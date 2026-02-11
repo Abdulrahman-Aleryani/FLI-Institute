@@ -1,0 +1,20 @@
+{
+    "doctype": "DocType",
+    "module": "LMS",
+    "name": "Placement Test Question Option",
+    "istable": 1,
+    "fields": [
+        {
+            "fieldname": "option_text",
+            "fieldtype": "Data",
+            "label": "Option",
+            "reqd": 1
+        },
+        {
+            "fieldname": "is_correct",
+            "fieldtype": "Check",
+            "label": "Is Correct",
+            "default": 0
+        }
+    ]
+}

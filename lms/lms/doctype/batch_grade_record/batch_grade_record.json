@@ -1,0 +1,107 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-01-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "student",
+  "student_name",
+  "attendance",
+  "participation",
+  "assignments",
+  "speaking",
+  "writing",
+  "communicative_competence",
+  "final_oral",
+  "exam",
+  "total"
+ ],
+ "fields": [
+  {
+   "fieldname": "student",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Student",
+   "options": "User"
+  },
+  {
+   "fetch_from": "student.full_name",
+   "fieldname": "student_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Student Name",
+   "read_only": 1
+  },
+  {
+   "fieldname": "attendance",
+   "fieldtype": "Float",
+   "label": "Attendance (10)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "participation",
+   "fieldtype": "Float",
+   "label": "Participation (10)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "assignments",
+   "fieldtype": "Float",
+   "label": "Assignments (10)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "speaking",
+   "fieldtype": "Float",
+   "label": "Speaking (10)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "writing",
+   "fieldtype": "Float",
+   "label": "Writing (15)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "communicative_competence",
+   "fieldtype": "Float",
+   "label": "Communicative Competence (10)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "final_oral",
+   "fieldtype": "Float",
+   "label": "Final Oral (10)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "exam",
+   "fieldtype": "Float",
+   "label": "Exam (25)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "total",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Total",
+   "precision": "2",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-01-03 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "Batch Grade Record",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 0,
+ "sort_field": "idx",
+ "sort_order": "ASC",
+ "track_changes": 1
+}

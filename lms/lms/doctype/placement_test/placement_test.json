@@ -1,0 +1,77 @@
+{
+    "doctype": "DocType",
+    "module": "LMS",
+    "custom": 0,
+    "name": "Placement Test",
+    "autoname": "format:PT-{####}",
+    "fields": [
+        {
+            "fieldname": "test_title",
+            "fieldtype": "Data",
+            "label": "Test Title",
+            "reqd": 1
+        },
+        {
+            "fieldname": "description",
+            "fieldtype": "Text Editor",
+            "label": "Description"
+        },
+        {
+            "fieldname": "time_limit",
+            "fieldtype": "Int",
+            "label": "Time Limit (minutes)",
+            "description": "Time limit in minutes (0 for no limit)",
+            "default": 60
+        },
+        {
+            "fieldname": "passing_score",
+            "fieldtype": "Percent",
+            "label": "Passing Score (%)",
+            "default": 70
+        },
+        {
+            "fieldname": "is_active",
+            "fieldtype": "Check",
+            "label": "Is Active",
+            "default": 1
+        },
+        {
+            "fieldname": "questions",
+            "fieldtype": "Table",
+            "label": "Questions",
+            "options": "Placement Test Question Row",
+            "reqd": 1
+        }
+    ],
+    "naming_rule": "By fieldname",
+    "istable": 0,
+    "modified_by": "Administrator",
+    "modified": "2025-12-15 20:15:00.000000",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Placement Test Manager",
+            "share": 1,
+            "write": 1
+        }
+    ]
+}

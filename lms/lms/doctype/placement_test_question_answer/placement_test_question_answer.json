@@ -1,0 +1,34 @@
+{
+    "doctype": "DocType",
+    "module": "LMS",
+    "name": "Placement Test Question Answer",
+    "istable": 1,
+    "fields": [
+        {
+            "fieldname": "question",
+            "fieldtype": "Link",
+            "label": "Question",
+            "options": "Placement Test Question",
+            "reqd": 1
+        },
+        {
+            "fieldname": "question_text",
+            "fieldtype": "Small Text",
+            "label": "Question Text",
+            "fetch_from": "question.question",
+            "read_only": 1
+        },
+        {
+            "fieldname": "selected_options",
+            "fieldtype": "Small Text",
+            "label": "Selected Options",
+            "description": "JSON array of selected option indices"
+        },
+        {
+            "fieldname": "is_correct",
+            "fieldtype": "Check",
+            "label": "Is Correct",
+            "default": 0
+        }
+    ]
+}

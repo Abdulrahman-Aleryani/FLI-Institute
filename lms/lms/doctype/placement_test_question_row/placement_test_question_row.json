@@ -1,0 +1,31 @@
+{
+    "doctype": "DocType",
+    "module": "LMS",
+    "name": "Placement Test Question Row",
+    "hide_in_module": 1,
+    "in_global_search": 0,
+    "istable": 1,
+    "fields": [
+        {
+            "fieldname": "question",
+            "fieldtype": "Link",
+            "label": "Question",
+            "options": "Placement Test Question",
+            "reqd": 1
+        },
+        {
+            "fieldname": "question_text",
+            "fieldtype": "Small Text",
+            "label": "Question Text",
+            "fetch_from": "question.question",
+            "read_only": 1
+        },
+        {
+            "fieldname": "marks",
+            "fieldtype": "Int",
+            "label": "Marks",
+            "fetch_from": "question.marks",
+            "read_only": 1
+        }
+    ]
+}

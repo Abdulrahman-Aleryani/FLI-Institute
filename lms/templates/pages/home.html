@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLI - Faculty Language Institute</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:0;overflow-x:hidden}
+:root{
+  --accent:#0b5fff;
+  --muted:#6b7280;
+  --section-pad:60px;
+  --max-width:1180px;
+  --radius:12px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+[dir="rtl"] {
+  font-family: "Cairo", "Tajawal", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+.container{max-width:var(--max-width);margin:0 auto;padding:0 20px;}
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 0;
+  gap:16px;
+  position:sticky;
+  top:0;
+  z-index:2100;
+  background:transparent;
+  backdrop-filter:blur(10px);
+}
+.header .logo img{height:130px;}
+.nav{display:flex;gap:24px;align-items:center}
+.header-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
+.header-actions .btn{white-space:nowrap}
+.header-actions .lang-switcher{white-space:nowrap}
+.nav a.nav-link{
+  color:#1a1a2e;
+  text-decoration:none;
+  font-weight:500;
+  font-size:15px;
+  padding:8px 4px;
+  position:relative;
+  transition:color 0.2s;
+}
+.nav a.nav-link::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:width 0.2s;
+}
+.nav a.nav-link:hover{color:var(--accent)}
+.nav a.nav-link:hover::after{width:100%}
+.home-link{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  color:#0b5fff;
+  border:2px solid rgba(11,95,255,0.2);
+  transition:all 0.25s ease;
+  text-decoration:none;
+}
+.home-link svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;}
+.home-link:hover{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(11,95,255,0.3);}
+.mobile-menu .home-link{
+  width:100%;
+  height:auto;
+  padding:12px 16px;
+  border-radius:10px;
+  justify-content:flex-start;
+  gap:12px;
+}
+.mobile-menu .home-link svg{
+  width:20px;
+  height:20px;
+}
+.btn{background:var(--accent);color:#fff !important;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.2s;box-shadow:0 2px 8px rgba(11,95,255,0.25)}
+.btn:hover{background:#0947cc;transform:translateY(-1px);box-shadow:0 4px 12px rgba(11,95,255,0.35)}
+.lang-switcher{background:#f8fafc;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:14px;color:#1a1a2e;font-weight:500;transition:all 0.2s}
+.lang-switcher:hover{background:var(--accent);color:#fff}
+
+/* Hamburger Menu */
+.hamburger{
+  display:none;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  flex-direction:column;
+  gap:5px;
+}
+.hamburger span{
+  display:block;
+  width:24px;
+  height:3px;
+  background:#0b5fff;
+  border-radius:2px;
+  transition:all 0.3s;
+}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+
+.mobile-menu{
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  border-radius:0 0 16px 16px;
+  padding:20px;
+  flex-direction:column;
+  gap:12px;
+  z-index:1000;
+}
+.mobile-menu.active{display:flex}
+.mobile-menu a{
+  display:block;
+  padding:12px 16px;
+  color:#1a1a2e;
+  text-decoration:none;
+  font-weight:500;
+  font-size:16px;
+  border-radius:10px;
+  transition:all 0.2s;
+}
+.mobile-menu a:hover{background:#f8fafc;color:var(--accent)}
+.mobile-menu .btn{
+  text-align:center;
+  margin-top:8px;
+  color: white;
+}
+
+/* Hero */
+.hero{display:flex;gap:50px;align-items:flex-start;padding:70px 0}
+.hero-left{flex:1;max-width:480px}
+.hero-right{flex:1;display:flex;justify-content:flex-end}
+.hero-right img{
+  width:100%;
+  max-width:520px;
+  border-radius:20px;
+  object-fit:cover;
+  box-shadow:0 20px 45px rgba(15,23,42,0.15);
+}
+.hero h1{font-size:42px;margin:0 0 24px;line-height:1.15;font-weight:800;color:#1a1a2e}
+
+/* Hero Badge */
+.hero-badge{
+  display:inline-block;
+  background:#e8f4fd;
+  color:var(--accent);
+  font-weight:600;
+  font-size:14px;
+  padding:8px 18px;
+  border-radius:20px;
+  margin-bottom:20px;
+}
+
+/* Hero Benefits List */
+.hero-benefits{
+  list-style:none;
+  padding:0;
+  margin:0 0 28px 0;
+}
+.hero-benefits li{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:14px;
+  color:#374151;
+  font-size:15px;
+  line-height:1.5;
+}
+.benefit-check{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  background:var(--accent);
+  color:#fff;
+  border-radius:50%;
+  font-size:12px;
+  font-weight:700;
+  flex-shrink:0;
+  margin-top:2px;
+}
+
+/* Hero CTA Button */
+.hero-cta{
+  display:inline-flex;
+  align-items:center;
+  background:var(--accent);
+  color:#fff;
+  padding:14px 28px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:16px;
+  text-decoration:none;
+  transition:background 0.2s;
+}
+.hero-cta:hover{background:#0947cc}
+
+/* Category Cards Grid */
+.category-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:22px;
+  width:100%;
+}
+.hero-sub{
+  color:#374151;
+  font-size:15px;
+  line-height:1.6;
+  margin:0 0 18px;
+}
+.category-section{
+  padding:60px 0;
+}
+.category-section h2{
+  margin:0 0 32px;
+  font-size:32px;
+  font-weight:800;
+  color:#1a1a2e;
+}
+.category-card{
+  position:relative;
+  border-radius:18px;
+  overflow:hidden;
+  text-decoration:none;
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+  border:2px solid #5e64ff;
+  box-shadow:0 10px 25px rgba(15,23,42,0.08);
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+  max-width:320px;
+  margin:0 auto;
+}
+.category-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 32px rgba(15,23,42,0.12);
+}
+.category-card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+.category-body{
+  padding:18px;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.category-title{
+  color:#1a1a2e;
+  font-weight:800;
+  font-size:16px;
+}
+.category-desc{
+  color:#4b5563;
+  font-size:14px;
+  line-height:1.5;
+}
+.category-btn{
+  display:inline-flex;
+  align-self:center;
+  align-items:center;
+  justify-content:center;
+  padding:10px 18px;
+  background:#3c2ea3;
+  color:#fff;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+  box-shadow:0 8px 18px rgba(60,46,163,0.25);
+  transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+.category-btn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 12px 22px rgba(60,46,163,0.28);
+}
+
+@media (max-width:600px){
+  .category-card{
+    max-width:100%;
+    aspect-ratio:auto;
+    height:320px;
+    display:flex;
+    flex-direction:column;
+  }
+  .category-card img{
+    height:140px;
+    flex-shrink:0;
+  }
+  .category-body{
+    position:relative;
+    left:auto;
+    right:auto;
+    bottom:auto;
+    background:#fff;
+    color:#1a1a2e;
+    align-items:center;
+    text-align:center;
+    padding:14px 16px;
+    border-radius:0 0 16px 16px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    overflow:hidden;
+  }
+  .category-title{
+    color:#1a1a2e;
+    font-size:14px;
+    flex-shrink:0;
+  }
+  .category-desc{
+    color:#4b5563;
+    font-size:12px;
+    line-height:1.4;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+    flex-shrink:0;
+    max-height:34px;
+  }
+  .category-btn{
+    background:#3c2ea3;
+    color:#fff;
+    box-shadow:0 8px 18px rgba(60,46,163,0.25);
+    margin-top:auto;
+    flex-shrink:0;
+    padding:8px 16px;
+    font-size:13px;
+  }
+}
+
+/* Hero Highlight card */
+.highlight-mobile-card{display:none;margin-bottom:24px;border-radius:20px;overflow:hidden;box-shadow:0 25px 60px rgba(15,23,42,0.15);position:relative}
+.highlight-mobile-card img{width:100%;display:block;height:320px;object-fit:cover;object-position:center top}
+.highlight-mobile-content{position:absolute;bottom:0;left:0;right:0;padding:24px;background:linear-gradient(180deg,rgba(3,7,18,0) 0%,rgba(3,7,18,0.85) 85%);color:#fff}
+.highlight-mobile-content p{margin:0 0 8px;text-transform:uppercase;font-size:13px;font-weight:600;letter-spacing:0.08em}
+.highlight-mobile-content h3{margin:0 0 10px;font-size:20px;font-weight:700}
+.highlight-mobile-content span{display:block;line-height:1.5;font-size:15px;color:rgba(255,255,255,0.92)}
+
+.hero-highlight{
+  padding:40px 0 20px;
+}
+.hero-highlight .highlight-card{
+  position:relative;
+  border-radius:28px;
+  overflow:hidden;
+}
+.highlight-content{
+  position:absolute;
+  inset:0 auto 0 0;
+  padding:36px;
+  max-width:440px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+  color:#fff;
+  background:transparent;
+  text-shadow:0 8px 26px rgba(0,0,0,0.45);
+  z-index:1;
+}
+.highlight-content h3{
+  margin:0 0 12px;
+  font-size:26px;
+  font-weight:700;
+}
+.highlight-content p{
+  margin:0;
+  color:rgba(255,255,255,0.9);
+  line-height:1.6;
+}
+.highlight-image{
+  width:100%;
+  height: 470px;
+}
+.highlight-image img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center top;
+}
+
+@media (max-width:900px){
+  .highlight-content{
+    position:absolute;
+    inset:auto 0 0 0;
+    max-width:100%;
+    padding:24px;
+    text-align:center;
+    color:#fff;
+    text-shadow:0 5px 20px rgba(0,0,0,0.4);
+  }
+  .highlight-content h3{font-size:22px}
+  .highlight-image{height:300px}
+}
+
+/* Why Learn Section */
+.why-learn{
+  padding:80px 0;
+  background:#f8fafc;
+}
+.why-learn h2{
+  text-align:center;
+  font-size:36px;
+  font-weight:800;
+  color:#1a1a2e;
+  margin-bottom:50px;
+}
+.why-cards{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+.why-card{
+  background:#fff;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+}
+.why-card-img{
+  position:relative;
+  height:220px;
+  overflow:hidden;
+}
+.why-card-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.why-card-badge{
+  position:absolute;
+  top:16px;
+  left:16px;
+  background:rgba(255,255,255,0.95);
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:13px;
+  font-weight:600;
+  color:#1a1a2e;
+  max-width:180px;
+  line-height:1.4;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+.why-card-badge.right{
+  left:auto;
+  right:16px;
+  background:rgba(230,240,255,0.95);
+  color:#1a4b8e;
+}
+.why-card-content{
+  padding:24px;
+}
+.why-card-content h3{
+  font-size:20px;
+  font-weight:700;
+  color:#1a1a2e;
+  margin:0 0 12px;
+}
+.why-card-content p{
+  color:#6b7280;
+  font-size:15px;
+  line-height:1.6;
+  margin:0 0 20px;
+}
+.why-card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--accent);
+  font-weight:600;
+  font-size:15px;
+  text-decoration:none;
+  padding:10px 20px;
+  border:2px solid var(--accent);
+  border-radius:8px;
+  transition:all 0.2s;
+}
+.why-card-link:hover{
+  background:var(--accent);
+  color:#fff;
+}
+
+/* Placement Test Section */
+.placement-test{
+  padding:60px 0;
+  background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);
+  text-align:center;
+}
+.placement-test h2{
+  color:#fff;
+  font-size:32px;
+  font-weight:800;
+  margin:0 0 12px;
+}
+.placement-test p{
+  color:rgba(255,255,255,0.8);
+  font-size:16px;
+  margin:0 0 30px;
+  max-width:600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.placement-test-buttons{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.placement-test-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 28px;
+  border-radius:8px;
+  font-weight:600;
+  font-size:16px;
+  text-decoration:none;
+  transition:all 0.2s;
+}
+.placement-test-btn.primary{
+  background:var(--accent);
+  color:#fff;
+}
+.placement-test-btn.primary:hover{
+  background:#0947cc;
+}
+.placement-test-btn.secondary{
+  background:transparent;
+  color:#fff;
+  border:2px solid rgba(255,255,255,0.5);
+}
+.placement-test-btn.secondary:hover{
+  border-color:#fff;
+  background:rgba(255,255,255,0.1);
+}
+
+/* Features */
+.features{display:flex;gap:18px;margin-top:30px}
+.feature{flex:1;background:#fff;border-radius:12px;padding:20px;box-shadow:0 6px 20px rgba(9,30,66,0.05);display:flex;gap:12px;align-items:flex-start}
+.feature img{width:48px;height:48px;border-radius:8px}
+
+/* Courses / Batches preview */
+.courses{padding:var(--section-pad) 0;background:#f8fafc}
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.course-card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 15px rgba(9,30,66,0.04)}
+
+/* How it works */
+.how{padding:var(--section-pad) 0}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center}
+
+/* Testimonials */
+.testimonials{padding:var(--section-pad) 0;background:#f8fafc}
+.test-card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 15px rgba(9,30,66,0.04)}
+
+/* CTA footer */
+.cta{padding:40px 0;text-align:center}
+.footer{padding:30px 0;border-top:1px solid #eef2f7;color:var(--muted)}
+.footer a{
+  color:var(--accent);
+  text-decoration:none;
+  transition:all 0.2s;
+}
+.footer a:hover{
+  color:var(--accent-hover);
+}
+.footer .social-links{
+  display:flex;
+  gap:12px;
+  justify-content:flex-end;
+  margin-top:10px;
+}
+.footer .social-links a{
+  width:44px;
+  height:44px;
+  border-radius:16px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  text-decoration:none;
+  box-shadow:0 15px 30px rgba(15,23,42,0.18);
+  transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+.footer .social-links a svg{width:18px;height:18px}
+.footer .social-links a:hover{
+  transform:translateY(-3px) scale(1.04);
+  box-shadow:0 18px 34px rgba(15,23,42,0.25);
+}
+.footer .social-link--facebook{background:linear-gradient(135deg,#0062ff,#409eff)}
+.footer .social-link--instagram{background:linear-gradient(135deg,#ff512f,#dd2476 45%,#8134af)}
+.footer .social-link--youtube{background:linear-gradient(135deg,#ff0844,#ff5f5f)}
+.footer .social-link--linkedin{background:linear-gradient(135deg,#0077b5,#00a0dc)}
+
+/* RTL adjustments */
+[dir="rtl"] .hero{flex-direction:row-reverse}
+[dir="rtl"] .hero-left{text-align:right}
+[dir="rtl"] .hero-benefits li{flex-direction:row-reverse}
+[dir="rtl"] .category-overlay{flex-direction:row-reverse}
+[dir="rtl"] .why-card-badge{left:auto;right:16px}
+[dir="rtl"] .why-card-badge.right{right:auto;left:16px}
+[dir="rtl"] .why-card-content{text-align:right}
+[dir="rtl"] .feature{flex-direction:row-reverse;text-align:right}
+[dir="rtl"] .footer > div:first-child{flex-direction:row-reverse}
+[dir="rtl"] .footer div[style*="text-align:right"]{text-align:left}
+
+/* Responsive */
+@media (max-width:900px){
+  .header{flex-wrap:wrap;gap:12px}
+  .nav{flex-wrap:wrap;gap:10px;justify-content:center}
+  .header-actions{margin-left:0}
+  .hero{flex-direction:column;gap:40px;padding:40px 0}
+  [dir="rtl"] .hero{flex-direction:column}
+  .hero-left{max-width:100%}
+  .hero-right{justify-content:center;width:100%}
+  .category-grid{max-width:100%;width:100%}
+  .highlight-mobile-card{display:block}
+  .hero-highlight{display:none}
+  .why-learn{padding:50px 0}
+  .why-cards{grid-template-columns:1fr}
+  .why-learn h2{font-size:28px}
+  .how-grid{grid-template-columns:repeat(1,1fr)}
+  .features{flex-direction:column}
+  .footer > div:first-child{flex-direction:column;gap:20px;text-align:center}
+}
+@media (max-width:600px){
+  .container{padding:0 24px}
+  #page-wrapper{padding:0 8px}
+  .header{
+    padding:6px 0;
+    flex-direction:row;
+    position:sticky;
+    top:0;
+    left:0;
+    right:0;
+    background:transparent;
+    z-index:2000;
+    box-shadow:none;
+    backdrop-filter:blur(8px);
+  }
+  .header .logo img{height:70px}
+  .nav{display:none}
+  .hamburger{display:flex}
+  .header-actions{margin-left:auto;gap:6px}
+  .header-actions .btn{
+    padding:6px 12px;
+    font-size:12px;
+    border-radius:18px;
+  }
+  .header-actions .lang-switcher{
+    padding:4px 10px;
+    font-size:12px;
+  }
+  .hero{padding:30px 0;gap:30px}
+  .hero h1{font-size:26px;margin-bottom:16px}
+  .hero-badge{font-size:12px;padding:6px 14px}
+  .hero-benefits li{font-size:14px;gap:10px}
+  .benefit-check{width:18px;height:18px;font-size:10px}
+  .hero-cta{padding:12px 20px;font-size:14px;width:100%;justify-content:center}
+  .category-grid{grid-template-columns:1fr;gap:12px}
+  .category-card{aspect-ratio:16/10}
+  .why-learn{padding:40px 24px}
+  .why-learn .container{padding:0}
+  .why-cards{gap:20px}
+  .why-card{border-radius:16px}
+  .courses,.how,.testimonials,.cta{padding-left:24px;padding-right:24px}
+  .footer{padding-left:24px;padding-right:24px}
+  .why-learn h2{font-size:24px;margin-bottom:30px}
+  .why-card-img{height:180px}
+  .why-card-badge{font-size:11px;padding:8px 12px;max-width:160px}
+  .why-card-content{padding:18px}
+  .why-card-content h3{font-size:18px}
+  .why-card-content p{font-size:14px}
+  .courses h2,.how h2,.testimonials h2{font-size:22px}
+  .cta h2{font-size:22px}
+  .placement-test{padding:40px 24px}
+  .placement-test h2{font-size:24px}
+  .placement-test p{font-size:14px}
+  .placement-test-buttons{flex-direction:column;gap:14px}
+  .placement-test-btn{padding:12px 20px;font-size:14px;width:100%;justify-content:center}
+  .footer{text-align:center}
+  .footer > div{flex-direction:column!important;gap:16px}
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="page-wrapper">
+<header class="container header">
+  <div class="logo" style="display: flex; align-items: center;"><img src="/files/flipng.png" alt="Institute Logo" style="height:130px"></div>
+  <nav class="nav">
+    <a href="/" class="home-link" aria-label="Home">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 11.5 12 4l9 7.5" />
+        <path d="M5 10.5V20h14v-9.5" />
+      </svg>
+    </a>
+    <a href="/about" class="nav-link" data-i18n="nav_about">About</a>
+    <a href="/contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="lang-switcher" onclick="toggleLanguage()">العربية</button>
+    <a href="/login" class="btn" data-i18n="nav_login">Login</a>
+  </div>
+  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/" class="nav-link" aria-label="Home" data-i18n="nav_home">Home</a>
+    <a href="/about" class="nav-link" data-i18n="nav_about">About</a>
+    <a href="/contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+  </div>
+</header>
+
+<section class="container hero" aria-label="Hero">
+  <div class="hero-left">
+    <span class="hero-badge" data-i18n="hero_badge">مرحبًا بكم في منصة FLI التعليمية</span>
+    <h1 data-i18n="hero_title">ابدأ رحلتك لتعلّم الإنجليزية بثقة اليوم.</h1>
+    
+    <ul class="hero-benefits">
+      <li>
+        <span class="benefit-check">✓</span>
+        <span data-i18n="hero_benefit_1">تعلم معنا أينما كنت، وكيف ما أردت.</span>
+      </li>
+      <li>
+        <span class="benefit-check">✓</span>
+        <span data-i18n="hero_benefit_2">محتوى تفاعلي وأدوات رقمية لدعم التعليم عن بعد والحضوري.</span>
+      </li>
+      <li>
+        <span class="benefit-check">✓</span>
+        <span data-i18n="hero_benefit_3">متابعة وتقييم مستمر لضمان تطوير مهاراتك بفعالية.</span>
+      </li>
+    </ul>
+    <p class="hero-sub" data-i18n="hero_sub">ابدأ من المستوى المناسب لك، وتعلّم بثقة ومنهجية صحيحة.</p>
+    
+    <a class="btn hero-cta" href="/placement-test" data-i18n="hero_cta_primary">
+      Start Placement Test <span style="margin-left:8px">→</span>
+    </a>
+   <a href="/courses" class="placement-test-btn secondary" data-i18n="placement_btn_register" style="color:var(--accent);border:2px solid var(--accent);margin-top:12px;display:inline-block;text-align:center;">
+        التسجيل من أول دورة
+      </a>
+    
+    
+  </div>
+
+  <div class="hero-right">
+    <img src="/files/FLi online.jpeg" alt="Institute building and students" loading="lazy">
+  </div>
+
+  <div class="highlight-mobile-card">
+    <img src="/files/FLi.jpeg" alt="Faculty Language Institute campus" loading="lazy">
+    <div class="highlight-mobile-content">
+      <p data-i18n="highlight_badge">Aim higher.</p>
+      <h3 data-i18n="highlight_title">Flexible English courses online and in-person.</h3>
+      <span data-i18n="highlight_desc">Learn with experienced instructors at the Faculty Language Institute—join batches on campus or remotely and stay on track with personal coaching.</span>
+    </div>
+  </div>
+
+</section>
+
+<section class="hero-highlight" aria-label="Highlight">
+  <div class="container">
+    <div class="highlight-card">
+      <div class="highlight-content">
+        <p style="text-transform:uppercase;font-size:14px;font-weight:600;letter-spacing:0.08em;margin:0 0 10px" data-i18n="highlight_badge">Aim higher.</p>
+        <h3 data-i18n="highlight_title">Flexible English courses online and in-person.</h3>
+        <p data-i18n="highlight_desc">Learn with experienced instructors at the Faculty Language Institute—join batches on campus or remotely and stay on track with personal coaching.</p>
+      </div>
+      <div class="highlight-image">
+        <img src="/files/FLi.jpeg" alt="Students learning together" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="category-section" aria-label="Course Categories">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+    <h2 data-i18n="cat_section_title" style="margin:0;font-size:32px;font-weight:800;color:#1a1a2e">Programs</h2>
+    <div class="category-grid">
+      <a href="/business-correspondence" class="category-card">
+        <img src="/files/business-partner.jpg" alt="Business Correspondence English" onerror="this.src='https://images.unsplash.com/photo-1521791055366-0d553872125f?w=600&h=400&fit=crop'">
+        <div class="category-body">
+          <span class="category-title">المراسلات التجارية</span>
+          <span class="category-desc">برامج مصممة للموظفين وروّاد الأعمال، تركز على كتابة الإيميلات الرسمية، التقارير، والتواصل المهني مع الشركات والمؤسسات باللغة الإنجليزية.</span>
+          <span>
+            <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
+          </span>
+        </div>
+      </a>
+      <a href="/online-course" class="category-card">
+        <img src="/files/online-course.jpg" alt="Online English Course" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop'">
+        <div class="category-body">
+          <span class="category-title" data-i18n="cat_online">Skills Levels</span>
+          <span class="category-desc">Progress through levels with flexible online sessions.</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/exam-prep" class="category-card">
+        <img src="/files/exam-prep.jpg" alt="Exam Preparation" onerror="this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'">
+        <div class="category-body">
+          <span class="category-title" data-i18n="cat_exam">Exam Preparation</span>
+          <span class="category-desc">Targeted practice for IELTS, TOEFL, and more.</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/kids-course" class="category-card">
+        <img src="/files/Kids Cover.JPEG" alt="Kids English Course" onerror="this.src='https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=300&fit=crop'">
+        <div class="category-body">
+          <span class="category-title" data-i18n="cat_teens">English for Young Learners</span>
+          <span class="category-desc">Fun, interactive classes to build early confidence.</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/computer-course" class="category-card">
+        <img src="/files/computer-course.jpg" alt="Computer Skills Course" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop'">
+        <div class="category-body">
+          <span class="category-title">دورات الكمبيوتر</span>
+          <span class="category-desc">برامج عملية تهدف إلى رفع الكفاءة الرقمية، تشمل أساسيات الحاسوب، التطبيقات المكتبية، والمهارات التقنية الأساسية المطلوبة لسوق العمل.</span>
+          <span class="category-btn">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/grammar-writing" class="category-card">
+        <img src="/files/grammar-writing.jpg" alt="Grammar and Writing Course" onerror="this.src='https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&h=400&fit=crop'">
+        <div class="category-body">
+          <span class="category-title">دورة القواعد والكتابة</span>
+          <span class="category-desc">مخصصة للطلاب الراغبين في تقوية الأساس اللغوي وتحسين الكتابة الأكاديمية والعملية، مع شرح مبسّط وتطبيقات عملية تناسب جميع المستويات.</span>
+          <span class="category-btn">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/speaking-course" class="category-card">
+        <img src="/files/conversation-course.jpg" alt="Speaking Courses" onerror="this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop'">
+        <div class="category-body">
+          <span class="category-title">دورات المحادثة</span>
+          <span class="category-desc">دورات عملية تهدف إلى كسر حاجز الخوف وبناء الثقة في التحدث باللغة الإنجليزية من خلال مواقف حياتية واقعية، نقاشات، وتمارين تواصل مباشرة بإشراف مدرّسين مختصين.</span>
+          <span class="category-btn">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/corporate-english" class="category-card">
+        <img src="/files/corporate-english.jpg" alt="Corporate English Course" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop'">
+        <div class="category-body">
+          <span class="category-title">Online Corporate English</span>
+          <span class="category-desc">Guided training for teams to level-up English fast.</span>
+          <span class="category-btn">اكتشف المزيد</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="why-learn">
+  <div class="container">
+    <h2 data-i18n="why_title">Why learn with us?</h2>
+    <div class="why-cards">
+      <div class="why-card">
+        <div class="why-card-img">
+          <img src="/files/blended-method.jpg" alt="Blended learning" onerror="this.src='https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=500&h=350&fit=crop'">
+          <span class="why-card-badge" data-i18n="why_badge_1">94% of our students would recommend us*</span>
+        </div>
+        <div class="why-card-content">
+          <h3 data-i18n="why_card_1_title">A unique blended method</h3>
+          <p data-i18n="why_card_1_desc">Combining self-study with teacher-led classes makes learning fast and effective.</p>
+          <a href="/our-method" class="why-card-link" data-i18n="why_card_1_link">Explore our method →</a>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-card-img">
+          <img src="/files/flexible-times.jpg" alt="Flexible class times" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&h=350&fit=crop'">
+        </div>
+        <div class="why-card-content">
+          <h3 data-i18n="why_card_2_title">Flexible class times</h3>
+          <p data-i18n="why_card_2_desc">No fixed timetable. Control when, where and how you study with 50,000 live classes each month with a maximum of 4 students</p>
+          <a href="/courses" class="why-card-link" data-i18n="why_card_2_link">How our course works →</a>
+        </div>
+      </div>
+      <div class="why-card">
+        <div class="why-card-img">
+          <img src="/files/english-teachers.jpg" alt="English teachers" onerror="this.src='https://images.unsplash.com/photo-1544717305-2782549b5136?w=500&h=350&fit=crop'">
+          <span class="why-card-badge right" data-i18n="why_badge_3">9 out of 10 students say having a dedicated coach helps them stay motivated with their studies*</span>
+        </div>
+        <div class="why-card-content">
+          <h3 data-i18n="why_card_3_title">Our English teachers</h3>
+          <p data-i18n="why_card_3_desc">A leading English language school with schools in 41 countries. We've helped more than 3 million students improve their English.</p>
+          <a href="/teachers" class="why-card-link" data-i18n="why_card_3_link">Find out more →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="placement-test">
+  <div class="container">
+    <h2 data-i18n="placement_title">اختبار تحديد المستوى</h2>
+    <p data-i18n="placement_desc">في FLI سنساعدك على التخطيط لأفضل دورة لغة إنجليزية تناسب احتياجاتك. سيساعدك خبراؤنا على معرفة مستواك الدقيق في اللغة الإنجليزية ومن ثم سننشئ خطة دورة تضمن تحقيق أهدافك. لمساعدتنا في تقييم احتياجاتك، رحلتك التعليمية من المكان المناسب مجانا</p>
+    <div class="placement-test-buttons">
+      <a href="/placement-test" class="placement-test-btn primary" data-i18n="placement_btn_test">
+        بدء اختبار تحديد المستوى
+      </a>
+      <a href="/courses" class="placement-test-btn secondary" data-i18n="placement_btn_register">
+        التسجيل من أول دورة
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="container footer">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;align-items:flex-start">
+    <div>
+      <img src="/files/flipng.png" alt="logo" style="height:130px">
+      <div style="color:var(--muted);font-size:14px;margin-top:8px" data-i18n="footer_address">Faculty Language Institute (FLI)</div>
+      <a href="https://maps.app.goo.gl/i6p2srHHZGsf7V577" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;text-decoration:none;margin-top:4px">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 3.25c-3.2 0-5.75 2.55-5.75 5.7 0 4.45 5.75 11.8 5.75 11.8s5.75-7.35 5.75-11.8c0-3.15-2.55-5.7-5.75-5.7Zm0 8.65a2.95 2.95 0 1 1 0-5.9 2.95 2.95 0 0 1 0 5.9Z" fill="currentColor"/>
+        </svg>
+        <span>Baghdad street, Sanaa, Yemen</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:8px">
+        <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4.5 6.75h15a1 1 0 0 1 1 1v8.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1v-8.5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M4.5 7.5 12 12.5l7.5-5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>facultyinstitutefli@gmail.com</span>
+      </div>
+      <div style="display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:8px;line-height:1.4">
+        <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6.8 4.2c-.3.3-.5.7-.4 1.1.4 2 1.3 4 2.7 5.7a13.2 13.2 0 0 0 5.7 2.7c.4.1.8 0 1.1-.4l1-1a.8.8 0 0 0-.1-1.2l-1.8-1.2a.8.8 0 0 0-.9 0l-.9.6a.8.8 0 0 1-.8 0 9.2 9.2 0 0 1-3.3-3.3.8.8 0 0 1 0-.8l.6-.9a.8.8 0 0 0 0-.9L9.3 3.4a.8.8 0 0 0-1.2-.1l-1.3 1Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>00967 781 405 000</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:16px;margin-top:12px">
+        <a href="https://wa.me/967781405000" target="_blank" rel="noopener" title="WhatsApp" style="color:#25D366;text-decoration:none">
+          <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </a>
+         <a href="https://www.instagram.com/fli.institute?igsh=MWprY2E3Z3JjMHE3dg==" target="_blank" rel="noopener" title="Instagram" style="color:#E4405F;text-decoration:none">
+          <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/>
+          </svg>
+           </a>
+        <a href="https://www.facebook.com/share/17pTq7L5uM/?mibextid=LQQJ4d" target="_blank" rel="noopener" title="Facebook" style="color:#1877F2;text-decoration:none">
+          <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:180px;align-self:flex-start;margin-top:140px">
+      <a href="/about" style="color:var(--text);text-decoration:none;font-weight:500" data-i18n="nav_about">About Us</a>
+      <a href="/contact" style="color:var(--text);text-decoration:none;font-weight:500" data-i18n="nav_contact">Contact</a>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:18px;color:var(--muted);font-size:13px">
+    &copy; <span id="year"></span> <span data-i18n="footer_copyright">Faculty Language Institute. All rights reserved.</span>
+  </div>
+</footer>
+</div>
+
+<script>
+const translations = {
+  en: {
+    nav_courses: "Courses",
+    nav_about: "About",
+    nav_contact: "Contact",
+    nav_login: "Login",
+    nav_signup: "Sign up",
+    nav_home: "Home",
+    hero_badge: "Welcome to FLI Learning Platform",
+    hero_eyebrow: "Learn English. Dream bigger",
+    hero_title: "Start your English learning journey with confidence today.",
+    hero_benefit_1: "Learn with us anywhere, anytime you want.",
+    hero_benefit_2: "Interactive content and digital tools supporting remote and in-person learning.",
+    hero_benefit_3: "Continuous follow-up and assessment to ensure effective skill development.",
+    hero_sub: "Start from the right level for you, and learn with confidence and proper methodology.",
+    hero_cta_primary: "Start Placement Test",
+    cat_adults: "Adults - English Course",
+    cat_online: "Online - English course",
+    cat_exam: "Exam preparation courses",
+    cat_teens: "Kids - English Course",
+    more_courses: "More Courses →",
+    why_title: "Why learn with us?",
+    why_badge_1: "94% of our students would recommend us*",
+    why_badge_3: "9 out of 10 students say having a dedicated coach helps them stay motivated with their studies*",
+    why_card_1_title: "A unique blended method",
+    why_card_1_desc: "Combining self-study with teacher-led classes makes learning fast and effective.",
+    why_card_1_link: "Explore our method →",
+    why_card_2_title: "Flexible class times",
+    why_card_2_desc: "No fixed timetable. Control when, where and how you study with 50,000 live classes each month with a maximum of 4 students",
+    why_card_2_link: "How our course works →",
+    why_card_3_title: "Our English teachers",
+    why_card_3_desc: "A leading English language school with schools in 41 countries. We've helped more than 3 million students improve their English.",
+    why_card_3_link: "Find out more →",
+    placement_title: "Placement Test",
+    placement_desc: "At FLI, we'll help you plan the best English course for your needs. Our experts will help you determine your exact English level and then create a course plan that ensures you achieve your goals. To help us assess your needs, start your learning journey from the right place for free.",
+    placement_btn_test: "Start Placement Test",
+    placement_btn_register: "Register Now",
+    courses_title: "Popular Courses & Batches",
+    courses_subtitle: "Start dates, levels and available seats.",
+    course_1_title: "English File – Starter",
+    course_1_info: "Batch: Morning • Seats: 18/20 • Start: Feb 2026",
+    course_2_title: "English File – Beginner (A1)",
+    course_2_info: "Batch: Evening • Seats: 15/20 • Start: Feb 2026",
+    course_3_title: "Conversation & Fluency",
+    course_3_info: "Open Enrollment • Self-paced",
+    view_btn: "View",
+    how_title: "How it works",
+    how_step_1_title: "1. Join a Batch",
+    how_step_1_desc: "Register for a scheduled batch with a fixed instructor and classmates.",
+    how_step_2_title: "2. Attend Live Sessions",
+    how_step_2_desc: "Lessons with teacher-led activities, quizzes and homework.",
+    how_step_3_title: "3. Track Progress",
+    how_step_3_desc: "Reports, grades and certificates as you progress through the course.",
+    testimonials_title: "What our students say",
+    testimonial_1_quote: "\"I improved my speaking in just 2 months. The teachers are great.\"",
+    testimonial_1_author: "— Sara, Student",
+    testimonial_2_quote: "\"Great structure and clear lessons. The batch system helped me stay consistent.\"",
+    testimonial_2_author: "— Ali, Student",
+    cta_title: "Ready to start?",
+    cta_join: "Join a Batch",
+    cta_contact: "Contact us",
+    highlight_badge: "Aim higher.",
+    highlight_title: "Flexible English courses online and in-person.",
+    highlight_desc: "Learn with experienced instructors at the Faculty Language Institute—join batches on campus or remotely and stay on track with personal coaching.",
+    footer_address: "Faculty Language Institute (FLI)",
+    footer_contact: "Contact",
+    footer_email: "Email: facultyinstitutefli@gmail.com",
+    footer_phone: "Phone: 00967 781 405 000",
+    footer_copyright: "Faculty Language Institute. All rights reserved."
+  },
+  ar: {
+    nav_courses: "الدورات",
+    nav_about: "عن المعهد",
+    nav_contact: "تواصل معنا",
+    nav_login: "تسجيل الدخول",
+    nav_signup: "إنشاء حساب",
+    nav_home: "الرئيسية",
+    hero_eyebrow: "تعلّم الإنجليزية. احلم بالمزيد",
+    hero_title: "ابدأ رحلتك لتعلّم الإنجليزية بثقة اليوم.",
+    hero_benefit_1: "تعلم معنا أينما كنت، وكيف ما أردت.",
+    hero_benefit_2: "محتوى تفاعلي وأدوات رقمية لدعم التعليم عن بعد والحضوري.",
+    hero_benefit_3: "متابعة وتقييم مستمر لضمان تطوير مهاراتك بفعالية.",
+    hero_cta_primary: "ابدأ اختبار تحديد المستوى",
+    hero_badge: "مرحبًا بكم في منصة FLI التعليمية",
+    hero_sub: "ابدأ من المستوى المناسب لك، وتعلّم بثقة ومنهجية صحيحة.",
+    cat_adults: "دورة الكبار - إنجليزي",
+    cat_online: "الدراسة عبر الإنترنت - دورة اللغة الإنجليزية",
+    cat_exam: "دورات التحضير للامتحانات",
+    cat_teens: "الأطفال - دورة اللغة الإنجليزية",
+    more_courses: "المزيد من الدورات →",
+    why_title: "لماذا تتعلم معنا؟",
+    why_badge_1: "94% من طلابنا يوصون بنا*",
+    why_badge_3: "9 من كل 10 طلاب يقولون أن وجود مدرب مخصص يساعدهم على البقاء متحمسين لدراستهم*",
+    why_card_1_title: "طريقة مدمجة فريدة",
+    why_card_1_desc: "الجمع بين الدراسة الذاتية والفصول بقيادة المعلم يجعل التعلم سريعاً وفعالاً.",
+    why_card_1_link: "← اكتشف طريقتنا",
+    why_card_2_title: "أوقات دراسة مرنة",
+    why_card_2_desc: "لا جدول زمني ثابت. تحكم في متى وأين وكيف تدرس مع 50,000 فصل مباشر شهرياً بحد أقصى 4 طلاب",
+    why_card_2_link: "← كيف تعمل دوراتنا",
+    why_card_3_title: "معلمونا للغة الإنجليزية",
+    why_card_3_desc: "مدرسة رائدة للغة الإنجليزية مع فروع في 41 دولة. ساعدنا أكثر من 3 ملايين طالب على تحسين إنجليزيتهم.",
+    why_card_3_link: "← اعرف المزيد",
+    placement_title: "اختبار تحديد المستوى",
+    placement_desc: "اكتشف مستواك الحالي في اللغة الإنجليزية وابدأ رحلتك التعليمية من المكان المناسب",
+    placement_btn_test: "بدء اختبار تحديد المستوى",
+    placement_btn_register: "سجّل الآن",
+    courses_title: "الدورات والمجموعات الشائعة",
+    courses_subtitle: "تواريخ البدء، المستويات، والمقاعد المتاحة.",
+    course_1_title: "English File – مبتدئ",
+    course_1_info: "المجموعة: صباحية • المقاعد: 18/20 • البدء: فبراير 2026",
+    course_2_title: "English File – مبتدئ (A1)",
+    course_2_info: "المجموعة: مسائية • المقاعد: 15/20 • البدء: فبراير 2026",
+    course_3_title: "المحادثة والطلاقة",
+    course_3_info: "تسجيل مفتوح • ذاتي السرعة",
+    view_btn: "عرض",
+    how_title: "كيف يعمل النظام",
+    how_step_1_title: "١. انضم إلى مجموعة",
+    how_step_1_desc: "سجّل في مجموعة مجدولة مع مدرّس وزملاء ثابتين.",
+    how_step_2_title: "٢. احضر الجلسات المباشرة",
+    how_step_2_desc: "دروس بأنشطة يقودها المعلم، اختبارات وواجبات.",
+    how_step_3_title: "٣. تابع تقدّمك",
+    how_step_3_desc: "تقارير، درجات وشهادات مع تقدّمك في الدورة.",
+    testimonials_title: "ماذا يقول طلابنا",
+    testimonial_1_quote: "\"تحسّن نطقي في شهرين فقط. المعلمون رائعون.\"",
+    testimonial_1_author: "— سارة، طالبة",
+    testimonial_2_quote: "\"هيكل رائع ودروس واضحة. نظام المجموعات ساعدني على الاستمرار.\"",
+    testimonial_2_author: "— علي، طالب",
+    cta_title: "مستعد للبدء؟",
+    cta_join: "انضم إلى مجموعة",
+    cta_contact: "تواصل معنا",
+    highlight_badge: "ارتقِ أكثر.",
+    highlight_title: "دورات مرنة عبر الإنترنت وفي الحرم الجامعي.",
+    highlight_desc: "تعلّم مع مدرّسين خبراء في معهد فاكلتي للغات — انضم إلى مجموعات في القاعات أو عن بُعد واستمر في التقدم مع دعم شخصي.",
+    footer_address: "معهد فاكلتي للغات (FLI) — شارع بغداد، صنعاء",
+    footer_contact: "التواصل",
+    footer_email: "البريد: facultyinstitutefli@gmail.com",
+    footer_phone: "الهاتف: 00967 781 405 000",
+    footer_copyright: "معهد فاكلتي للغات. جميع الحقوق محفوظة."
+  }
+};
+
+let currentLang = localStorage.getItem('fli_lang') || 'en';
+
+function applyTranslations(lang) {
+  const wrapper = document.getElementById('page-wrapper');
+  wrapper.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  
+  // Update all language switcher buttons
+  document.querySelectorAll('.lang-switcher').forEach(btn => {
+    btn.textContent = lang === 'en' ? 'العربية' : 'English';
+  });
+  
+  localStorage.setItem('fli_lang', lang);
+  currentLang = lang;
+}
+
+function toggleLanguage() {
+  const newLang = currentLang === 'en' ? 'ar' : 'en';
+  applyTranslations(newLang);
+  // Close mobile menu after language switch
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (hamburger && mobileMenu) {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('active');
+  }
+}
+
+function toggleMobileMenu() {
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.classList.toggle('active');
+  mobileMenu.classList.toggle('active');
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(e) {
+  const hamburger = document.querySelector('.hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+    hamburger.classList.remove('active');
+    mobileMenu.classList.remove('active');
+  }
+});
+
+// Initialize
+document.getElementById('year')?.appendChild(document.createTextNode(new Date().getFullYear()));
+applyTranslations(currentLang);
+</script>
+</body>
+</html>

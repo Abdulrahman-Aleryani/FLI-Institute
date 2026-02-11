@@ -1,0 +1,805 @@
+<!-- English Courses Page -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:0;overflow-x:hidden}
+:root{
+  --accent:#0b5fff;
+  --muted:#6b7280;
+  --section-pad:60px;
+  --max-width:1180px;
+  --radius:12px;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+[dir="rtl"] {
+  font-family: "Cairo", "Tajawal", system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+.container{max-width:var(--max-width);margin:0 auto;padding:0 20px;}
+
+/* Header */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:18px 0;
+  gap:16px;
+  position:sticky;
+  top:0;
+  z-index:2100;
+  background:transparent;
+  backdrop-filter:blur(10px);
+}
+.header .logo img{height:130px;}
+.nav{display:flex;gap:24px;align-items:center}
+.header-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
+.header-actions .btn{white-space:nowrap}
+.nav a.nav-link{
+  color:#1a1a2e;
+  text-decoration:none;
+  font-weight:500;
+  font-size:15px;
+  padding:8px 4px;
+  position:relative;
+  transition:color 0.2s;
+}
+.nav a.nav-link::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--accent);
+  transition:width 0.2s;
+}
+.nav a.nav-link:hover{color:var(--accent)}
+.nav a.nav-link:hover::after{width:100%}
+.home-link{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  color:#1a1a2e;
+  border:2px solid rgba(11,95,255,0.2);
+  transition:all 0.25s ease;
+  text-decoration:none;
+}
+.home-link svg{width:20px;height:20px;stroke:currentColor;stroke-width:2;fill:none;}
+.home-link:hover{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(11,95,255,0.3);}
+.btn{background:var(--accent);color:#fff !important;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.2s;box-shadow:0 2px 8px rgba(11,95,255,0.25)}
+.btn:hover{background:#0947cc;transform:translateY(-1px);box-shadow:0 4px 12px rgba(11,95,255,0.35)}
+.lang-switcher{background:#f8fafc;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:14px;color:#1a1a2e;font-weight:500;transition:all 0.2s}
+.lang-switcher:hover{background:var(--accent);color:#fff}
+
+/* Hamburger Menu */
+.hamburger{
+  display:none;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  flex-direction:column;
+  gap:5px;
+}
+.hamburger span{
+  display:block;
+  width:24px;
+  height:3px;
+  background:#1a1a2e;
+  border-radius:2px;
+  transition:all 0.3s;
+}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(6px,6px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(6px,-6px)}
+
+.mobile-menu{
+  display:none;
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  border-radius:0 0 16px 16px;
+  padding:20px;
+  flex-direction:column;
+  gap:12px;
+  z-index:1000;
+}
+.mobile-menu.active{display:flex}
+.mobile-menu a{
+  display:block;
+  padding:12px 16px;
+  color:#1a1a2e;
+  text-decoration:none;
+  font-weight:500;
+  font-size:16px;
+  border-radius:10px;
+  transition:all 0.2s;
+}
+.mobile-menu a:hover{background:#f8fafc;color:var(--accent)}
+.mobile-menu .btn{text-align:center;margin-top:8px;color:white;}
+
+/* Page Hero */
+.courses-hero{
+  padding:60px 0 40px;
+}
+.courses-hero h1{
+  font-size:48px;
+  font-weight:700;
+  color:#1a1a2e;
+  margin:0 0 24px;
+  line-height:1.15;
+}
+.courses-hero p{
+  font-size:17px;
+  color:#4a5568;
+  line-height:1.7;
+  margin:0;
+  max-width:800px;
+}
+.courses-hero p a{
+  color:var(--accent);
+  text-decoration:none;
+  font-weight:500;
+}
+.courses-hero p a:hover{
+  text-decoration:underline;
+}
+
+/* Courses Grid */
+.courses-section{
+  padding:40px 0 80px;
+}
+.courses-grid{
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:40px;
+}
+.course-card{
+  display:flex;
+  gap:24px;
+  align-items:flex-start;
+}
+.course-card-image{
+  flex-shrink:0;
+  width:180px;
+  height:140px;
+  border-radius:8px;
+  overflow:hidden;
+}
+.course-card-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.course-card-content{
+  flex:1;
+}
+.course-card-content h3{
+  font-size:20px;
+  font-weight:700;
+  color:#1a1a2e;
+  margin:0 0 12px;
+  line-height:1.3;
+}
+.course-card-content p{
+  font-size:14px;
+  color:#6b7280;
+  line-height:1.6;
+  margin:0 0 16px;
+}
+.course-card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  color:#dc2626;
+  font-weight:600;
+  font-size:14px;
+  text-decoration:none;
+  transition:all 0.2s;
+}
+.course-card-link:hover{
+  gap:10px;
+}
+.course-card-link svg{
+  width:16px;
+  height:16px;
+  transition:transform 0.2s;
+}
+
+/* Know More Section */
+.know-more-section{
+  padding:60px 0;
+  background:#f5f5f5;
+}
+.know-more-wrapper{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+.know-more-image img{
+  width:100%;
+  max-width:450px;
+  height:auto;
+  border-radius:8px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.1);
+}
+.know-more-content h2{
+  font-size:36px;
+  font-weight:700;
+  color:#1a1a2e;
+  margin:0 0 20px;
+  line-height:1.2;
+  font-style:italic;
+}
+.know-more-content > p{
+  font-size:16px;
+  color:#4a5568;
+  line-height:1.6;
+  margin:0 0 20px;
+}
+.know-more-list{
+  list-style:none;
+  padding:0;
+  margin:0 0 28px;
+}
+.know-more-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  margin-bottom:10px;
+  font-size:15px;
+  color:#4a5568;
+  line-height:1.5;
+}
+.know-more-list li::before{
+  content:'•';
+  color:#1a1a2e;
+  font-weight:bold;
+  flex-shrink:0;
+}
+.know-more-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  background:#dc2626;
+  color:#fff;
+  padding:14px 28px;
+  border-radius:4px;
+  font-weight:600;
+  font-size:15px;
+  text-decoration:none;
+  transition:all 0.2s;
+}
+.know-more-btn:hover{
+  background:#b91c1c;
+}
+.know-more-btn svg{
+  width:18px;
+  height:18px;
+}
+
+@media (max-width:900px){
+  .know-more-wrapper{grid-template-columns:1fr;gap:40px}
+  .know-more-image{text-align:center}
+}
+@media (max-width:600px){
+  .know-more-section{padding:40px 0}
+  .know-more-content h2{font-size:28px}
+  .know-more-btn{width:100%;justify-content:center}
+}
+
+/* Plan Course Section */
+.plan-course-section{
+  padding:80px 0;
+  background:#fff;
+}
+.plan-course-content{
+  max-width:600px;
+}
+.plan-course-content h2{
+  font-size:42px;
+  font-weight:700;
+  color:#0b5fff;
+  margin:0 0 24px;
+  line-height:1.2;
+}
+.plan-course-content p{
+  font-size:16px;
+  color:#4a5568;
+  line-height:1.7;
+  margin:0;
+}
+
+/* Course Planner CTA Section */
+.course-planner-section{
+  padding:80px 0;
+  background:#1a1a2e;
+  position:relative;
+  overflow:hidden;
+}
+.course-planner-section::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="50" font-size="40" fill="rgba(255,255,255,0.03)" font-family="serif" font-style="italic">English</text></svg>') repeat;
+  opacity:0.5;
+}
+.course-planner-wrapper{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  max-width:700px;
+  margin:0 auto;
+}
+.course-planner-wrapper .eyebrow{
+  font-size:14px;
+  color:rgba(255,255,255,0.7);
+  margin:0 0 8px;
+  text-transform:uppercase;
+  letter-spacing:0.05em;
+}
+.course-planner-wrapper h2{
+  font-size:36px;
+  font-weight:700;
+  color:#f59e0b;
+  margin:0 0 20px;
+  font-style:italic;
+}
+.course-planner-wrapper p{
+  font-size:16px;
+  color:rgba(255,255,255,0.8);
+  margin:0 0 32px;
+  line-height:1.6;
+}
+.planner-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#0b5fff;
+  color:#fff;
+  padding:14px 32px;
+  border-radius:4px;
+  font-weight:600;
+  font-size:15px;
+  text-decoration:none;
+  transition:all 0.2s;
+}
+.planner-btn:hover{
+  background:#0947cc;
+}
+
+@media (max-width:600px){
+  .plan-course-section{padding:50px 0}
+  .plan-course-content h2{font-size:32px}
+  .course-planner-section{padding:50px 0}
+  .course-planner-wrapper h2{font-size:28px}
+}
+
+/* Footer */
+.footer{padding:30px 0;border-top:1px solid #eef2f7;color:var(--muted)}
+.footer a{color:var(--accent);text-decoration:none;transition:all 0.2s}
+.footer a:hover{color:var(--accent-hover)}
+
+/* RTL */
+[dir="rtl"] .know-more-wrapper{direction:rtl}
+[dir="rtl"] .know-more-content{text-align:right}
+[dir="rtl"] .know-more-list li{flex-direction:row-reverse}
+[dir="rtl"] .course-card{flex-direction:row-reverse}
+[dir="rtl"] .course-card-content{text-align:right}
+[dir="rtl"] .courses-hero{text-align:right}
+
+/* Responsive */
+@media (max-width:900px){
+  .courses-grid{grid-template-columns:1fr;gap:30px}
+  .nav{display:none}
+  .hamburger{display:flex}
+}
+@media (max-width:600px){
+  .container{padding:0 24px}
+  .header{padding:6px 0}
+  .header .logo img{height:70px}
+  .courses-hero{padding:40px 0 30px}
+  .courses-hero h1{font-size:32px}
+  .courses-hero p{font-size:15px}
+  .course-card{flex-direction:column}
+  [dir="rtl"] .course-card{flex-direction:column}
+  .course-card-image{width:100%;height:200px}
+  .course-card-content h3{font-size:18px}
+}
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+<div id="page-wrapper">
+<header class="container header">
+  <div class="logo" style="display: flex; align-items: center;"><img src="/files/flipng.png" alt="Institute Logo" style="height:130px"></div>
+  <nav class="nav">
+    <a href="/" class="home-link" aria-label="Home">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 11.5 12 4l9 7.5" />
+        <path d="M5 10.5V20h14v-9.5" />
+      </svg>
+    </a>
+    <a href="/about" class="nav-link" data-i18n="nav_about">About</a>
+    <a href="/contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+  </nav>
+  <div class="header-actions">
+    <button class="lang-switcher" onclick="toggleLanguage()">العربية</button>
+    <a href="/login" class="btn" data-i18n="nav_login">Login</a>
+  </div>
+  <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="/" class="nav-link" data-i18n="nav_home">Home</a>
+    <a href="/about" class="nav-link" data-i18n="nav_about">About</a>
+    <a href="/contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+  </div>
+</header>
+
+<!-- Hero Section -->
+<section class="courses-hero">
+  <div class="container">
+    <h1 data-i18n="courses_title">The English course for you</h1>
+    <p data-i18n="courses_desc">We have the right English course for you whether you want to study <a href="/online-course">online</a> or in-person. Wall Street English courses are tailored to you and your needs. All you need to do is, follow our proven methodology and you will achieve your learning goals. Book a free assessment of your level with an educational consultant and we'll create your personalized course plan.</p>
+  </div>
+</section>
+
+<!-- Courses Grid -->
+<section class="courses-section">
+  <div class="container">
+    <div class="courses-grid">
+      
+      <!-- Teens Course -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/teens-course.jpg" alt="Teens English Course" onerror="this.src='https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_teens_title">Teens - English Course</h3>
+          <p data-i18n="course_teens_desc">Prepare to speak English at school and university using our proven method. We enable students to build the confidence and skills needed to speak English fluently.</p>
+          <a href="/kids-course" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Exam Preparation -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/exam-prep-course.jpg" alt="Exam Preparation Courses" onerror="this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_exam_title">Exam preparation courses</h3>
+          <p data-i18n="course_exam_desc">Prepare for success with our exam preparation courses for IELTS, TOEIC, TOEFL, and the Pearson Test of English (PTE). Our course will make sure you're ready to get the score you need.</p>
+          <a href="/exam-prep" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Online Course -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/online-english.jpg" alt="Online English Course" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_online_title">Online - English course</h3>
+          <p data-i18n="course_online_desc">Improve your English skills online with a proven method and guaranteed results. Study anytime, anywhere with our online English course.</p>
+          <a href="/online-course" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Travel Course -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/travel-english.jpg" alt="Travel English Course" onerror="this.src='https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_travel_title">Travel - English course</h3>
+          <p data-i18n="course_travel_desc">From beginner level right through to the advanced stage. English lessons at FLI are focused on listening and speaking. This is ideal for travellers because these two skills are essential when you're abroad.</p>
+          <a href="/lms/courses" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Students Course -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/students-course.jpg" alt="Students English Course" onerror="this.src='https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_students_title">Students - English Course</h3>
+          <p data-i18n="course_students_desc">Prepare to study English at college or university with our proven method. Build the routines and skills you need to use your English with our course.</p>
+          <a href="/lms/courses" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Business Course -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/business-english.jpg" alt="Business English Course" onerror="this.src='https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_business_title">Business - English Course</h3>
+          <p data-i18n="course_business_desc">Our English course is focused on improving listening and speaking skills. It's ideal for professional business people that want a career working in English.</p>
+          <a href="/lms/courses" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Adults Course -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/adults-course.jpg" alt="Adults English Course" onerror="this.src='https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_adults_title">Adults - English Course</h3>
+          <p data-i18n="course_adults_desc">Improve your English skills with a proven method and guaranteed results. Perfect for busy people like you.</p>
+          <a href="/lms/courses?category=adults" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Online Corporate -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/corporate-english.jpg" alt="Online Corporate English Course" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_corporate_title">Online corporate English course</h3>
+          <p data-i18n="course_corporate_desc">Our Corporate English Online training course is a modern tool that allows employees to perform simple exercises and consolidate their skills under the constant guidance of our native teachers.</p>
+          <a href="/lms/courses" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Business Partner -->
+      <div class="course-card">
+        <div class="course-card-image">
+          <img src="/files/business-partner.jpg" alt="Business Partner Course" onerror="this.src='https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&h=300&fit=crop'">
+        </div>
+        <div class="course-card-content">
+          <h3 data-i18n="course_partner_title">Business Partner: A course to master business English</h3>
+          <p data-i18n="course_partner_desc">Business Partner is a new English course specifically developed by Wall Street English and Pearson for international business professionals.</p>
+          <a href="/lms/courses" class="course-card-link" data-i18n="course_view">
+            View course
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Know More Section -->
+<section class="know-more-section">
+  <div class="container">
+    <div class="know-more-wrapper">
+      <div class="know-more-image">
+        <img src="/files/online-learning.jpg" alt="Online course demo" onerror="this.src='https://images.unsplash.com/photo-1588702547923-7093a6c3ba33?w=600&h=400&fit=crop'">
+      </div>
+      <div class="know-more-content">
+        <h2 data-i18n="know_more_title">Want to know more about the course?</h2>
+        <p data-i18n="know_more_desc">Take an exclusive look at the course experience and find out more about:</p>
+        <ul class="know-more-list">
+          <li data-i18n="know_more_item1">The course schedule and how it adapts to any lifestyle</li>
+          <li data-i18n="know_more_item2">The team of expert teachers and coaches we work with</li>
+        </ul>
+        <a href="/contact" class="know-more-btn" data-i18n="know_more_btn">
+          Get your free course demo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Plan Course Section -->
+<section class="plan-course-section">
+  <div class="container">
+    <div class="plan-course-content">
+      <h2 data-i18n="plan_course_title">Plan your English course</h2>
+      <p data-i18n="plan_course_desc">At FLI we'll help you to plan the best English course for your needs. Our experts will help you find out your exact English level and then we'll create a course plan that makes sure you achieve your goals. To help assess your needs complete this short survey and we'll discuss the best course plan for you.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Course Planner CTA Section -->
+<section class="course-planner-section">
+  <div class="container">
+    <div class="course-planner-wrapper">
+      <p class="eyebrow" data-i18n="planner_eyebrow">Plan your perfect course</p>
+      <h2 data-i18n="planner_title">English Course Planner</h2>
+      <p data-i18n="planner_desc">The most supportive and motivating learning experience with Faculty Language Institute</p>
+      <a href="/placement-test" class="planner-btn" data-i18n="planner_btn">PLAN MY COURSE</a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="container footer">
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:32px;align-items:flex-start">
+    <div>
+      <img src="/files/flipng.png" alt="logo" style="height:130px">
+      <div style="color:var(--muted);font-size:14px;margin-top:8px" data-i18n="footer_address">Faculty Language Institute (FLI)</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:180px;align-self:flex-start;margin-top:40px">
+      <a href="/" style="color:#1a1a2e;text-decoration:none;font-weight:500" data-i18n="nav_home">Home</a>
+      <a href="/about" style="color:#1a1a2e;text-decoration:none;font-weight:500" data-i18n="nav_about">About Us</a>
+      <a href="/contact" style="color:#1a1a2e;text-decoration:none;font-weight:500" data-i18n="nav_contact">Contact</a>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:18px;color:var(--muted);font-size:13px">
+    &copy; <span id="year"></span> <span data-i18n="footer_copyright">Faculty Language Institute. All rights reserved.</span>
+  </div>
+</footer>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+const translations = {
+  en: {
+    nav_home: "Home",
+    nav_about: "About",
+    nav_contact: "Contact",
+    nav_login: "Login",
+    courses_title: "The English course for you",
+    courses_desc: "We have the right English course for you whether you want to study online or in-person. FLI English courses are tailored to you and your needs. All you need to do is, follow our proven methodology and you will achieve your learning goals. Book a free assessment of your level with an educational consultant and we'll create your personalized course plan.",
+    course_teens_title: "Teens - English Course",
+    course_teens_desc: "Prepare to speak English at school and university using our proven method. We enable students to build the confidence and skills needed to speak English fluently.",
+    course_exam_title: "Exam preparation courses",
+    course_exam_desc: "Prepare for success with our exam preparation courses for IELTS, TOEIC, TOEFL, and the Pearson Test of English (PTE). Our course will make sure you're ready to get the score you need.",
+    course_online_title: "Online - English course",
+    course_online_desc: "Improve your English skills online with a proven method and guaranteed results. Study anytime, anywhere with our online English course.",
+    course_travel_title: "Travel - English course",
+    course_travel_desc: "From beginner level right through to the advanced stage. English lessons at FLI are focused on listening and speaking. This is ideal for travellers because these two skills are essential when you're abroad.",
+    course_students_title: "Students - English Course",
+    course_students_desc: "Prepare to study English at college or university with our proven method. Build the routines and skills you need to use your English with our course.",
+    course_business_title: "Business - English Course",
+    course_business_desc: "Our English course is focused on improving listening and speaking skills. It's ideal for professional business people that want a career working in English.",
+    course_adults_title: "Adults - English Course",
+    course_adults_desc: "Improve your English skills with a proven method and guaranteed results. Perfect for busy people like you.",
+    course_corporate_title: "Online corporate English course",
+    course_corporate_desc: "Our Corporate English Online training course is a modern tool that allows employees to perform simple exercises and consolidate their skills under the constant guidance of our native teachers.",
+    course_partner_title: "Business Partner: A course to master business English",
+    course_partner_desc: "Business Partner is a new English course specifically developed by FLI and Pearson for international business professionals.",
+    course_view: "View course",
+    know_more_title: "Want to know more about the course?",
+    know_more_desc: "Take an exclusive look at the course experience and find out more about:",
+    know_more_item1: "The course schedule and how it adapts to any lifestyle",
+    know_more_item2: "The team of expert teachers and coaches we work with",
+    know_more_btn: "Get your free course demo",
+    plan_course_title: "Plan your English course",
+    plan_course_desc: "At FLI we'll help you to plan the best English course for your needs. Our experts will help you find out your exact English level and then we'll create a course plan that makes sure you achieve your goals. To help assess your needs complete this short survey and we'll discuss the best course plan for you.",
+    planner_eyebrow: "Plan your perfect course",
+    planner_title: "English Course Planner",
+    planner_desc: "The most supportive and motivating learning experience with Faculty Language Institute",
+    planner_btn: "PLAN MY COURSE",
+    footer_address: "Faculty Language Institute (FLI)",
+    footer_copyright: "Faculty Language Institute. All rights reserved."
+  },
+  ar: {
+    nav_home: "الرئيسية",
+    nav_about: "من نحن",
+    nav_contact: "اتصل بنا",
+    nav_login: "تسجيل الدخول",
+    courses_title: "دورة اللغة الإنجليزية المناسبة لك",
+    courses_desc: "لدينا دورة اللغة الإنجليزية المناسبة لك سواء كنت تريد الدراسة عبر الإنترنت أو شخصياً. دورات FLI للغة الإنجليزية مصممة خصيصاً لك ولاحتياجاتك. كل ما عليك فعله هو اتباع منهجيتنا المثبتة وستحقق أهدافك التعليمية. احجز تقييماً مجانياً لمستواك مع مستشار تعليمي وسننشئ خطة دورتك المخصصة.",
+    course_teens_title: "المراهقون - دورة اللغة الإنجليزية",
+    course_teens_desc: "استعد للتحدث بالإنجليزية في المدرسة والجامعة باستخدام طريقتنا المثبتة. نمكّن الطلاب من بناء الثقة والمهارات اللازمة للتحدث بالإنجليزية بطلاقة.",
+    course_exam_title: "دورات التحضير للامتحانات",
+    course_exam_desc: "استعد للنجاح مع دورات التحضير للامتحانات لـ IELTS و TOEIC و TOEFL واختبار بيرسون للغة الإنجليزية (PTE). ستضمن دورتنا أنك مستعد للحصول على الدرجة التي تحتاجها.",
+    course_online_title: "عبر الإنترنت - دورة اللغة الإنجليزية",
+    course_online_desc: "حسّن مهاراتك في اللغة الإنجليزية عبر الإنترنت بطريقة مثبتة ونتائج مضمونة. ادرس في أي وقت وفي أي مكان مع دورتنا للغة الإنجليزية عبر الإنترنت.",
+    course_travel_title: "السفر - دورة اللغة الإنجليزية",
+    course_travel_desc: "من مستوى المبتدئين وصولاً إلى المرحلة المتقدمة. دروس اللغة الإنجليزية في FLI تركز على الاستماع والتحدث. هذا مثالي للمسافرين لأن هاتين المهارتين ضروريتان عندما تكون في الخارج.",
+    course_students_title: "الطلاب - دورة اللغة الإنجليزية",
+    course_students_desc: "استعد لدراسة اللغة الإنجليزية في الكلية أو الجامعة بطريقتنا المثبتة. ابنِ الروتين والمهارات التي تحتاجها لاستخدام لغتك الإنجليزية مع دورتنا.",
+    course_business_title: "الأعمال - دورة اللغة الإنجليزية",
+    course_business_desc: "تركز دورتنا للغة الإنجليزية على تحسين مهارات الاستماع والتحدث. إنها مثالية لرجال الأعمال المحترفين الذين يريدون مهنة تعمل بالإنجليزية.",
+    course_adults_title: "البالغون - دورة اللغة الإنجليزية",
+    course_adults_desc: "حسّن مهاراتك في اللغة الإنجليزية بطريقة مثبتة ونتائج مضمونة. مثالية للأشخاص المشغولين مثلك.",
+    course_corporate_title: "دورة اللغة الإنجليزية للشركات عبر الإنترنت",
+    course_corporate_desc: "دورتنا التدريبية للغة الإنجليزية للشركات عبر الإنترنت هي أداة حديثة تتيح للموظفين أداء تمارين بسيطة وتعزيز مهاراتهم تحت التوجيه المستمر لمعلمينا الأصليين.",
+    course_partner_title: "شريك الأعمال: دورة لإتقان اللغة الإنجليزية للأعمال",
+    course_partner_desc: "شريك الأعمال هي دورة جديدة للغة الإنجليزية طورتها FLI وبيرسون خصيصاً لمحترفي الأعمال الدوليين.",
+    course_view: "عرض الدورة",
+    know_more_title: "هل تريد معرفة المزيد عن الدورة؟",
+    know_more_desc: "ألقِ نظرة حصرية على تجربة الدورة واكتشف المزيد عن:",
+    know_more_item1: "جدول الدورة وكيف يتكيف مع أي نمط حياة",
+    know_more_item2: "فريق المعلمين والمدربين الخبراء الذين نعمل معهم",
+    know_more_btn: "احصل على عرض الدورة المجاني",
+    plan_course_title: "خطط لدورتك في اللغة الإنجليزية",
+    plan_course_desc: "في FLI سنساعدك على التخطيط لأفضل دورة لغة إنجليزية تناسب احتياجاتك. سيساعدك خبراؤنا على معرفة مستواك الدقيق في اللغة الإنجليزية ومن ثم سننشئ خطة دورة تضمن تحقيق أهدافك. لمساعدتنا في تقييم احتياجاتك، أكمل هذا الاستبيان القصير وسنناقش أفضل خطة دورة لك.",
+    planner_eyebrow: "خطط لدورتك المثالية",
+    planner_title: "مخطط دورة اللغة الإنجليزية",
+    planner_desc: "تجربة التعلم الأكثر دعماً وتحفيزاً مع معهد فاكلتي للغات",
+    planner_btn: "خطط دورتي",
+    footer_address: "معهد فاكلتي للغات (FLI)",
+    footer_copyright: "معهد فاكلتي للغات. جميع الحقوق محفوظة."
+  }
+};
+
+let currentLang = 'en';
+
+function applyTranslations(lang) {
+  const elements = document.querySelectorAll('[data-i18n]');
+  elements.forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      if (el.tagName === 'A' && el.querySelector('svg')) {
+        const svg = el.querySelector('svg').outerHTML;
+        el.innerHTML = translations[lang][key] + ' ' + svg;
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+}
+
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.querySelector('.hamburger');
+  menu.classList.toggle('active');
+  hamburger.classList.toggle('active');
+}
+
+function toggleLanguage() {
+  const html = document.documentElement;
+  currentLang = currentLang === 'en' ? 'ar' : 'en';
+  html.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+  document.querySelector('.lang-switcher').textContent = currentLang === 'ar' ? 'English' : 'العربية';
+  applyTranslations(currentLang);
+}
+</script>
