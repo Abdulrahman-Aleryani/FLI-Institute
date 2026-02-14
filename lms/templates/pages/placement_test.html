@@ -1524,7 +1524,7 @@ frappe.ready(function() {
                     // Get user info before removing from localStorage
                     const userInfo = JSON.parse(localStorage.getItem("placementTestUserInfo") || "{}");
                     localStorage.removeItem("placementTestUserInfo");
-                    showTestResult(r.message, userInfo);
+                    showTestResult(r.message, userInfo, testData.submission_id);
                 } else {
                     showError("Failed to submit test");
                 }
@@ -1532,11 +1532,12 @@ frappe.ready(function() {
         });
     }
     // Show test result
-    function showTestResult(result, userInfo) {
+    function showTestResult(result, userInfo, submissionId) {
         userInfo = userInfo || {};
         const studentName = userInfo.fullName || "";
         const interviewTime = userInfo.interviewTime || "";
         const lang = localStorage.getItem('fli_lang') || 'en';
+        const sid = submissionId || (result && result.submission_id) || (typeof testData !== 'undefined' ? testData.submission_id : '') || 'N/A';
         
         // Get translations based on current language
         const dict = footerTranslations[lang] || footerTranslations.en;
@@ -1569,7 +1570,7 @@ frappe.ready(function() {
                     </p>
                 </div>
                 <div class="mt-4">
-                    <a href="/" class="btn btn-primary" data-i18n="back_home">${dict.back_home || 'Back to Home'}</a>
+                    <a href="/" id="confirm-booking-btn" class="btn btn-primary" data-i18n="confirm_booking">${dict.confirm_booking || 'Confirm Booking'}</a>
                 </div>
             </div>
         `;
@@ -1577,6 +1578,48 @@ frappe.ready(function() {
         $("#placement-test-container").html(summaryHtml);
         // Apply RTL/LTR styling based on language
         applyPlacementTranslations(lang);
+
+        // Attach WhatsApp redirect with booking details
+        $("#confirm-booking-btn").on("click", function(e) {
+            e.preventDefault();
+            const message = buildWhatsAppMessage(lang, userInfo, sid);
+            const targetUrl = `https://wa.me/967777577222?text=${encodeURIComponent(message)}`;
+            window.location.href = targetUrl;
+        });
+    }
+    
+    function buildWhatsAppMessage(lang, info, submissionId) {
+        const labels = lang === 'ar'
+            ? {
+                title: 'تأكيد الحجز - اختبار تحديد المستوى',
+                name: 'الاسم',
+                dob: 'تاريخ الميلاد',
+                email: 'البريد الإلكتروني',
+                phone: 'رقم التواصل',
+                slot: 'وقت المقابلة',
+                submission: 'رقم الطلب'
+            }
+            : {
+                title: 'Booking Confirmation - Placement Test',
+                name: 'Name',
+                dob: 'Date of Birth',
+                email: 'Email',
+                phone: 'Contact Number',
+                slot: 'Interview Time',
+                submission: 'Submission ID'
+            };
+
+        const lines = [
+            labels.title,
+            `${labels.name}: ${info.fullName || '-'}`,
+            `${labels.dob}: ${info.dateOfBirth || '-'}`,
+            `${labels.email}: ${info.email || '-'}`,
+            `${labels.phone}: ${info.phone || '-'}`,
+            `${labels.slot}: ${info.interviewTime || '-'}`,
+            `${labels.submission}: ${submissionId || '-'}`
+        ];
+
+        return lines.join('\n');
     }
     // Show error message
     function showError(message) {
@@ -1687,7 +1730,7 @@ const footerTranslations = {
         result_wish: 'We wish you a great learning experience with FLI.',
         result_regards: 'Best regards,',
         result_admin: 'Faculty Language Institute Administration',
-        back_home: 'Back to Home'
+        confirm_booking: 'Confirm Booking'
     },
     ar: {
         footer_address: 'معهد فاكلتي للغات (FLI) — شارع بغداد، صنعاء',
@@ -1754,7 +1797,7 @@ const footerTranslations = {
         result_wish: 'نتمنى لك تجربة تعليمية مميزة مع FLI.',
         result_regards: 'مع خالص التحية،',
         result_admin: 'إدارة معهد Faculty Language Institute',
-        back_home: 'العودة للرئيسية'
+        confirm_booking: 'تأكيد الحجز'
     }
 };
 
