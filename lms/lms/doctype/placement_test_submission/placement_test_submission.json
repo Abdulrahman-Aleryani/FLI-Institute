@@ -108,7 +108,7 @@
       "fieldname": "interview_time",
       "fieldtype": "Select",
       "label": "Preferred Time",
-      "options": "9-10 AM\n1-2 PM\n4-5 PM\n8-9 PM",
+      "options": "10-12 AM\n4-6 PM",
       "reqd": 1
      }
     ],

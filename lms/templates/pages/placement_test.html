@@ -758,6 +758,7 @@ frappe.ready(function() {
     let currentQuestion = 0;
     let testData = null;
     let userAnswers = {};
+    let pendingSubmission = null;
     let timer = null;
     let timeLeft = 0;
     const DEFAULT_COUNTRY_NAME = "Yemen";
@@ -1263,10 +1264,8 @@ frappe.ready(function() {
                         <div class="field-input">
                             <select id="interviewTime" class="form-select" required>
                                 <option value="" data-i18n="select_time">${getTranslation('select_time')}</option>
-                                <option value="9-10 AM">9-10 AM</option>
-                                <option value="1-2 PM">1-2 PM</option>
-                                <option value="4-5 PM">4-5 PM</option>
-                                <option value="8-9 PM">8-9 PM</option>
+                                <option value="10-12 AM">10-12 AM</option>
+                                <option value="4-6 PM">4-6 PM</option>
                             </select>
                         </div>
                     </div>
@@ -1323,29 +1322,14 @@ frappe.ready(function() {
             startTest(fullName, dateOfBirth, email, formattedPhone, interviewTime);
         });
     }
-    // Start the test
+    // Start the test (no DB writes here; defer to confirm booking)
     function startTest(fullName, dateOfBirth, email, phone, interviewTime) {
-        // Create test submission
-        frappe.call({
-            method: "lms.placement_test.create_test_submission",
-            args: {
-                test_id: testData.name,
-                full_name: fullName,
-                date_of_birth: dateOfBirth,
-                email: email,
-                phone: phone,
-                interview_time: interviewTime
-            },
-            callback: function(r) {
-                if (!r.exc && r.message) {
-                    testData.submission_id = r.message;
-                    showQuestion(0);
-                    startTimer();
-                } else {
-                    showError("Failed to start test");
-                }
-            }
-        });
+        if (!testData) {
+            showError("Failed to start test");
+            return;
+        }
+        showQuestion(0);
+        startTimer();
     }
     // Show a specific question
     function showQuestion(index) {
@@ -1501,35 +1485,16 @@ frappe.ready(function() {
                 selected_options: JSON.stringify(userAnswers[index] || [])
             });
         });
-        // Submit to server
-        const submissionInfo = loadSubmissionInfo();
-        const payload = {
-            submission_id: testData.submission_id,
-            answers: answers,
+
+        const submissionInfo = loadSubmissionInfo() || {};
+        pendingSubmission = {
+            answers,
+            submissionInfo,
+            testId: testData ? testData.name : ''
         };
 
-        if (submissionInfo) {
-            payload.full_name = submissionInfo.fullName;
-            payload.date_of_birth = submissionInfo.dateOfBirth;
-            payload.email = submissionInfo.email;
-            payload.phone = submissionInfo.phone;
-        }
-
-        frappe.call({
-            method: "lms.placement_test.submit_test_answers",
-            args: payload,
-            freeze: true,
-            callback: function(r) {
-                if (!r.exc && r.message) {
-                    // Get user info before removing from localStorage
-                    const userInfo = JSON.parse(localStorage.getItem("placementTestUserInfo") || "{}");
-                    localStorage.removeItem("placementTestUserInfo");
-                    showTestResult(r.message, userInfo, testData.submission_id);
-                } else {
-                    showError("Failed to submit test");
-                }
-            }
-        });
+        // Show confirmation step without persisting to DB yet
+        showTestResult({}, submissionInfo, null);
     }
     // Show test result
     function showTestResult(result, userInfo, submissionId) {
@@ -1537,7 +1502,7 @@ frappe.ready(function() {
         const studentName = userInfo.fullName || "";
         const interviewTime = userInfo.interviewTime || "";
         const lang = localStorage.getItem('fli_lang') || 'en';
-        const sid = submissionId || (result && result.submission_id) || (typeof testData !== 'undefined' ? testData.submission_id : '') || 'N/A';
+        const sid = submissionId || (result && result.submission_id) || '';
         
         // Get translations based on current language
         const dict = footerTranslations[lang] || footerTranslations.en;
@@ -1582,10 +1547,79 @@ frappe.ready(function() {
         // Attach WhatsApp redirect with booking details
         $("#confirm-booking-btn").on("click", function(e) {
             e.preventDefault();
-            const message = buildWhatsAppMessage(lang, userInfo, sid);
+            handleConfirmBooking(this, lang, userInfo);
+        });
+    }
+    
+    function frappeCallAsync(opts) {
+        return new Promise((resolve, reject) => {
+            frappe.call({
+                ...opts,
+                callback: function(r) {
+                    if (r && !r.exc) {
+                        resolve(r);
+                    } else {
+                        reject(r);
+                    }
+                },
+                error: function(err) {
+                    reject(err);
+                }
+            });
+        });
+    }
+
+    async function handleConfirmBooking(button, lang, userInfo) {
+        if (!pendingSubmission) {
+            frappe.msgprint(__('No submission data available. Please retake the test.'));
+            return;
+        }
+        const originalText = button.innerText;
+        button.disabled = true;
+        button.innerText = lang === 'ar' ? 'جارٍ الإرسال...' : 'Sending...';
+
+        try {
+            const submissionId = await finalizeSubmission(pendingSubmission);
+            localStorage.removeItem("placementTestUserInfo");
+            const message = buildWhatsAppMessage(lang, userInfo, submissionId);
             const targetUrl = `https://wa.me/967777577222?text=${encodeURIComponent(message)}`;
             window.location.href = targetUrl;
+        } catch (err) {
+            button.disabled = false;
+            button.innerText = originalText;
+            frappe.msgprint(__('Failed to confirm booking. Please try again.'));
+        }
+    }
+
+    async function finalizeSubmission(pending) {
+        const info = pending.submissionInfo || {};
+        const createRes = await frappeCallAsync({
+            method: "lms.placement_test.create_test_submission",
+            args: {
+                test_id: pending.testId,
+                full_name: info.fullName,
+                date_of_birth: info.dateOfBirth,
+                email: info.email,
+                phone: info.phone,
+                interview_time: info.interviewTime
+            }
         });
+        const submissionId = createRes && createRes.message;
+
+        await frappeCallAsync({
+            method: "lms.placement_test.submit_test_answers",
+            args: {
+                submission_id: submissionId,
+                answers: pending.answers,
+                full_name: info.fullName,
+                date_of_birth: info.dateOfBirth,
+                email: info.email,
+                phone: info.phone
+            },
+            freeze: true
+        });
+
+        return submissionId;
     }
     
     function buildWhatsAppMessage(lang, info, submissionId) {
