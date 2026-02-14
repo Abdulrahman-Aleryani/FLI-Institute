@@ -460,6 +460,12 @@
         overflow: hidden;
         border: none;
     }
+
+    .confirmation-message {
+        width: 100%;
+        max-width: none;
+        margin: 0;
+    }
     
     .placement-header {
         background: linear-gradient(135deg, var(--text-dark) 0%, #16213e 100%);
@@ -528,8 +534,30 @@
       .header{flex-wrap:wrap;gap:12px}
       .nav{flex-wrap:wrap;gap:10px;justify-content:center}
     }
+    @media (max-width:700px){
+      .container{padding:0 12px}
+      .header{
+        padding:6px 0;
+        flex-direction:row;
+        position:static;
+        /* ... existing styles ... */
+      }
+      .header-actions{margin-left:auto;gap:6px}
+      .header-actions .btn{padding:6px 12px;font-size:12px;border-radius:18px}
+      .header-actions .lang-switcher{padding:4px 10px;font-size:12px}
+      [dir="rtl"] .header-actions{margin-left:0;margin-right:auto}
+      .placement-wrapper,.placement-page,.placement-container{width:100%;max-width:none;}
+      .placement-page{padding:14px 0}
+      .placement-container{padding:0}
+      .placement-card{width:100%;max-width:none;margin:0;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+      .placement-body{padding:14px 10px;}
+      .placement-header{padding:14px 10px;}
+      .placement-info-section{padding:14px 10px;box-shadow:0 4px 12px rgba(0,0,0,0.05);width:100%;border-radius:12px;}
+      .placement-header h3{font-size:22px;}
+      .placement-header p{font-size:14px;}
+    }
     @media (max-width:600px){
-      .container{padding:0 24px}
+      .container{padding:0 8px}
       .header{
         padding:6px 0;
         flex-direction:row;
@@ -543,10 +571,42 @@
       .header-actions .btn{padding:6px 12px;font-size:12px;border-radius:18px}
       .header-actions .lang-switcher{padding:4px 10px;font-size:12px}
       [dir="rtl"] .header-actions{margin-left:0;margin-right:auto}
-      .placement-page{padding:30px 0}
-      .placement-header{padding:24px 20px}
-      .placement-header h3{font-size:22px}
-      .placement-body{padding:24px 20px}
+      .placement-wrapper,.placement-page,.placement-container{width:100%;max-width:none;}
+      .placement-page{padding:10px 0}
+      .placement-container{padding:0}
+      .placement-card{width:100%;max-width:none;margin:0;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.04);}
+      .placement-header{padding:12px 10px}
+      .placement-header h3{font-size:20px}
+      .placement-body{padding:12px 10px}
+      .placement-info-section{padding:12px 10px;box-shadow:0 3px 10px rgba(0,0,0,0.04);width:100%;border-radius:10px;}
+      .confirmation-message {
+        width: 100%;
+        max-width: none;
+        margin: 0 auto;
+        padding: 0;
+      }
+    }
+    @media (max-width:700px){
+      .confirmation-message{
+        width:100% !important;
+        max-width:none !important;
+        margin:0 !important;
+        padding:14px 10px !important;
+        border-radius:12px !important;
+      }
+    }
+    @media (max-width:480px){
+      .container{padding:0 4px}
+      .placement-wrapper,.placement-page,.placement-container{width:100%;max-width:none;}
+      .placement-page{padding:6px 0}
+      .placement-container{padding:0}
+      .placement-card,.placement-info-section{border-radius:8px;box-shadow:none;}
+      .placement-body{padding:10px 8px;}
+      .placement-header{padding:10px 8px;}
+      .confirmation-message{
+        padding:12px 8px !important;
+        border-radius:10px !important;
+      }
     }
 </style>
 
@@ -554,6 +614,7 @@
 <!-- Navbar -->
 <header class="container header">
   <div class="logo" style="display: flex; align-items: center;"><img src="/files/flipng.png" alt="Institute Logo" style="height:130px"></div>
+  <!-- ... existing code ... -->
   <nav class="nav">
     <a href="/" class="home-link" aria-label="Home">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1405,6 +1466,10 @@ frappe.ready(function() {
         } else {
             $("#submit-btn").on("click", function() {
                 if (confirm(__("Are you sure you want to submit the test?"))) {
+                    frappe.msgprint({
+                        message: __("يجب عليك تأكيد الطلب بالنقر على زر التاكيد اسفل الصفحة"),
+                        indicator: "blue"
+                    });
                     submitTest();
                 }
             });
@@ -1940,6 +2005,9 @@ document.addEventListener('DOMContentLoaded', function() {
         border-radius: 16px;
         background: linear-gradient(135deg, rgba(232, 244, 253, 0.5), rgba(255, 255, 255, 0.95));
         box-shadow: 0 10px 30px rgba(9, 30, 66, 0.06);
+        width: 100%;
+        max-width: none;
+        margin: 0;
     }
     .participant-field {
         display: flex;
@@ -2013,9 +2081,28 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         .participant-field .field-label {
             flex: 0 0 40%;
+            max-width: 40%;
         }
         .participant-field .field-input {
             flex: 1;
+            max-width: 60%;
+        }
+    }
+    @media (max-width: 700px) {
+        .participant-form {
+            padding: 14px 10px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        .participant-field {
+            gap: 0.5rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .participant-form {
+            padding: 12px 8px;
+            border-radius: 10px;
+            box-shadow: none;
         }
     }
     .country-contact-row .form-label {
