@@ -61,7 +61,13 @@ def get_user_info():
 	user.is_instructor = "Course Creator" in user.roles
 	user.is_moderator = "Moderator" in user.roles
 	user.is_evaluator = "Batch Evaluator" in user.roles
-	user.is_student = not user.is_instructor and not user.is_moderator and not user.is_evaluator
+	user.is_interviewer = "Interviewer" in user.roles
+	user.is_student = (
+		not user.is_instructor
+		and not user.is_moderator
+		and not user.is_evaluator
+		and not user.is_interviewer
+	)
 	user.is_fc_site = is_fc_site()
 	user.is_system_manager = "System Manager" in user.roles
 	user.sitename = frappe.local.site

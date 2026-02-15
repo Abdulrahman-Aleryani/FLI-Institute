@@ -86,7 +86,7 @@
 			>
 				{{
 					__(
-						'This site is being updated. You will not be able to make any changes. Full access will be restored shortly.'
+						'This site is being updated. You will not be able to make any changes. Full access will be restored shortly.',
 					)
 				}}
 			</div>
@@ -126,7 +126,7 @@
 							>
 								{{
 									__(
-										'This site is being updated. You will not be able to make any changes. Full access will be restored shortly.'
+										'This site is being updated. You will not be able to make any changes. Full access will be restored shortly.',
 									)
 								}}
 							</div>
@@ -204,6 +204,7 @@ import LMSLogo from '@/components/Icons/LMSLogo.vue'
 import { useRouter } from 'vue-router'
 import {
 	ref,
+	computed,
 	onMounted,
 	inject,
 	watch,
@@ -224,6 +225,7 @@ import {
 	Users,
 	BookText,
 	Zap,
+	Mic,
 } from 'lucide-vue-next'
 import {
 	TrialBanner,
@@ -249,6 +251,7 @@ const sidebarLinks = ref(null)
 const showPageModal = ref(false)
 const isModerator = ref(false)
 const isInstructor = ref(false)
+const isInterviewer = ref(false)
 const pageToEdit = ref(null)
 const { sidebarSettings, activeTab, isSettingsOpen, programs } = useSettings()
 const settingsStore = useSettings()
@@ -282,13 +285,13 @@ const setSidebarLinks = () => {
 					if (!parseInt(data[key])) {
 						sidebarLinks.value.forEach((link) => {
 							link.items = link.items.filter(
-								(item) => item.label.toLowerCase().split(' ').join('_') !== key
+								(item) => item.label.toLowerCase().split(' ').join('_') !== key,
 							)
 						})
 					}
 				})
 			},
-		}
+		},
 	)
 }
 
@@ -304,6 +307,12 @@ const addKeyboardShortcut = () => {
 		}
 	})
 }
+
+const interviewLink = computed(() => ({
+	label: 'Interview',
+	icon: 'Mic',
+	to: 'interview',
+}))
 
 const toggleCommandPalette = () => {
 	settingsStore.isCommandPaletteOpen = !settingsStore.isCommandPaletteOpen
@@ -357,7 +366,7 @@ const toggleSidebar = () => {
 	sidebarStore.isSidebarCollapsed = !sidebarStore.isSidebarCollapsed
 	localStorage.setItem(
 		'isSidebarCollapsed',
-		JSON.stringify(sidebarStore.isSidebarCollapsed)
+		JSON.stringify(sidebarStore.isSidebarCollapsed),
 	)
 }
 
@@ -365,7 +374,7 @@ const toggleWebPages = () => {
 	sidebarStore.isWebpagesCollapsed = !sidebarStore.isWebpagesCollapsed
 	localStorage.setItem(
 		'isWebpagesCollapsed',
-		JSON.stringify(sidebarStore.isWebpagesCollapsed)
+		JSON.stringify(sidebarStore.isWebpagesCollapsed),
 	)
 }
 
@@ -587,6 +596,7 @@ watch(userResource, async () => {
 	if (userResource.data) {
 		isModerator.value = userResource.data.is_moderator
 		isInstructor.value = userResource.data.is_instructor
+		isInterviewer.value = userResource.data.is_interviewer
 		await programs.reload()
 		setUpOnboarding()
 	}

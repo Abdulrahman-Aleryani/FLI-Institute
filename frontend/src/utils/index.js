@@ -451,6 +451,20 @@ const getSidebarItems = () => {
 						return userResource?.data
 					},
 				},
+				{
+					label: 'Interview',
+					icon: 'Mic',
+					to: 'Interview',
+					condition: () => {
+						return (
+							userResource?.data?.is_interviewer ||
+							userResource?.data?.roles?.includes(
+								'Interviewer',
+							) ||
+							userResource?.data?.is_system_manager
+						)
+					},
+				},
 			],
 		},
 		{
@@ -494,7 +508,9 @@ const getSidebarItems = () => {
 						return (
 							userResource?.data?.is_instructor ||
 							userResource?.data?.roles?.includes('Instructor') ||
-							userResource?.data?.roles?.includes('LMS Instructor')
+							userResource?.data?.roles?.includes(
+								'LMS Instructor',
+							)
 						)
 					},
 				},
@@ -507,7 +523,9 @@ const getSidebarItems = () => {
 						return (
 							userResource?.data?.is_instructor ||
 							userResource?.data?.roles?.includes('Instructor') ||
-							userResource?.data?.roles?.includes('LMS Instructor') ||
+							userResource?.data?.roles?.includes(
+								'LMS Instructor',
+							) ||
 							userResource?.data?.roles?.includes('Moderator')
 						)
 					},
@@ -532,7 +550,9 @@ const getSidebarItems = () => {
 					condition: () => {
 						return (
 							userResource?.data?.is_system_manager ||
-							userResource?.data?.roles?.includes('Placement Test Manager')
+							userResource?.data?.roles?.includes(
+								'Placement Test Manager',
+							)
 						)
 					},
 				},
@@ -596,13 +616,13 @@ const checkIfCanAddProgram = () => {
 export function getFormattedDateRange(
 	startDate,
 	endDate,
-	format = 'DD MMM YYYY'
+	format = 'DD MMM YYYY',
 ) {
 	if (startDate === endDate) {
 		return dayjs(startDate).format(format)
 	}
 	return `${dayjs(startDate).format(format)} - ${dayjs(endDate).format(
-		format
+		format,
 	)}`
 }
 
@@ -634,7 +654,7 @@ export function singularize(word) {
 	}
 	return word.replace(
 		new RegExp(`(${Object.keys(endings).join('|')})$`),
-		(r) => endings[r]
+		(r) => endings[r],
 	)
 }
 
@@ -687,7 +707,7 @@ export const escapeHTML = (text) => {
 
 	return String(text).replace(
 		/[&<>"'`=]/g,
-		(char) => escape_html_mapping[char] || char
+		(char) => escape_html_mapping[char] || char,
 	)
 }
 
@@ -913,7 +933,7 @@ const wrapRangeInHighlight = (
 	{ node, startIndex, endIndex },
 	color,
 	name,
-	scrollIntoView
+	scrollIntoView,
 ) => {
 	const range = document.createRange()
 	range.setStart(node, startIndex)
