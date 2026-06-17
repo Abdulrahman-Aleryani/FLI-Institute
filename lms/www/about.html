@@ -21,6 +21,8 @@ body {
     margin: 0;
     padding: 0;
 }
+[dir="rtl"] body{direction:rtl;text-align:right;}
+[dir="ltr"] body{direction:ltr;text-align:left;}
 
 [dir="rtl"] body,
 [dir="rtl"] .about-wrapper {
@@ -30,22 +32,10 @@ body {
 /* Container */
 .container{max-width:var(--max-width);margin:0 auto;padding:0 20px;}
 
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:18px 0;
-  gap:16px;
-  position:sticky;
-  top:0;
-  z-index:2100;
-  background:transparent;
-  backdrop-filter:blur(10px);
-}
+/* Header/Navbar */
+.header{display:flex;align-items:center;justify-content:space-between;padding:18px 0;}
 .header .logo img{height:130px;}
 .nav{display:flex;gap:24px;align-items:center}
-.header-actions{display:flex;align-items:center;gap:12px;margin-left:auto}
-.header-actions .btn,.header-actions .lang-switcher{white-space:nowrap}
 .nav a.nav-link{
   color:#1a1a2e;
   text-decoration:none;
@@ -94,8 +84,8 @@ body {
   width:20px;
   height:20px;
 }
-.btn{background:var(--accent);color:#fff !important;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.2s;box-shadow:0 2px 8px rgba(11,95,255,0.25)}
-.btn:hover{background:#0947cc;transform:translateY(-1px);box-shadow:0 4px 12px rgba(11,95,255,0.35)}
+.btn-nav{background:var(--accent);color:#fff !important;padding:10px 20px;border-radius:25px;text-decoration:none;font-weight:600;font-size:14px;transition:all 0.2s;box-shadow:0 2px 8px rgba(11,95,255,0.25)}
+.btn-nav:hover{background:#0947cc;transform:translateY(-1px);box-shadow:0 4px 12px rgba(11,95,255,0.35);color:#fff}
 .lang-switcher{background:#f8fafc;border:none;padding:8px 14px;border-radius:20px;cursor:pointer;font-size:14px;color:#1a1a2e;font-weight:500;transition:all 0.2s}
 .lang-switcher:hover{background:var(--accent);color:#fff}
 
@@ -159,7 +149,7 @@ body {
   transition:all 0.2s;
 }
 .mobile-menu a:hover{background:#f8fafc;color:var(--accent)}
-.mobile-menu .btn{
+.mobile-menu .btn-nav{
   text-align:center;
   margin-top:8px;
   color: white;
@@ -170,7 +160,7 @@ body {
 }
 
 /* RTL adjustments for header */
-[dir="rtl"] .nav a.nav-link::after{left:auto;right:0}
+[dir="rtl"] .nav a:not(.btn-nav)::after{left:auto;right:0}
 
 /* About Page Styles */
 .about-page {
@@ -224,6 +214,174 @@ body {
 
 .about-intro p {
     margin-bottom: 16px;
+}
+
+.vision-mission{
+    margin-top: 32px;
+    padding: 30px 24px;
+    background: linear-gradient(180deg,#f8fafc 0%,#eef2ff 100%);
+    border-radius: 18px;
+    box-shadow: 0 18px 38px rgba(15,23,42,0.08);
+    border:1px solid #e5e7eb;
+}
+.vm-grid{
+    display:grid;
+    gap:18px;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    max-width:1100px;
+    margin:0 auto;
+}
+.vm-card{
+    background:#fff;
+    border-radius:16px;
+    padding:18px 20px;
+    box-shadow:0 14px 28px rgba(15,23,42,0.08);
+    border:1px solid #e5e7eb;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+    position:relative;
+    overflow:hidden;
+}
+.objective-card{grid-column:1 / -1;}
+.vm-card::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:5px;
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+}
+.vm-card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,0.12);}
+.vm-card h3{
+    margin:4px 0 10px;
+    font-size:17px;
+    font-weight:800;
+    color:#0f172a;
+    letter-spacing:0.1px;
+}
+.vm-card p{
+    margin:0;
+    color:#4b5563;
+    line-height:1.7;
+    font-size:15px;
+    text-align:start;
+}
+
+[dir="rtl"] .vm-card h3,
+[dir="rtl"] .vm-card p{direction:rtl;text-align:right}
+[dir="ltr"] .vm-card h3,
+[dir="ltr"] .vm-card p{direction:ltr;text-align:left}
+
+/* Staff section */
+.staff-section{
+    margin-top:36px;
+    padding:28px 20px;
+    background:linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);
+    border-radius:18px;
+    box-shadow:0 18px 38px rgba(15,23,42,0.08);
+    border:1px solid #e5e7eb;
+}
+.staff-section h2{
+    margin:0 0 10px;
+    font-size:22px;
+    color:#0f172a;
+    font-weight:800;
+    text-align:start;
+}
+.staff-section > p{
+    margin:0 0 16px;
+    color:#4b5563;
+    line-height:1.7;
+    font-size:15px;
+    text-align:start;
+}
+.staff-grid{
+    display:grid;
+    gap:16px;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    max-width:1100px;
+    margin:0 auto;
+}
+.staff-card{
+    background:#fff;
+    border-radius:16px;
+    padding:16px 18px 18px;
+    border:1px solid #e5e7eb;
+    box-shadow:0 14px 28px rgba(15,23,42,0.08);
+    position:relative;
+    overflow:hidden;
+}
+.staff-card::before{
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:5px;
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+}
+.staff-card h3{
+    margin:0 0 8px;
+    font-size:17px;
+    font-weight:800;
+    color:#111827;
+}
+.staff-card p{
+    margin:0;
+    color:#4b5563;
+    line-height:1.65;
+    font-size:14.5px;
+}
+.staff-card ul{
+    margin:0;
+    padding-left:18px;
+    color:#4b5563;
+    line-height:1.65;
+    font-size:14.5px;
+    list-style:none;
+}
+.staff-card ul li{position:relative;padding-inline-start:14px;}
+.staff-card ul li::before{
+    content:'';
+    position:absolute;
+    top:9px;
+    inset-inline-start:0;
+    width:6px;height:6px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#3b82f6,#6366f1);
+}
+.staff-card ul li+li{margin-top:6px}
+[dir="rtl"] .staff-card h3,
+[dir="rtl"] .staff-card p,
+[dir="rtl"] .staff-card ul{direction:rtl;text-align:right;padding-left:0;padding-right:18px;list-style:none;}
+[dir="rtl"] .staff-card ul li{padding-inline-start:0;padding-inline-end:14px}
+[dir="rtl"] .staff-card ul li::before{inset-inline-start:auto;inset-inline-end:0;}
+[dir="ltr"] .staff-card h3,
+[dir="ltr"] .staff-card p,
+[dir="ltr"] .staff-card ul{direction:ltr;text-align:left;padding-right:0;padding-left:18px;list-style:none;}
+
+@media (max-width:640px){
+    .vision-mission{
+        padding:16px 14px;
+        border-radius:14px;
+        box-shadow:0 12px 26px rgba(15,23,42,0.08);
+    }
+    .vm-grid{gap:12px;grid-template-columns:1fr;max-width:none;}
+    .vm-card{
+        padding:16px;
+        border-radius:14px;
+        box-shadow:0 12px 24px rgba(15,23,42,0.1);
+    }
+    .vm-card::before{height:4px;}
+
+    .staff-section{
+        padding:16px 12px;
+        border-radius:14px;
+        box-shadow:0 12px 26px rgba(15,23,42,0.08);
+    }
+    .staff-grid{gap:12px;grid-template-columns:1fr;max-width:none;}
+    .staff-card{
+        padding:14px 14px 16px;
+        border-radius:14px;
+        box-shadow:0 12px 24px rgba(15,23,42,0.1);
+    }
+    .staff-card::before{height:4px;}
 }
 
 /* Company History Section */
@@ -326,21 +484,10 @@ body {
 }
 @media (max-width:600px){
   .container{padding:0 24px}
-  .header{
-    padding:6px 0;
-    flex-direction:row;
-    position:sticky;
-    left:0;
-    right:0;
-    top:0;
-    box-shadow:none;
-  }
-  .header .logo img{height:70px}
+  .header{padding:16px 0;flex-direction:row;position:relative}
+  .header .logo img{height:130px}
   .nav{display:none}
   .hamburger{display:flex}
-  .header-actions{margin-left:auto;gap:6px}
-  .header-actions .btn{padding:6px 12px;font-size:12px;border-radius:18px}
-  .header-actions .lang-switcher{padding:4px 10px;font-size:12px}
   .about-page{padding:30px 0}
   .about-header{padding:24px 20px}
   .about-header h1{font-size:22px}
@@ -353,7 +500,7 @@ body {
 <div class="about-wrapper" id="about-wrapper">
 <!-- Navbar -->
 <header class="container header">
-  <div class="logo" style="display:flex;align-items:center;"><img src="/files/flipng.png" alt="Institute Logo" style="height:130px"></div>
+  <div class="logo" style="display: flex; align-items: center;"><img src="/files/flipng.png" alt="Institute Logo" style="height:130px"></div>
   <nav class="nav">
     <a href="/" class="home-link" aria-label="Home">
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -363,11 +510,9 @@ body {
     </a>
     <a href="/about" class="nav-link" data-i18n="nav_about">About</a>
     <a href="/contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+    <a href="/login" class="btn-nav" data-i18n="nav_login">Login</a>
+    <button class="lang-switcher" onclick="toggleLang()">العربية</button>
   </nav>
-  <div class="header-actions">
-    <button class="lang-switcher" onclick="toggleLanguage()">العربية</button>
-    <a href="/login" class="btn" data-i18n="nav_login">Login</a>
-  </div>
   <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">
     <span></span>
     <span></span>
@@ -377,6 +522,8 @@ body {
     <a href="/" class="nav-link" aria-label="Home" data-i18n="nav_home">Home</a>
     <a href="/about" class="nav-link" data-i18n="nav_about">About</a>
     <a href="/contact" class="nav-link" data-i18n="nav_contact">Contact</a>
+    <a href="/login" class="btn-nav" data-i18n="nav_login">Login</a>
+    <button class="lang-switcher" onclick="toggleLang()">العربية</button>
   </div>
 </header>
 
@@ -389,12 +536,75 @@ body {
             </div>
             <div class="about-body">
                 <div class="about-intro" id="about-intro">
-                    {% if doc.company_introduction %}
-                        {{ doc.company_introduction }}
-                    {% else %}
-                        <p>Faculty Language Institute (FLI) is dedicated to providing high-quality English language education. Our mission is to empower students with the language skills they need to succeed in their academic and professional lives.</p>
-                    {% endif %}
+                    <p>
+                      FLi Institute provides high-quality education and training that develops individuals’ skills and prepares them to meet the requirements of today’s world and the job market. Since its establishment, the institute has been committed to delivering effective training programs that combine knowledge with practical application. FLi offers a variety of programs including English language courses, the International Computer Driving License (ICDL), Business Correspondence, sales and marketing courses and TESOL programs for English teachers. The institute focuses on modern teaching methods, qualified instructors, and a motivating learning environment to provide learners with a valuable educational experience. FLi aims to prepare skilled individuals who have the knowledge, confidence, and abilities needed for academic and professional success.
+                    </p>
                 </div>
+
+                <section class="vision-mission">
+                    <div class="vm-grid">
+                        <div class="vm-card">
+                            <h3 data-i18n="vision_title">Our Vision</h3>
+                            <p data-i18n="vision_desc">To become a leading educational and training institution, recognized for quality, innovation, and excellence in developing individuals and preparing them for a better future.</p>
+                        </div>
+                        <div class="vm-card">
+                            <h3 data-i18n="mission_title">Our Mission</h3>
+                            <p data-i18n="mission_desc">To provide high-quality training programs through effective curricula, qualified instructors, and an advanced learning environment that helps learners develop their skills and achieve their goals.</p>
+                        </div>
+                        <div class="vm-card objective-card">
+                            <h3 data-i18n="objective_title">Our Objective</h3>
+                            <p data-i18n="objective_desc">At FLi, we believe quality education starts with an outstanding teaching team. Our institute is proud to have qualified teachers with the experience and knowledge to provide learners with an effective and enjoyable learning experience. We use modern teaching methods that focus on developing learners’ skills, building their confidence, and helping them achieve their educational and professional goals. The FLi teaching team is dedicated to creating a motivating learning environment and supporting students throughout their journey.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="staff-section">
+                    <h2 data-i18n="staff_intro_title">Introduction to the Institute</h2>
+                    <p data-i18n="staff_intro_desc">Faculty Language Institute (FLI) has a well-structured administrative and teaching team working together to deliver high-quality English education based on modern international curricula, ensuring continuous student development and measurable learning outcomes.</p>
+                    <div class="staff-grid">
+                        <div class="staff-card">
+                            <h3 data-i18n="staff_admin_title">General Administration</h3>
+                            <p data-i18n="staff_admin_desc">Responsible for overall leadership, strategic planning, and ensuring the quality of educational services.</p>
+                        </div>
+                        <div class="staff-card">
+                            <h3 data-i18n="staff_academic_title">Academic Administration</h3>
+                            <ul>
+                                <li data-i18n="staff_academic_item_1">Curriculum planning</li>
+                                <li data-i18n="staff_academic_item_2">Teacher supervision</li>
+                                <li data-i18n="staff_academic_item_3">Student assessment</li>
+                                <li data-i18n="staff_academic_item_4">Continuous quality improvement</li>
+                            </ul>
+                        </div>
+                        <div class="staff-card">
+                            <h3 data-i18n="staff_teachers_title">Teachers</h3>
+                            <ul>
+                                <li data-i18n="staff_teachers_item_1">Teaching English at different levels</li>
+                                <li data-i18n="staff_teachers_item_2">Applying modern interactive teaching methods</li>
+                                <li data-i18n="staff_teachers_item_3">Developing all four language skills</li>
+                                <li data-i18n="staff_teachers_item_4">Monitoring student progress</li>
+                                <li data-i18n="staff_teachers_item_5">Encouraging participation and improvement</li>
+                            </ul>
+                        </div>
+                        <div class="staff-card">
+                            <h3 data-i18n="staff_support_title">Support (Online Learning) Technical</h3>
+                            <ul>
+                                <li data-i18n="staff_support_item_1">Platform management</li>
+                                <li data-i18n="staff_support_item_2">Live class support</li>
+                                <li data-i18n="staff_support_item_3">Technical problem solving</li>
+                            </ul>
+                        </div>
+                        <div class="staff-card">
+                            <h3 data-i18n="staff_features_title">Key Features</h3>
+                            <ul>
+                                <li data-i18n="staff_features_item_1">Experienced English language instructors</li>
+                                <li data-i18n="staff_features_item_2">Modern and interactive teaching methods</li>
+                                <li data-i18n="staff_features_item_3">Continuous student monitoring</li>
+                                <li data-i18n="staff_features_item_4">Motivating learning environment</li>
+                                <li data-i18n="staff_features_item_5">Focus on practical communication skills</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
                 
                 {% if doc.get({"doctype":"Company History"}) %}
                 <div class="history-section">
@@ -521,6 +731,37 @@ const translations = {
         about_subtitle: 'Learn more about our institute',
         history_title: 'Our History',
         team_title: 'Our Team',
+        vision_title: 'Our Vision',
+        vision_desc: 'To become a leading educational and training institution, recognized for quality, innovation, and excellence in developing individuals and preparing them for a better future.',
+        mission_title: 'Our Mission',
+        mission_desc: 'To provide high-quality training programs through effective curricula, qualified instructors, and an advanced learning environment that helps learners develop their skills and achieve their goals.',
+        objective_title: 'Our Objective',
+        objective_desc: 'At FLi, we believe quality education starts with an outstanding teaching team. Our institute is proud to have qualified teachers with the experience and knowledge to provide learners with an effective and enjoyable learning experience. We use modern teaching methods that focus on developing learners’ skills, building their confidence, and helping them achieve their educational and professional goals. The FLi teaching team is dedicated to creating a motivating learning environment and supporting students throughout their journey.',
+        staff_intro_title: 'Introduction to the Institute',
+        staff_intro_desc: 'Faculty Language Institute (FLI) has a well-structured administrative and teaching team working together to deliver high-quality English education based on modern international curricula, ensuring continuous student development and measurable learning outcomes.',
+        staff_admin_title: 'General Administration',
+        staff_admin_desc: 'Responsible for overall leadership, strategic planning, and ensuring the quality of educational services.',
+        staff_academic_title: 'Academic Administration',
+        staff_academic_item_1: 'Curriculum planning',
+        staff_academic_item_2: 'Teacher supervision',
+        staff_academic_item_3: 'Student assessment',
+        staff_academic_item_4: 'Continuous quality improvement',
+        staff_teachers_title: 'Teachers',
+        staff_teachers_item_1: 'Teaching English at different levels',
+        staff_teachers_item_2: 'Applying modern interactive teaching methods',
+        staff_teachers_item_3: 'Developing all four language skills',
+        staff_teachers_item_4: 'Monitoring student progress',
+        staff_teachers_item_5: 'Encouraging participation and improvement',
+        staff_support_title: 'Support (Online Learning) Technical',
+        staff_support_item_1: 'Platform management',
+        staff_support_item_2: 'Live class support',
+        staff_support_item_3: 'Technical problem solving',
+        staff_features_title: 'Key Features',
+        staff_features_item_1: 'Experienced English language instructors',
+        staff_features_item_2: 'Modern and interactive teaching methods',
+        staff_features_item_3: 'Continuous student monitoring',
+        staff_features_item_4: 'Motivating learning environment',
+        staff_features_item_5: 'Focus on practical communication skills',
         footer_address: 'Faculty Language Institute (FLI) — Baghdad Street, Sana\'a',
         footer_contact: 'Contact',
         footer_email: 'Email: facultyinstitutefli@gmail.com',
@@ -535,19 +776,40 @@ const translations = {
         about_subtitle: 'تعرف على المزيد عن معهدنا',
         history_title: 'تاريخنا',
         team_title: 'فريقنا',
+        vision_title: 'رؤيتنا',
+        vision_desc: 'أن يكون معهد فلاي مؤسسة تعليمية رائدة في التدريب والتطوير، وخياراً أول للباحثين عن تعليم نوعي يسهم في بناء مستقبل أفضل.',
+        mission_title: 'رسالتنا',
+        mission_desc: 'تقديم برامج تدريبية وتعليمية عالية الجودة عبر مناهج فعّالة، ومدربين مؤهلين، وبيئة تعليمية متطورة تساعد المتدربين على اكتساب المهارات وتحقيق أهدافهم.',
+        objective_title: 'هدفنا',
+        objective_desc: 'في فلاي نؤمن بأن جودة التعليم تبدأ من فريق تدريسي متميز. يضم المعهد نخبة من المدرسين والمدرسات المؤهلين الذين يمتلكون الخبرة والمعرفة، ويحرصون على تقديم تجربة تعليمية فعّالة وممتعة للطلاب. يتميز فريقنا باستخدام أساليب تعليم حديثة تركز على تطوير مهارات المتدربين، وتعزيز الثقة لديهم، ومساعدتهم على تحقيق أهدافهم التعليمية والمهنية. يعمل مدرّسو ومدرّسات فلاي بشغف والتزام لتوفير بيئة تعليمية محفزة تسهم في بناء جيل يمتلك المهارة والمعرفة.',
+        staff_intro_title: 'مقدمة عن المعهد',
+        staff_intro_desc: 'يضم معهد FLI كادرًا إداريًا وتعليميًا متخصصًا يعمل بتناغم لضمان تقديم تعليم عالي الجودة وفق أحدث المناهج العالمية، مع التركيز على التطوير المستمر للطلاب وتحقيق نتائج تعليمية ملموسة.',
+        staff_admin_title: 'الإدارة العامة',
+        staff_admin_desc: 'تتولى قيادة المعهد والإشراف الكامل على العمل الإداري والتخطيط الاستراتيجي وضمان جودة الخدمات التعليمية.',
+        staff_academic_title: 'الإدارة الأكاديمية',
+        staff_academic_item_1: 'إعداد الخطط الدراسية',
+        staff_academic_item_2: 'متابعة أداء المعلمين',
+        staff_academic_item_3: 'تقييم مستوى الطلاب',
+        staff_academic_item_4: 'تحسين جودة التعليم بشكل مستمر',
+        staff_teachers_title: 'المدرسون',
+        staff_teachers_item_1: 'تدريس اللغة الإنجليزية بمستويات مختلفة',
+        staff_teachers_item_2: 'تطبيق أساليب تعليم تفاعلية حديثة',
+        staff_teachers_item_3: 'تطوير المهارات اللغوية الأربع للطلاب',
+        staff_teachers_item_4: 'متابعة تقدم الطلاب بشكل مستمر',
+        staff_teachers_item_5: 'تحفيز الطلاب على المشاركة والتطور',
+        staff_support_title: 'الدعم التقني (التعليم عن بُعد)',
+        staff_support_item_1: 'إدارة المنصة التعليمية',
+        staff_support_item_2: 'دعم الحصص المباشرة',
+        staff_support_item_3: 'حل المشكلات التقنية للطلاب',
+        staff_features_title: 'مميزات الكادر',
+        staff_features_item_1: 'خبرة في تعليم اللغة الإنجليزية لغير الناطقين بها',
+        staff_features_item_2: 'أساليب تعليم حديثة وتفاعلية',
+        staff_features_item_3: 'متابعة مستمرة لمستوى الطلاب',
+        staff_features_item_4: 'بيئة تعليمية محفزة',
+        staff_features_item_5: 'تركيز على التطبيق العملي وليس النظري',
         about_intro: `
-            <p><strong>العربية</strong></p>
-            <p>معهد اللغات بالكلية (FLI) هو معهد تعليمي رائد متخصص في تدريس اللغة الإنجليزية بناءً على مناهج معترف بها دولياً، مع تركيز قوي على American English File.</p>
-            <p>تأسس FLI في عام 2012، وقد بنى سمعة قوية من خلال أكثر من عقد من التميز في التعليم وجهاً لوجه. اليوم، يدخل المعهد مرحلة جديدة بإطلاق منصته التعليمية عبر الإنترنت، موسعاً خبرته الأكاديمية المثبتة إلى بيئة رقمية حديثة.</p>
-            <p>يعمل FLI بفريق من المدربين المؤهلين تأهيلاً عالياً مع أكثر من 13 عاماً من الخبرة في التدريس، يحملون شهادات معتمدة في تدريس اللغة الإنجليزية وملتزمون بتقديم التعليم وفق المعايير الدولية.</p>
-            <p>تم تصميم برامجنا لتقديم تجربة تعليمية شاملة تجمع بين:</p>
-            <ul>
-                <li>مناهج معترف بها عالمياً</li>
-                <li>خيارات التعلم الحضوري وعبر الإنترنت</li>
-                <li>بيئة تعليمية احترافية ومحفزة</li>
-                <li>تعليم عملي يركز على التواصل</li>
-            </ul>
-            <p>في معهد اللغات بالكلية، نتجاوز مجرد تدريس اللغة الإنجليزية. نحن نخلق تجربة تعليمية متميزة تمكّن المتعلمين من التواصل بثقة وفعالية في السياقات الأكاديمية والمهنية والحياتية.</p>
+            <p>معهد فلاي يقدم تعليم وتدريب متميز يساهم في تطوير مهارات الأفراد وتأهيلهم لمواكبة متطلبات العصر وسوق العمل. ومنذ تأسيسه، أصبح المعهد وجهة تعليمية تهتم بجودة التدريب، وتقديم برامج متخصصة تجمع بين المعرفة والتطبيق العملي.</p>
+            <p>يقدم فلاي مجموعة متنوعة من البرامج التدريبية تشمل دورات اللغة الإنجليزية، والرخصة الدولية لقيادة الحاسب الآلي (ICDL)، والمراسلات التجارية، ودورات المبيعات والتسويق، وبرنامج TESOL لتأهيل مدرّسي اللغة الإنجليزية. المعهد يركز على بناء مهارات حقيقية تساعد المتدربين على التطور والنجاح، ويعتمد على أساليب تعليم حديثة، ومدربين مؤهلين، وبيئة تدريبية محفزة تهدف إلى تقديم تجربة تعليمية فعّالة ومميزة. ويسعى فلاي إلى إعداد كوادر تمتلك المعرفة والمهارات والثقة اللازمة لتحقيق أهدافها الأكاديمية والمهنية.</p>
         `,
         footer_address: 'معهد فاكلتي للغات (FLI) — شارع بغداد، صنعاء',
         footer_contact: 'التواصل',

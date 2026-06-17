@@ -170,8 +170,19 @@ body{margin:0;padding:0;overflow-x:hidden}
 }
 
 /* Hero */
-.hero{display:flex;gap:50px;align-items:flex-start;padding:70px 0}
-.hero-left{flex:1;max-width:480px}
+.hero{display:flex;gap:40px;align-items:flex-start;justify-content:center;flex-direction:column;padding:70px 0;position:relative;overflow:hidden;text-align:left !important;direction:ltr}
+.hero::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:url('/files/flipng.png') no-repeat center center;
+  background-size:cover;
+  opacity:0.16;
+  pointer-events:none;
+}
+.hero-left,.hero-right,.highlight-mobile-card{position:relative;z-index:1}
+.hero-left{flex:1;max-width:780px;width:100%;display:flex;flex-direction:column;gap:16px;align-items:flex-start;text-align:left !important;direction:ltr}
+.hero h1,.hero p,.hero-benefits-text{margin:0;text-align:left !important;align-self:stretch}
 .hero-right{flex:1;display:flex;justify-content:flex-end}
 .hero-right img{
   width:100%;
@@ -199,6 +210,18 @@ body{margin:0;padding:0;overflow-x:hidden}
   list-style:none;
   padding:0;
   margin:0 0 28px 0;
+}
+.hero-benefits-text{
+  line-height:1.7;
+  color:#374151;
+  font-size:15px;
+  margin:0 0 20px;
+}
+.hero-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
 }
 .hero-benefits li{
   display:flex;
@@ -598,6 +621,69 @@ body{margin:0;padding:0;overflow-x:hidden}
 .how{padding:var(--section-pad) 0}
 .how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;text-align:center}
 
+/* Why choose section */
+.why-choose{
+  padding:50px 0;
+}
+.why-choose h2{
+  margin:0 0 16px;
+  font-size:30px;
+  font-weight:800;
+  color:#1a1a2e;
+  text-align:center;
+}
+.why-choose p{
+  margin:0 auto;
+  max-width:760px;
+  color:#4b5563;
+  font-size:15px;
+  line-height:1.6;
+  text-align:center;
+}
+
+/* Why special section */
+.why-special{
+  padding:50px 0 70px;
+  background:linear-gradient(135deg, #f6f9ff 0%, #eef4ff 100%);
+}
+.why-special h2{
+  margin:0 0 18px;
+  font-size:30px;
+  font-weight:800;
+  color:#1a1a2e;
+  text-align:center;
+}
+.why-special-list{
+  list-style:none;
+  padding:0;
+  margin:12px auto 0;
+  max-width:900px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:12px;
+  color:#1f2937;
+  font-size:15px;
+  line-height:1.6;
+}
+.why-special-list li{
+  background:#fff;
+  border-radius:14px;
+  padding:14px 16px;
+  box-shadow:0 10px 30px rgba(15,23,42,0.08);
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  text-align:left;
+}
+.why-special-list li .dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#3b82f6,#6366f1);
+  flex-shrink:0;
+  margin-top:6px;
+}
+
 /* Testimonials */
 .testimonials{padding:var(--section-pad) 0;background:#f8fafc}
 .test-card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 6px 15px rgba(9,30,66,0.04)}
@@ -642,8 +728,12 @@ body{margin:0;padding:0;overflow-x:hidden}
 .footer .social-link--linkedin{background:linear-gradient(135deg,#0077b5,#00a0dc)}
 
 /* RTL adjustments */
-[dir="rtl"] .hero{flex-direction:row-reverse}
-[dir="rtl"] .hero-left{text-align:right}
+[dir="rtl"] .hero{flex-direction:column;text-align:right !important;align-items:flex-end;direction:rtl}
+[dir="rtl"] .hero-left{text-align:right !important;align-items:flex-end;direction:rtl}
+[dir="rtl"] .hero h1,[dir="rtl"] .hero p,[dir="rtl"] .hero-benefits-text{margin:0;text-align:right !important;align-self:stretch;direction:rtl}
+[dir="ltr"] .hero{direction:ltr;text-align:left !important;align-items:flex-start}
+[dir="ltr"] .hero-left{direction:ltr;text-align:left !important;align-items:flex-start}
+[dir="ltr"] .hero h1,[dir="ltr"] .hero p,[dir="ltr"] .hero-benefits-text{direction:ltr;text-align:left !important;align-self:stretch}
 [dir="rtl"] .hero-benefits li{flex-direction:row-reverse}
 [dir="rtl"] .category-overlay{flex-direction:row-reverse}
 [dir="rtl"] .why-card-badge{left:auto;right:16px}
@@ -658,7 +748,20 @@ body{margin:0;padding:0;overflow-x:hidden}
   .header{flex-wrap:wrap;gap:12px}
   .nav{flex-wrap:wrap;gap:10px;justify-content:center}
   .header-actions{margin-left:0}
-  .hero{flex-direction:column;gap:40px;padding:40px 0}
+  .hero{flex-direction:column;gap:40px;padding:40px 0;text-align:left}
+  .hero-left{text-align:left;align-items:flex-start}
+  .hero::after{display:none}
+  .hero-left::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:url('/files/flipng.png') no-repeat center center;
+    background-size:contain;
+    opacity:0.22;
+    pointer-events:none;
+    z-index:0;
+  }
+  .hero-left > *{position:relative;z-index:1}
   [dir="rtl"] .hero{flex-direction:column}
   .hero-left{max-width:100%}
   .hero-right{justify-content:center;width:100%}
@@ -767,36 +870,26 @@ body{margin:0;padding:0;overflow-x:hidden}
 <section class="container hero" aria-label="Hero">
   <div class="hero-left">
     <span class="hero-badge" data-i18n="hero_badge">مرحبًا بكم في منصة FLI التعليمية</span>
-    <h1 data-i18n="hero_title">ابدأ رحلتك لتعلّم الإنجليزية بثقة اليوم.</h1>
+    <h1 data-i18n="hero_title">Welcome to FLi institute</h1>
     
-    <ul class="hero-benefits">
-      <li>
-        <span class="benefit-check">✓</span>
-        <span data-i18n="hero_benefit_1">كلاسات مباشرة تفاعلية</span>
-      </li>
-      <li>
-        <span class="benefit-check">✓</span>
-        <span data-i18n="hero_benefit_2">متابعة شخصية لكل طالب</span>
-      </li>
-      <li>
-        <span class="benefit-check">✓</span>
-        <span data-i18n="hero_benefit_3">خطط تعليمية تناسب جميع المستويات</span>
-      </li>
-    </ul>
+    <p class="hero-benefits hero-benefits-text" data-i18n="hero_benefits_text">
+      FLi Institute for Languages and Computer was established in 2009. It is a specialized educational institute that provides high-quality training programs in English language, information technology, and professional development. The institute offers English language courses at different levels, the International Computer Driving License (ICDL), Business Correspondence courses, and TESOL programs for English language teachers. FLi Institute is committed to providing effective learning through a modern training environment and qualified instructors to help learners develop their skills and achieve their goals.
+    </p>
     <p class="hero-sub" data-i18n="hero_sub">خطوتك الأولى نحو مستقبل أفضل تبدأ من هنا</p>
-    
-    <a class="btn hero-cta" href="/placement-test" data-i18n="hero_cta_primary">
-      أختبر مستواك محانا
-    </a>
-    <a href="#" id="open-register-modal" class="placement-test-btn secondary" data-i18n="placement_btn_register" style="color:var(--accent);border:2px solid var(--accent);margin-top:12px;display:inline-block;text-align:center;">سجّل الآن</a>
-    
-    
-  </div>
+    <div class="hero-actions">
+      <a class="btn hero-cta" href="/placement-test" data-i18n="hero_cta_primary">
+        أختبر مستواك محانا
+      </a>
+      <a
+        href="#"
+        id="open-register-modal"
+        class="placement-test-btn secondary"
+        data-i18n="placement_btn_register"
+        style="color:var(--accent);border:2px solid var(--accent);display:inline-block;text-align:center;"
+      >سجّل الآن</a>
+    </div>
 
-  <div class="hero-right">
-    <img src="/files/FLi online.jpeg" alt="Institute building and students" loading="lazy">
   </div>
-
   <div class="highlight-mobile-card">
     <img src="/files/FLiHouse.jpeg" alt="Faculty Language Institute campus" loading="lazy">
     <div class="highlight-mobile-content">
@@ -872,11 +965,14 @@ body{margin:0;padding:0;overflow-x:hidden}
 </section>
 
 <section class="category-section" aria-label="Course Categories">
-  <div class="container" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px">
+  <div class="container" style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
     <h2 data-i18n="cat_section_title" style="margin:0;font-size:32px;font-weight:800;color:#1a1a2e">Programs</h2>
-    <div class="category-grid">
+    <p data-i18n="cat_section_intro" style="margin:0 0 4px;max-width:960px;color:#1f2937;line-height:1.8;font-size:15.5px;font-weight:500;letter-spacing:0.1px">
+      FLi Institute provides comprehensive educational programs in English Language and Computer skills, including diploma programs and specialized courses for different levels and categories.
+    </p>
+    <div class="category-grid" style="gap:18px">
       <a href="/online-course" class="category-card">
-        <img src="/files/online-course.jpg" alt="Online English Course" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop'">
+        <img src="/files/online-course.jpg" alt="Online English Course" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop'" style="border-radius:14px 14px 0 0;">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_online">General English Courses</span>
           <span class="category-desc" data-i18n="cat_online_desc">Progress through levels with flexible online sessions.</span>
@@ -884,7 +980,7 @@ body{margin:0;padding:0;overflow-x:hidden}
         </div>
       </a>
       <a href="/kids-course" class="category-card">
-        <img src="/files/Kids Cover.JPEG" alt="Kids English Course" onerror="this.src='https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=300&fit=crop'">
+        <img src="/files/Kids Cover.JPEG" alt="Kids English Course" onerror="this.src='https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=300&fit=crop'" style="border-radius:14px 14px 0 0;">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_teens">English for Young Learners</span>
           <span class="category-desc" data-i18n="cat_teens_desc">Fun, interactive classes to build early confidence.</span>
@@ -892,14 +988,15 @@ body{margin:0;padding:0;overflow-x:hidden}
         </div>
       </a>
       <a href="/speaking-course" class="category-card">
-        <img src="/files/conversation-course.jpg" alt="Speaking Courses" onerror="this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop'">
+        <img src="/files/conversation-course.jpg" alt="Speaking Courses" onerror="this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop'" style="border-radius:14px 14px 0 0;">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_speaking">دورات المحادثة</span>
           <span class="category-desc" data-i18n="cat_speaking_desc">دورات عملية تهدف إلى كسر حاجز الخوف وبناء الثقة في التحدث باللغة الإنجليزية من خلال مواقف حياتية واقعية، نقاشات، وتمارين تواصل مباشرة بإشراف مدرّسين مختصين.</span>
           <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
         </div>
       </a>
-     <!-- <a href="/business-correspondence" class="category-card">
+     <!--
+      <a href="/business-correspondence" class="category-card">
         <img src="/files/business-partner.jpg" alt="Business Correspondence English" onerror="this.src='https://images.unsplash.com/photo-1521791055366-0d553872125f?w=600&h=400&fit=crop'">
         <div class="category-body">
           <span class="category-title">المراسلات التجارية</span>
@@ -909,6 +1006,8 @@ body{margin:0;padding:0;overflow-x:hidden}
           </span>
         </div>
       </a>
+     -->
+     <!--
       <a href="/exam-prep" class="category-card">
         <img src="/files/exam-prep.jpg" alt="Exam Preparation" onerror="this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'">
         <div class="category-body">
@@ -917,14 +1016,16 @@ body{margin:0;padding:0;overflow-x:hidden}
           <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
         </div>
       </a>
+     -->
       <a href="/computer-course" class="category-card">
         <img src="/files/computer-course.jpg" alt="Computer Skills Course" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop'">
         <div class="category-body">
-          <span class="category-title">دورات الكمبيوتر</span>
-          <span class="category-desc">برامج عملية تهدف إلى رفع الكفاءة الرقمية، تشمل أساسيات الحاسوب، التطبيقات المكتبية، والمهارات التقنية الأساسية المطلوبة لسوق العمل.</span>
-          <span class="category-btn">اكتشف المزيد</span>
+          <span class="category-title" data-i18n="cat_computer_title">Computer Diploma</span>
+          <span class="category-desc" data-i18n="cat_computer_desc">The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
         </div>
       </a>
+      <!--
       <a href="/grammar-writing" class="category-card">
         <img src="/files/grammar-writing.jpg" alt="Grammar and Writing Course" onerror="this.src='https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&h=400&fit=crop'">
         <div class="category-body">
@@ -940,11 +1041,35 @@ body{margin:0;padding:0;overflow-x:hidden}
           <span class="category-desc">Guided training for teams to level-up English fast.</span>
           <span class="category-btn">اكتشف المزيد</span>
         </div>
-      </a> !-->
+      </a>
+      -->
     </div>
   </div>
 </section>
 
+<section class="why-choose">
+  <div class="container" style="text-align:center">
+    <h2 data-i18n="why_choose_title">Why to choose FLi?</h2>
+    <p data-i18n="why_choose_desc">
+      At FLi Institute, we believe that education is the key to building a better future. Since its establishment in 2009, FLi has been committed to providing high-quality training programs that help learners develop their skills and achieve their goals with confidence. The institute offers a modern learning environment, qualified trainers, and effective programs designed to meet learners’ needs and prepare them for academic and professional success in different fields, including English language, information technology, and professional development.
+    </p>
+  </div>
+</section>
+
+<section class="why-special">
+  <div class="container" style="text-align:center">
+    <h2 data-i18n="why_special_title">What makes us special</h2>
+    <ul class="why-special-list">
+      <li><span class="dot"></span><span data-i18n="why_special_item_1">More than 17 years of experience in training and development.</span></li>
+      <li><span class="dot"></span><span data-i18n="why_special_item_2">A variety of programs including English language courses, ICDL, Business Correspondence, and TESOL.</span></li>
+      <li><span class="dot"></span><span data-i18n="why_special_item_3">Focus on practical skills that support learners in their academic and professional lives.</span></li>
+      <li><span class="dot"></span><span data-i18n="why_special_item_4">Qualified instructors and modern teaching methods.</span></li>
+      <li><span class="dot"></span><span data-i18n="why_special_item_5">A motivating learning environment that encourages growth and excellence.</span></li>
+      <li><span class="dot"></span><span data-i18n="why_special_item_6">Continuous commitment to preparing learners with skills that create better future opportunities.</span></li>
+    </ul>
+  </div>
+</section>
+ 
 <!--
 <section class="why-learn">
   <div class="container">
@@ -1239,22 +1364,35 @@ const translations = {
     nav_home: "Home",
     hero_badge: "Welcome to FLI Learning Platform",
     hero_eyebrow: "Learn English. Dream bigger",
-    hero_title: "Start your English learning journey with confidence today.",
+    hero_title: "Welcome to FLi institute",
     hero_benefit_1: "Live interactive classes",
     hero_benefit_2: "Personalized follow-up for every student",
     hero_benefit_3: "Learning plans tailored to every level",
     hero_sub: "Your first step toward a better future starts here.",
     hero_cta_primary: "Take your free placement test",
+    hero_benefits_text: "FLi Institute for Languages and Computer was established in 2009. It is a specialized educational institute that provides high-quality training programs in English language, information technology, and professional development. The institute offers English language courses at different levels, the International Computer Driving License (ICDL), Business Correspondence courses, and TESOL programs for English language teachers. FLi Institute is committed to providing effective learning through a modern training environment and qualified instructors to help learners develop their skills and achieve their goals.",
+    why_choose_title: "Why to choose FLi?",
+    why_choose_desc: "At FLi Institute, we believe that education is the key to building a better future. Since its establishment in 2009, FLi has been committed to providing high-quality training programs that help learners develop their skills and achieve their goals with confidence. The institute offers a modern learning environment, qualified trainers, and effective programs designed to meet learners’ needs and prepare them for academic and professional success in different fields, including English language, information technology, and professional development.",
+    why_special_title: "What makes us special",
+    why_special_item_1: "More than 17 years of experience in training and development.",
+    why_special_item_2: "A variety of programs including English language courses, ICDL, Business Correspondence, and TESOL.",
+    why_special_item_3: "Focus on practical skills that support learners in their academic and professional lives.",
+    why_special_item_4: "Qualified instructors and modern teaching methods.",
+    why_special_item_5: "A motivating learning environment that encourages growth and excellence.",
+    why_special_item_6: "Continuous commitment to preparing learners with skills that create better future opportunities.",
     cat_adults: "Adults - English Course",
     cat_online: "General English Courses",
     cat_online_desc: "Progress through levels with flexible online sessions.",
     cat_teens_desc: "Fun, interactive classes to build early confidence.",
     cat_speaking: "Speaking Courses",
     cat_speaking_desc: "Practical sessions to boost confidence through real-life dialogue and coached conversations.",
+    cat_computer_title: "Computer Diploma",
+    cat_computer_desc: "The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.",
     cat_register: "Discover more",
     cat_exam: "Exam preparation courses",
     cat_teens: "Kids - English Course",
     cat_section_title: "Programs",
+    cat_section_intro: "FLi Institute provides comprehensive educational programs in English Language and Computer skills, including diploma programs and specialized courses for different levels and categories.",
     more_courses: "More Courses →",
     why_title: "Why learn with us?",
     why_badge_1: "94% of our students would recommend us*",
@@ -1313,11 +1451,21 @@ const translations = {
     nav_signup: "إنشاء حساب",
     nav_home: "الرئيسية",
     hero_eyebrow: "تعلّم الإنجليزية. احلم بالمزيد",
-    hero_title: "ابدأ رحلتك لتعلّم الإنجليزية بثقة اليوم.",
+    hero_title: "مرحبًا بكم في معهد فلاي",
     hero_benefit_1: "كلاسات مباشرة تفاعلية",
     hero_benefit_2: "متابعة شخصية لكل طالب",
     hero_benefit_3: "خطط تعليمية تناسب جميع المستويات",
     hero_cta_primary: "أختبر مستواك محانا",
+    hero_benefits_text: "معهد فلاي للغات والحاسوب تأسس عام 2009 كمؤسسة تعليمية متخصصة تقدم برامج تدريبية عالية الجودة في اللغة الإنجليزية وتقنية المعلومات والتطوير المهني. يقدم المعهد دورات اللغة الإنجليزية بمستويات مختلفة، والرخصة الدولية لقيادة الحاسب الآلي (ICDL)، ودورات المراسلات التجارية، وبرامج TESOL لإعداد معلمي اللغة الإنجليزية. يحرص المعهد على تقديم تعلم فعال عبر بيئة تدريبية حديثة ومدربين مؤهلين لمساعدة المتدربين على تطوير مهاراتهم وتحقيق أهدافهم.",
+    why_choose_title: "لماذا تختار فلاي؟",
+    why_choose_desc: "في معهد فلاي نؤمن بأن التعليم هو الطريق لبناء مستقبل أفضل، لذا نقدم برامج تدريبية عالية الجودة تساعد المتدربين على تطوير مهاراتهم وتحقيق أهدافهم بثقة. يتميز المعهد ببيئة تعليمية حديثة ومدربين مؤهلين وبرامج فعّالة مصممة لتلبية احتياجات المتعلمين في مجالات اللغة الإنجليزية وتقنية المعلومات والتطوير المهني، مع التركيز على الدمج بين المعرفة التطبيقية والخبرة العملية." ,
+    why_special_title: "ما الذي يميزنا",
+    why_special_item_1: "أكثر من 17 عاماً من الخبرة في التدريب والتطوير.",
+    why_special_item_2: "برامج تدريبية متنوعة تشمل اللغة الإنجليزية، والرخصة الدولية لقيادة الحاسب الآلي (ICDL)، والمراسلات التجارية، وبرنامج TESOL.",
+    why_special_item_3: "تركيز على المهارات العملية التي تدعم المتعلمين في حياتهم الأكاديمية والمهنية.",
+    why_special_item_4: "مدربون مؤهلون وأساليب تدريس حديثة وفعّالة.",
+    why_special_item_5: "بيئة تعليمية محفزة تشجع على التطور والتميز.",
+    why_special_item_6: "التزام مستمر بتأهيل المتعلمين بمهارات تخلق فرصاً أفضل في المستقبل.",
     hero_badge: "مرحبًا بكم في منصة FLI التعليمية",
     hero_sub: "خطوتك الأولى نحو مستقبل أفضل تبدأ من هنا",
     cat_adults: "دورة الكبار - إنجليزي",
@@ -1326,10 +1474,13 @@ const translations = {
     cat_teens_desc: "دروس ممتعة وتفاعلية لبناء الثقة في سن مبكرة.",
     cat_speaking: "دورات المحادثة",
     cat_speaking_desc: "ممارسات عملية لكسر حاجز الخوف وبناء الطلاقة عبر مواقف واقعية ونقاشات مباشرة بإشراف مختصين.",
+    cat_computer_title: "دبلوم الكمبيوتر",
+    cat_computer_desc: "شهادة ICDL هي المعيار العالمي لقياس مهارات استخدام الحاسوب، ومعتمدة من وزارة التربية والتعليم والبحث العلمي - قطاع التعليم الفني والتدريب المهني.",
     cat_register: "اكتشف المزيد",
     cat_exam: "دورات التحضير للامتحانات",
     cat_teens: "الأطفال - دورة اللغة الإنجليزية",
     cat_section_title: "البرامج",
+    cat_section_intro: "يقدم معهد FLI برامج تعليمية متكاملة في اللغة الإنجليزية والكمبيوتر، تشمل الدبلومات والدورات المتخصصة لجميع الفئات والمستويات.",
     more_courses: "المزيد من الدورات →",
     why_title: "لماذا تتعلم معنا؟",
     why_badge_1: "94% من طلابنا يوصون بنا*",

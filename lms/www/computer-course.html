@@ -35,9 +35,14 @@
     .mobile-menu a{text-decoration:none;color:#0f172a;font-weight:500;padding:10px 14px}
 
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
-    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center}
-    .hero-text h1{margin:0 0 18px;font-size:34px;color:#0b1e4d;font-weight:800}
-    .hero-text p{margin:0 0 28px;color:#475569;line-height:1.75;font-size:17px}
+    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+    .hero-text h1{margin:0;font-size:34px;color:#0b1e4d;font-weight:800;line-height:1.2}
+    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:17px}
+    .hero-bullets{margin:4px 0 12px 0;padding:0;list-style:none;display:grid;gap:12px}
+    .hero-bullets li{background:#fff;border:1px solid #e5edff;border-radius:18px;padding:14px 16px;font-weight:700;color:#0b1e4d;box-shadow:0 10px 28px rgba(15,23,42,0.12);position:relative;overflow:hidden}
+    .hero-bullets li::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#0b5fff,#6bb8ff)}
+    .hero-bullets li span{display:block;color:#475569;font-weight:500;margin-top:6px;line-height:1.65}
+    .hero-text .btn{margin-top:6px}
     .hero-media{position:relative;overflow:hidden}
     .hero-media img{width:100%;height:100%;object-fit:cover;display:block;min-height:420px}
 
@@ -47,6 +52,18 @@
     .feature-icon{width:48px;height:48px;margin:0 auto 18px;color:var(--accent)}
     .feature-card h3{margin:0 0 12px;font-size:18px;color:#0b1e4d;font-weight:700}
     .feature-card p{margin:0;color:#475569;line-height:1.7;font-size:15px}
+
+    .modules{padding:40px 0;background:#f8fafc}
+    .modules h2{margin:0 0 16px;font-size:26px;color:#0b1e4d;font-weight:800;text-align:center}
+    .module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;list-style:none;padding:0;margin:0}
+    .module-card{background:#fff;border:1px solid #e5edff;border-radius:18px;padding:16px 18px;box-shadow:0 12px 32px rgba(15,23,42,0.12);position:relative;overflow:hidden;display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:start}
+    .module-card::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#0b5fff,#6bb8ff)}
+    .module-thumb{width:64px;height:64px;border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(11,95,255,0.18);background:#eef2ff}
+    .module-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .module-card h3{margin:0 0 8px;font-size:17px;color:#0b1e4d;font-weight:800}
+    .module-card p{margin:0;color:#475569;line-height:1.7;font-size:15px}
+
+    @media(max-width:960px){.module-grid{grid-template-columns:1fr}}
 
     footer{padding:45px 0;margin-top:40px;border-top:1px solid #e2e8f0;color:var(--muted)}
     footer img{height:110px}
@@ -106,15 +123,73 @@
         <img src="/files/computer-course.jpg" alt="دورات الكمبيوتر" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&auto=format&fit=crop'">
       </div>
       <div class="hero-text">
-        <h1>دورات الكمبيوتر</h1>
-        <p>برامج عملية تهدف إلى رفع الكفاءة الرقمية، تشمل أساسيات الحاسوب، التطبيقات المكتبية، والمهارات التقنية الأساسية المطلوبة لسوق العمل.</p>
-        <a class="btn" href="/contact">ابدأ التعلّم ←</a>
+        <h1 data-i18n="hero_title">ICDL – International Computer Driving License</h1>
+        <p data-i18n="hero_desc_1">The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.</p>
+        <p data-i18n="hero_desc_2">At FLi Institute, we provide complete training to help you pass the ICDL exams with ease, with certified trainers and labs equipped with the latest devices. Whether you are a student, employee, or job seeker, the ICDL certificate strengthens your CV and opens better job opportunities in both the government and private sectors.</p>
+        <ul class="hero-bullets">
+          <li>
+            <div data-i18n="hero_feat_title">Course Features at FLi Institute:</div>
+            <span data-i18n="hero_feat_desc">1. Internationally accredited certificate* valid for life<br>2. Local certificate accredited by the Ministry of Education and Scientific Research<br>3. 100% practical training on real devices<br>4. Practice tests that simulate the official exam<br>5. Flexible schedules* morning/evening suitable for employees<br>6. Exam retake guarantee in case of failure</span>
+          </li>
+        </ul>
+        <a class="btn" href="/contact" data-i18n="hero_cta">ابدأ التعلّم ←</a>
+      </div>
+    </section>
+
+    <section class="modules">
+      <div class="container">
+        <h2 data-i18n="modules_title">ICDL Modules you will master</h2>
+        <ul class="module-grid">
+          <li class="module-card">
+            <div class="module-thumb"><img src="/files/IT.jpg" alt="IT basics" loading="lazy"></div>
+            <div>
+              <h3 data-i18n="module_1_title">1. Introduction to Information Technology – IT</h3>
+              <p data-i18n="module_1_desc">Learn computer basics from scratch: types of devices, storage units, memory, software, operating systems, networks, cyber security, and intellectual property rights.</p>
+            </div>
+          </li>
+          <li class="module-card">
+            <div class="module-thumb"><img src="/files/Windows.jpg" alt="Windows" loading="lazy"></div>
+            <div>
+              <h3 data-i18n="module_2_title">2. Windows and Computer Usage – Windows</h3>
+              <p data-i18n="module_2_desc">Master the Windows OS: managing files and folders, copy/paste, settings, installing and uninstalling programs, compressing files, and virus protection.</p>
+            </div>
+          </li>
+          <li class="module-card">
+            <div class="module-thumb"><img src="/files/word.jpg" alt="Word" loading="lazy"></div>
+            <div>
+              <h3 data-i18n="module_3_title">3. Word Processing – Word</h3>
+              <p data-i18n="module_3_desc">Write and format reports and letters, insert tables and images, automatic numbering, margins, table of contents, and mail merge.</p>
+            </div>
+          </li>
+          <li class="module-card">
+            <div class="module-thumb"><img src="/files/Excel.jpg" alt="Excel" loading="lazy"></div>
+            <div>
+              <h3 data-i18n="module_4_title">4. Spreadsheets – Excel</h3>
+              <p data-i18n="module_4_desc">Create tables, write formulas and functions (SUM, IF), sort data, create charts, and format financial statements.</p>
+            </div>
+          </li>
+          <li class="module-card">
+            <div class="module-thumb"><img src="/files/PowerPoint.png" alt="PowerPoint" loading="lazy"></div>
+            <div>
+              <h3 data-i18n="module_5_title">5. Presentation – PowerPoint</h3>
+              <p data-i18n="module_5_desc">Design professional presentations: slides, text, images, video, transitions, and sound effects.</p>
+            </div>
+          </li>
+          <li class="module-card">
+            <div class="module-thumb"><img src="/files/Access.jpg" alt="Microsoft Access" loading="lazy"></div>
+            <div>
+              <h3 data-i18n="module_6_title">6. Databases – Access</h3>
+              <p data-i18n="module_6_desc">Store large datasets, create client/employee tables, design forms, build queries for quick searches, and printable reports.</p>
+            </div>
+          </li>
+        </ul>
       </div>
     </section>
 
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
+          <!--
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <circle cx="12" cy="12" r="10"/>
@@ -123,6 +198,7 @@
             <h3>كيف تعمل الدورة؟</h3>
             <p>تدريب عملي مباشر على أجهزة الحاسوب مع تمارين تطبيقية يومية ومتابعة فردية من المدربين المختصين.</p>
           </div>
+          
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="3" y="4" width="18" height="14" rx="2"/>
@@ -131,13 +207,14 @@
             <h3>ماذا ستتعلّم؟</h3>
             <p>أساسيات Windows، برامج Microsoft Office (Word, Excel, PowerPoint)، إدارة الملفات، أمان الإنترنت، والبريد الإلكتروني الاحترافي.</p>
           </div>
+          -->
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="3" y="4" width="18" height="18" rx="2"/>
               <path d="M16 2v4M8 2v4M3 10h18"/>
             </svg>
-            <h3>كم مدة الدورة؟</h3>
-            <p>مسارات متعددة: دورة مكثفة لمدة 4 أسابيع أو برنامج شامل لمدة 8 أسابيع مع شهادة معتمدة.</p>
+            <h3 data-i18n="feature_duration_title">How long is the course?</h3>
+            <p data-i18n="feature_duration_desc">85 hours<br>2 months<br>5 days a week<br>2 hours a day</p>
           </div>
         </div>
       </div>
@@ -214,16 +291,100 @@
       }
     });
 
+    const translations={
+      en:{
+        nav_about:"About",
+        nav_contact:"Contact",
+        nav_home:"Home",
+        nav_login:"Login",
+        hero_title:"ICDL – International Computer Driving License",
+        hero_desc_1:"The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.",
+        hero_desc_2:"At FLi Institute, we provide complete training to help you pass the ICDL exams with ease, with certified trainers and labs equipped with the latest devices. Whether you are a student, employee, or job seeker, the ICDL certificate strengthens your CV and opens better job opportunities in both the government and private sectors.",
+        hero_feat_title:"Course Features at FLi Institute:",
+        hero_feat_desc:"1. Internationally accredited certificate* valid for life\n2. Local certificate accredited by the Ministry of Education and Scientific Research\n3. 100% practical training on real devices\n4. Practice tests that simulate the official exam\n5. Flexible schedules* morning/evening suitable for employees\n6. Exam retake guarantee in case of failure",
+        hero_cta:"Start learning →",
+        modules_title:"ICDL Modules you will master",
+        feature_duration_title:"How long is the course?",
+        feature_duration_desc:"85 hours\n2 months\n5 days a week\n2 hours a day",
+        module_1_title:"1. Introduction to Information Technology – IT",
+        module_1_desc:"Learn computer basics from scratch: types of devices, storage units, memory, software, operating systems, networks, cyber security, and intellectual property rights.",
+        module_2_title:"2. Windows and Computer Usage – Windows",
+        module_2_desc:"Master the Windows OS: managing files and folders, copy/paste, settings, installing and uninstalling programs, compressing files, and virus protection.",
+        module_3_title:"3. Word Processing – Word",
+        module_3_desc:"Write and format reports and letters, insert tables and images, automatic numbering, margins, table of contents, and mail merge.",
+        module_4_title:"4. Spreadsheets – Excel",
+        module_4_desc:"Create tables, write formulas and functions (SUM, IF), sort data, create charts, and format financial statements.",
+        module_5_title:"5. Presentation – PowerPoint",
+        module_5_desc:"Design professional presentations: slides, text, images, video, transitions, and sound effects.",
+        module_6_title:"6. Databases – Access",
+        module_6_desc:"Store large datasets, create client/employee tables, design forms, build queries for quick searches, and printable reports.",
+        footer_address:"Faculty Language Institute (FLI)",
+        footer_contact:"Contact",
+        footer_copyright:"Faculty Language Institute. All rights reserved.",
+      },
+      ar:{
+        nav_about:"عن المعهد",
+        nav_contact:"تواصل معنا",
+        nav_home:"الرئيسية",
+        nav_login:"تسجيل الدخول",
+        hero_title:"دبلوم الكمبيوتر - الرخصة الدولية لقيادة الحاسوب ICDL",
+        hero_desc_1:"شهادة ICDL هي المعيار العالمي لقياس مهارات استخدام الحاسوب، ومعتمدة من وزارة التربية والتعليم والبحث العلمي - قطاع التعليم الفني والتدريب المهني.",
+        hero_desc_2:"في معهد فلاي نوفر لك التدريب الكامل لاجتياز اختبارات الرخصة الدولية بكل سهولة، مع مدربين معتمدين وقاعات مجهزة بأحدث الأجهزة. سواء كنت طالب، موظف، أو باحث عن عمل، شهادة ICDL بتقوي سيرتك الذاتية وتفتح لك فرص وظيفية أفضل في القطاع الحكومي والخاص.",
+        hero_feat_title:"مميزات الدورة في معهد فلاي:",
+        hero_feat_desc:"1. شهادة معتمدة دولياً صالحة مدى الحياة\n2. شهادة محلية معتمدة من وزارة التربية والتعليم والبحث العلمي\n3. تدريب عملي 100% على أجهزة حقيقية\n4. اختبارات تجريبية تحاكي الاختبار الرسمي\n5. مواعيد مرنة صباحي/مسائي تناسب الموظفين\n6. ضمان إعادة الاختبارات* في حال عدم الاجتياز",
+        hero_cta:"ابدأ التعلّم ←",
+        modules_title:"المحاور التي ستتقنها في ICDL",
+        feature_duration_title:"كم مدة الدورة؟",
+        feature_duration_desc:"85 ساعة\n2 شهرين\n5 ايام بالأسبوع\n2 ساعتين يوميا",
+        module_1_title:"1. مقدمة في تقنية المعلومات IT",
+        module_1_desc:"تتعرف على أساسيات الحاسوب من الصفر: أنواع الأجهزة، وحدات التخزين، الذاكرة، البرمجيات ونظام التشغيل، الشبكات، الأمن السيبراني وحقوق الملكية الفكرية.",
+        module_2_title:"2. الويندوز واستخدامات الكمبيوتر Windows",
+        module_2_desc:"إتقان نظام ويندوز: إدارة الملفات والمجلدات، النسخ واللصق، الإعدادات، تثبيت البرامج وحذفها، ضغط الملفات، والحماية من الفيروسات.",
+        module_3_title:"3. معالج النصوص وورد Word",
+        module_3_desc:"كتابة وتنسيق التقارير والخطابات، إدراج الجداول والصور، الترقيم التلقائي، الهوامش، فهرس المحتويات، ودمج المراسلات.",
+        module_4_title:"4. الجداول الإلكترونية إكسل Excel",
+        module_4_desc:"إنشاء الجداول، كتابة المعادلات والدوال مثل SUM و IF، فرز البيانات، عمل الرسوم البيانية، وتنسيق الكشوفات المالية.",
+        module_5_title:"5. العروض التقديمية باوربوينت PowerPoint",
+        module_5_desc:"تصميم عروض احترافية للاجتماعات والمحاضرات: الشرائح، النصوص، الصور، الفيديو، الحركات الانتقالية، والمؤثرات الصوتية.",
+        module_6_title:"6. قواعد البيانات أكسس Access",
+        module_6_desc:"تخزين كميات كبيرة من البيانات بشكل منظم، إنشاء جداول للعملاء أو الموظفين، تصميم نماذج للإدخال، استعلامات للبحث السريع، وتقارير للطباعة.",
+        footer_address:"معهد فاكلتي للغات (FLI)",
+        footer_contact:"التواصل",
+        footer_copyright:"معهد فاكلتي للغات. جميع الحقوق محفوظة.",
+      }
+    };
+
     let currentLang=localStorage.getItem('fli_lang')||'ar';
 
+    function applyTranslations(lang){
+      document.documentElement.setAttribute('lang',lang==='ar'?'ar':'en');
+      document.documentElement.setAttribute('dir',lang==='ar'?'rtl':'ltr');
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key=el.getAttribute('data-i18n');
+        if(translations[lang] && translations[lang][key]){
+          const value=translations[lang][key];
+          if(key.includes('desc')){
+            el.innerHTML=value.replace(/\n/g,'<br>');
+          }else{
+            el.textContent=value;
+          }
+        }
+      });
+      document.querySelectorAll('.lang-switcher').forEach(btn=>{
+        btn.textContent=lang==='ar'?'English':'العربية';
+      });
+      localStorage.setItem('fli_lang',lang);
+      currentLang=lang;
+    }
+
     function toggleLanguage(){
-      currentLang=currentLang==='ar'?'en':'ar';
-      localStorage.setItem('fli_lang',currentLang);
-      location.reload();
+      const next=currentLang==='ar'?'en':'ar';
+      applyTranslations(next);
     }
 
     document.addEventListener('DOMContentLoaded',()=>{
       document.getElementById('year-page').textContent=new Date().getFullYear();
+      applyTranslations(currentLang);
     });
   </script>
 </body>
