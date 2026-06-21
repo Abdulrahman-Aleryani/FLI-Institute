@@ -34,9 +34,22 @@
     .mobile-menu.active{display:flex}
     .mobile-menu a{text-decoration:none;color:#0f172a;font-weight:500;padding:10px 14px}
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
-    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center}
-    .hero-text h1{margin:0 0 18px;font-size:34px;color:#0b1e4d;font-weight:800}
-    .hero-text p{margin:0 0 28px;color:#475569;line-height:1.75;font-size:17px}
+    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+    .hero-text h1{margin:0;font-size:32px;color:#0b1e4d;font-weight:800;line-height:1.3}
+    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:16px}
+    .levels-section{padding:70px 0;background:linear-gradient(180deg,#f5f7ff 0%,#ffffff 100%)}
+    .levels-header{max-width:720px;margin:0 auto 26px;text-align:center}
+    .levels-section h2{margin:0 0 10px;font-size:28px;color:#0b1e4d;font-weight:850}
+    .levels-section p.lead{margin:0;color:#475569;line-height:1.7;font-size:16px}
+    .levels-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px}
+    .level-block{background:#fff;border-radius:18px;padding:20px 20px 22px;box-shadow:0 18px 40px rgba(71,85,105,0.16);line-height:1.7;height:100%;border:1px solid rgba(11,95,255,0.08);position:relative;overflow:hidden}
+    .level-block::before{content:'';position:absolute;top:0;left:0;right:0;height:8px;background:linear-gradient(90deg,#7aa2ff 0%,#b3c5ff 50%,#7aa2ff 100%);opacity:0.75}
+    .level-block h3{margin:6px 0 12px;font-size:19px;color:#0b1e4d;font-weight:780;position:relative;z-index:1}
+    .level-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(11,95,255,0.1);color:#0b5fff;padding:7px 13px;border-radius:999px;font-weight:750;font-size:12px;letter-spacing:0.2px;position:relative;z-index:1}
+    .level-block p{position:relative;z-index:1;margin:10px 0 12px;color:#0f1f3d}
+    .level-block .outcome{margin-top:16px;background:#e7efff;border-radius:14px;padding:14px 16px;border-inline-start:4px solid var(--accent);box-shadow:0 12px 28px rgba(11,95,255,0.12);position:relative;z-index:1}
+    .level-block .outcome strong{display:block;color:#0b1e4d;font-weight:800;margin-bottom:6px;font-size:15px}
+    .level-block .outcome span{display:block;color:#1f2937;font-weight:500;line-height:1.65}
     .hero-media{position:relative;overflow:hidden}
     .hero-media img{width:100%;height:100%;object-fit:cover;display:block;min-height:420px}
     .features-section{padding:60px 0;background:#fff}
@@ -94,13 +107,50 @@
       </div>
       <div class="hero-text">
         <h1 data-i18n="hero_title">General English Courses</h1>
-        <p data-i18n="hero_desc">Improve your English skills online with a proven method and guaranteed results. Study anytime, anywhere with our interactive courses.</p>
-        <a class="btn" href="/contact" data-i18n="hero_cta">Start learning →</a>
+        <a class="btn" href="/contact" data-i18n="hero_cta">تواصل للتسجيل →</a>
+      </div>
+    </section>
+    <section class="levels-section">
+      <div class="container">
+        <div class="levels-header">
+          <h2 data-i18n="hero_title">General English Courses</h2>
+          <p class="lead" data-i18n="levels_lead">ابدأ رحلتك من الأساسيات وصولاً إلى الطلاقة مع مستويات متدرجة مصممة لتطوير مهاراتك خطوة بخطوة.</p>
+        </div>
+        <div class="levels-grid">
+          <div class="level-block">
+            <div class="level-badge" data-i18n="level_beginner_badge">Beginner</div>
+            <h3 data-i18n="hero_beginner_title">American File English Diploma – Beginner Level</h3>
+            <p data-i18n="hero_beginner_desc">دبلوم اللغة الإنجليزية للمبتدئين باستخدام سلسلة American File العالمية، مصمم لتأسيس المتدربين في أساسيات اللغة الإنجليزية من الصفر. يركز البرنامج على تطوير مهارات الاستماع والتحدث والقراءة والكتابة، بالإضافة إلى تعلم المفردات والقواعد الأساسية المستخدمة في الحياة اليومية.</p>
+            <div class="outcome">
+              <strong data-i18n="hero_beginner_outcome_label">Key Outcome:</strong>
+              <span data-i18n="hero_beginner_outcome">القدرة على فهم واستخدام العبارات الأساسية، والتواصل في المواقف اليومية البسيطة، وبناء قاعدة قوية للانتقال إلى المستوى المتوسط.</span>
+            </div>
+          </div>
+          <div class="level-block">
+            <div class="level-badge" data-i18n="level_intermediate_badge">Intermediate</div>
+            <h3 data-i18n="hero_intermediate_title">American File English Diploma – Intermediate Level</h3>
+            <p data-i18n="hero_intermediate_desc">دبلوم اللغة الإنجليزية للمستوى المتوسط باستخدام منهج American File، يهدف إلى تطوير مهارات التواصل وزيادة الطلاقة اللغوية. يركز البرنامج على توسيع المفردات، وتحسين القواعد، وتعزيز القدرة على المشاركة في المحادثات وفهم النصوص والمواقف المختلفة.</p>
+            <div class="outcome">
+              <strong data-i18n="hero_intermediate_outcome_label">Key Outcome:</strong>
+              <span data-i18n="hero_intermediate_outcome">القدرة على التواصل بثقة في المواقف اليومية والعملية، وفهم النصوص والمحادثات المتوسطة المستوى، والتعبير عن الأفكار بوضوح.</span>
+            </div>
+          </div>
+          <div class="level-block">
+            <div class="level-badge" data-i18n="level_advanced_badge">Advanced</div>
+            <h3 data-i18n="hero_advanced_title">American File English Diploma – Advanced Level</h3>
+            <p data-i18n="hero_advanced_desc">دبلوم اللغة الإنجليزية للمستوى المتقدم باستخدام سلسلة American File، مصمم للمتعلمين الراغبين في الوصول إلى مستوى متقدم من الطلاقة والدقة اللغوية. يركز البرنامج على مهارات التواصل الاحترافي، والمناقشات المتقدمة، والكتابة الأكاديمية والعملية، وفهم اللغة في سياقات متنوعة.</p>
+            <div class="outcome">
+              <strong data-i18n="hero_advanced_outcome_label">Key Outcome:</strong>
+              <span data-i18n="hero_advanced_outcome">التحدث بطلاقة وثقة، واستخدام اللغة الإنجليزية بكفاءة في الدراسة والعمل، وفهم المحتوى المتقدم والتفاعل بفعالية في البيئات الأكاديمية والمهنية.</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
+          <!--
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             <h3 data-i18n="feature_1_title">How does the course work?</h3>
@@ -111,14 +161,15 @@
             <h3 data-i18n="feature_2_title">What will you learn?</h3>
             <p data-i18n="feature_2_desc">Twenty CEFR-aligned levels from beginner to advanced with interactive tasks, videos, and speaking practice.</p>
           </div>
+          -->
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <h3 data-i18n="feature_3_title">How long is it?</h3>
             <p class="feature-duration">
-              <span data-i18n="feature_3_line1">40 hours total</span>
-              <span data-i18n="feature_3_line2">4 weeks</span>
-              <span data-i18n="feature_3_line3">5 study days per week</span>
-              <span data-i18n="feature_3_line4">2 hours each day</span>
+              <span data-i18n="feature_3_line1">40 hours per course</span>
+              <span data-i18n="feature_3_line2">4 weeks a term</span>
+              <span data-i18n="feature_3_line3">5 days a week</span>
+              <span data-i18n="feature_3_line4">2 hours a day</span>
             </p>
           </div>
         </div>
@@ -186,18 +237,33 @@
         nav_contact:'Contact',
         nav_login:'Login',
         hero_title:'General English Courses',
-        hero_desc:'Improve your English skills online with a proven method and guaranteed results. Study anytime, anywhere with our interactive courses.',
-        hero_cta:'Start learning →',
+        hero_beginner_title:'American File English Diploma – Beginner Level',
+        hero_beginner_desc:'The Beginner English Diploma, based on the internationally recognized American File series, is designed for learners starting from scratch. The program focuses on developing listening, speaking, reading, and writing skills while building essential vocabulary and grammar for everyday communication.',
+        hero_beginner_outcome_label:'Key Outcome:',
+        hero_beginner_outcome:'Learners can understand and use basic English expressions, communicate in simple daily situations, and establish a strong foundation for further language development.',
+        hero_intermediate_title:'American File English Diploma – Intermediate Level',
+        hero_intermediate_desc:'The Intermediate English Diploma, delivered through the American File curriculum, helps learners strengthen their communication skills and improve fluency. The program expands vocabulary, enhances grammar accuracy, and develops the ability to engage in conversations and understand a variety of texts and situations.',
+        hero_intermediate_outcome_label:'Key Outcome:',
+        hero_intermediate_outcome:'Learners can communicate confidently in everyday and workplace situations, understand intermediate-level content, and express ideas more effectively.',
+        hero_advanced_title:'American File English Diploma – Advanced Level',
+        hero_advanced_desc:'The Advanced English Diploma, based on the American File series, is designed for learners seeking a high level of fluency and language proficiency. The program focuses on advanced communication, professional discussions, academic and practical writing, and understanding English in diverse contexts.',
+        hero_advanced_outcome_label:'Key Outcome:',
+        hero_advanced_outcome:'Learners achieve fluent and confident communication, use English effectively in academic and professional environments, and comprehend advanced-level content with ease.',
+        levels_lead:'Progress from the basics to fluency with structured levels designed to grow your skills step by step.',
+        level_beginner_badge:'Beginner',
+        level_intermediate_badge:'Intermediate',
+        level_advanced_badge:'Advanced',
+        hero_cta:'Contact to enroll →',
         feature_1_title:'How does the course work?',
         feature_1_desc:'Attend live sessions with expert teachers, join international classmates in our digital classroom, and track your goals with personal coaching.',
         feature_2_title:'What will you learn?',
         feature_2_desc:'Twenty CEFR-aligned levels from beginner to advanced with interactive tasks, videos, and speaking practice.',
         feature_3_title:'How long is it?',
         feature_3_desc:'40 hours • 4 weeks • 5 study days per week • 2 hours daily.',
-        feature_3_line1:'40 hours total',
-        feature_3_line2:'4 weeks',
-        feature_3_line3:'5 study days per week',
-        feature_3_line4:'2 hours each day',
+        feature_3_line1:'40 hours per course',
+        feature_3_line2:'4 weeks a term',
+        feature_3_line3:'5 days a week',
+        feature_3_line4:'2 hours a day',
         footer_address:'Faculty Language Institute (FLI)',
         footer_location:'Baghdad Street, Sana’a, Yemen',
         footer_email:'Email: facultyinstitutefli@gmail.com',
@@ -210,17 +276,32 @@
         nav_contact:'تواصل معنا',
         nav_login:'تسجيل الدخول',
         hero_title:'الدورات العامة للغة الإنجليزية',
-        hero_desc:'طوّر مهاراتك في الإنجليزية أونلاين بطريقة معتمدة ونتائج مضمونة. تعلّم في أي وقت ومن أي مكان مع دوراتنا التفاعلية عبر الإنترنت.',
-        hero_cta:'ابدأ التعلّم ←',
+        hero_beginner_title:'دبلوم اللغة الإنجليزية – مستوى المبتدئين (American File)',
+        hero_beginner_desc:'دبلوم اللغة الإنجليزية للمبتدئين باستخدام سلسلة American File العالمية، مصمم لتأسيس المتدربين في أساسيات اللغة الإنجليزية من الصفر. يركز البرنامج على تطوير مهارات الاستماع والتحدث والقراءة والكتابة، بالإضافة إلى تعلم المفردات والقواعد الأساسية المستخدمة في الحياة اليومية.',
+        hero_beginner_outcome_label:'المخرج التعليمي:',
+        hero_beginner_outcome:'القدرة على فهم واستخدام العبارات الأساسية، والتواصل في المواقف اليومية البسيطة، وبناء قاعدة قوية للانتقال إلى المستوى المتوسط.',
+        hero_intermediate_title:'دبلوم اللغة الإنجليزية – المستوى المتوسط (American File)',
+        hero_intermediate_desc:'دبلوم اللغة الإنجليزية للمستوى المتوسط باستخدام منهج American File، يهدف إلى تطوير مهارات التواصل وزيادة الطلاقة اللغوية. يركز البرنامج على توسيع المفردات، وتحسين القواعد، وتعزيز القدرة على المشاركة في المحادثات وفهم النصوص والمواقف المختلفة.',
+        hero_intermediate_outcome_label:'المخرج التعليمي:',
+        hero_intermediate_outcome:'القدرة على التواصل بثقة في المواقف اليومية والعملية، وفهم النصوص والمحادثات المتوسطة المستوى، والتعبير عن الأفكار بوضوح.',
+        hero_advanced_title:'دبلوم اللغة الإنجليزية – المستوى المتقدم (American File)',
+        hero_advanced_desc:'دبلوم اللغة الإنجليزية للمستوى المتقدم باستخدام سلسلة American File، مصمم للمتعلمين الراغبين في الوصول إلى مستوى متقدم من الطلاقة والدقة اللغوية. يركز البرنامج على مهارات التواصل الاحترافي، والمناقشات المتقدمة، والكتابة الأكاديمية والعملية، وفهم اللغة في سياقات متنوعة.',
+        hero_advanced_outcome_label:'المخرج التعليمي:',
+        hero_advanced_outcome:'التحدث بطلاقة وثقة، واستخدام اللغة الإنجليزية بكفاءة في الدراسة والعمل، وفهم المحتوى المتقدم والتفاعل بفعالية في البيئات الأكاديمية والمهنية.',
+        levels_lead:'ابدأ رحلتك من الأساسيات وصولاً إلى الطلاقة مع مستويات متدرجة مصممة لتطوير مهاراتك خطوة بخطوة.',
+        level_beginner_badge:'مبتدئ',
+        level_intermediate_badge:'متوسط',
+        level_advanced_badge:'متقدم',
+        hero_cta:'تواصل للتسجيل →',
         feature_1_title:'كيف تعمل الدورة؟',
         feature_1_desc:'احضر حصصاً مباشرة مع معلمين خبراء، وانضم لزملاء دوليين في فصلنا الرقمي، وتابع أهدافك مع مدرب شخصي.',
         feature_2_title:'ماذا ستتعلّم؟',
         feature_2_desc:'عشرون مستوى متوافقاً مع الإطار الأوروبي من المبتدئ إلى المتقدم مع أنشطة تفاعلية وفيديوهات وتمارين محادثة.',
         feature_3_title:'كم مدة الدورة؟',
-        feature_3_desc:'٤٠ ساعة • ٤ أسابيع • ٥ أيام أسبوعياً • ساعتان يومياً.',
-        feature_3_line1:'٤٠ ساعة إجمالية',
-        feature_3_line2:'٤ أسابيع',
-        feature_3_line3:'٥ أيام دراسة في الأسبوع',
+        feature_3_desc:'٤٠ ساعة لكل دورة • ٤ أسابيع للفصل • ٥ أيام في الأسبوع • ساعتان يومياً.',
+        feature_3_line1:'٤٠ ساعة لكل دورة',
+        feature_3_line2:'٤ أسابيع للفصل',
+        feature_3_line3:'٥ أيام في الأسبوع',
         feature_3_line4:'ساعتان يومياً',
         footer_address:'معهد فاكلتي للغات (FLI)',
         footer_location:'شارع بغداد، صنعاء، اليمن',

@@ -38,9 +38,12 @@
     .mobile-menu a{text-decoration:none;color:#0f172a;font-weight:500;padding:10px 14px}
 
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
-    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center}
+    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:14px}
     .hero-text h1{margin:0 0 18px;font-size:38px;color:#0b1e4d;font-weight:800}
     .hero-text p{margin:0 0 28px;color:#475569;line-height:1.75;font-size:17px}
+    .hero-outcome{margin-top:4px;background:#e7efff;border-radius:14px;padding:14px 16px;border-inline-start:4px solid var(--accent);box-shadow:0 12px 28px rgba(11,95,255,0.12)}
+    .hero-outcome span:first-child{display:block;color:#0b1e4d;font-weight:800;margin-bottom:6px;font-size:15px}
+    .hero-outcome span:last-child{display:block;color:#1f2937;font-weight:500;line-height:1.65}
     .hero-media{position:relative;overflow:hidden}
     .hero-media img{width:100%;height:100%;object-fit:cover;display:block;min-height:420px}
 
@@ -67,6 +70,7 @@
       .nav{display:none}
       .hamburger{display:flex}
       .hero-section{grid-template-columns:1fr}
+      .hero-media{order:-1}
       .hero-text{padding:40px 26px}
       .hero-media img{min-height:320px}
       .features-grid{grid-template-columns:1fr}
@@ -109,7 +113,11 @@
     <section class="hero-section">
       <div class="hero-text">
         <h1 data-i18n="hero_title">Kids - English Course</h1>
-        <p data-i18n="hero_desc">We teach your children English in a fun, interactive, and safe online environment, so they grow into a more confident and exceptional generation while developing their skills with creativity.</p>
+        <p data-i18n="hero_desc">Interactive English courses designed specifically for children to develop their listening, speaking, reading, and writing skills through engaging activities and age-appropriate learning methods.</p>
+        <div class="hero-outcome">
+          <span data-i18n="hero_desc_outcome_label">Key Outcome:</span>
+          <span data-i18n="hero_desc_outcome">Children build a strong foundation in English and gain the confidence to communicate and learn effectively.</span>
+        </div>
         <a class="btn" href="/placement-test" data-i18n="hero_cta">Start learning →</a>
       </div>
       <div class="hero-media">
@@ -120,6 +128,7 @@
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
+          <!--
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <circle cx="12" cy="12" r="10"/>
@@ -136,6 +145,7 @@
             <h3 data-i18n="feature2_title">What will I learn?</h3>
             <p data-i18n="feature2_desc">Based on your current level. 20 levels from beginner to advanced, aligned to the CEFR. Fun learning content and videos to develop all language skills with interactive activities powered by AI.</p>
           </div>
+          -->
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="3" y="4" width="18" height="18" rx="2"/>
@@ -143,10 +153,10 @@
             </svg>
             <h3 data-i18n="feature3_title">How long is the course?</h3>
             <p class="feature-duration">
-              <span data-i18n="feature3_line2">40 hours total</span>
-              <span data-i18n="feature3_line3">4 weeks</span>
-              <span data-i18n="feature3_line4">5 study days per week</span>
-              <span data-i18n="feature3_line5">2 hours each day</span>
+              <span data-i18n="feature3_line2">40 hours per course</span>
+              <span data-i18n="feature3_line3">4 weeks a term</span>
+              <span data-i18n="feature3_line4">5 days a week</span>
+              <span data-i18n="feature3_line5">2 hours a day</span>
             </p>
           </div>
         </div>
@@ -230,7 +240,9 @@
       en:{
         nav_home:'Home',nav_about:'About',nav_contact:'Contact',nav_team:'Teaching team',nav_login:'Login',
         hero_title:'Kids - English Course',
-        hero_desc:'We teach your children English in a fun, interactive, and safe online environment, helping them become a confident, outstanding generation while strengthening their skills with creativity.',
+        hero_desc:'Interactive English courses designed specifically for children to develop their listening, speaking, reading, and writing skills through engaging activities and age-appropriate learning methods.',
+        hero_desc_outcome_label:'Key Outcome:',
+        hero_desc_outcome:'Children build a strong foundation in English and gain the confidence to communicate and learn effectively.',
         hero_cta:'Start learning →',
         feature1_title:'How does the English course work?',
         feature1_desc:'We guarantee your kids will learn English with our proven method. Full-access experience: study in English-only learning centers and join international students in our digital classroom.',
@@ -238,10 +250,10 @@
         feature2_desc:'Based on your current level. 20 levels from beginner to advanced, aligned to the CEFR. Fun learning content and videos to develop all language skills with interactive activities powered by AI.',
         feature3_title:'How long is the course?',
         feature3_desc:'Personalized plans based on your starting level and goals, e.g. 9, 12 or 18 month courses. Study 3 hours per week. Go from Elementary level (A2) to Intermediate (B1) in 6 months by following our method.',
-        feature3_line2:'40 hours total',
-        feature3_line3:'4 weeks',
-        feature3_line4:'5 study days per week',
-        feature3_line5:'2 hours each day',
+        feature3_line2:'40 hours per course',
+        feature3_line3:'4 weeks a term',
+        feature3_line4:'5 days a week',
+        feature3_line5:'2 hours a day',
         footer_address:'Faculty Language Institute (FLI) — Baghdad Street, Sana\'a',
         footer_contact:'Contact',
         footer_email:'Email: facultyinstitutefli@gmail.com',
@@ -250,7 +262,9 @@
       ar:{
         nav_home:'الرئيسية',nav_about:'من نحن',nav_contact:'تواصل معنا',nav_team:'فريق التدريس',nav_login:'تسجيل الدخول',
         hero_title:'دورة الإنجليزية للأطفال',
-        hero_desc:'نعلم أطفالكم اللغة الإنجليزية بأسلوب ممتع وتفاعلي وآمن عبر الإنترنت، لنصنع جيلاً واثقاً ومتميزاً وننمي مهاراتهم بثقة وإبداع.',
+        hero_desc:'دورات تفاعلية مصممة خصيصًا للأطفال لتنمية مهارات اللغة الإنجليزية في الاستماع والتحدث والقراءة والكتابة من خلال أنشطة ممتعة وأساليب تعليم حديثة تناسب مختلف الأعمار والمستويات.',
+        hero_desc_outcome_label:'المخرج التعليمي:',
+        hero_desc_outcome:'يبني الطفل أساسًا قويًا في اللغة الإنجليزية ويكتسب الثقة اللازمة للتواصل والتعلم باستخدام اللغة.',
         hero_cta:'ابدأ التعلم →',
         feature1_title:'كيف تعمل دورة الإنجليزية؟',
         feature1_desc:'نضمن أن أطفالك سيتعلمون الإنجليزية بطريقتنا المثبتة. تجربة وصول كاملة: ادرس في مراكز تعليم الإنجليزية فقط وانضم إلى طلاب دوليين في فصلنا الرقمي.',
@@ -258,9 +272,9 @@
         feature2_desc:'بناءً على مستواك الحالي. 20 مستوى من المبتدئ إلى المتقدم، متوافقة مع CEFR. محتوى تعليمي ممتع وفيديوهات لتطوير جميع المهارات اللغوية مع أنشطة تفاعلية مدعومة بالذكاء الاصطناعي.',
         feature3_title:'كم مدة الدورة؟',
         feature3_desc:'خطط مخصصة بناءً على مستواك وأهدافك، مثل دورات 9 أو 12 أو 18 شهرًا. ادرس 3 ساعات أسبوعيًا. انتقل من المستوى الابتدائي (A2) إلى المتوسط (B1) في 6 أشهر باتباع طريقتنا.',
-        feature3_line2:'٤٠ ساعة إجمالية',
-        feature3_line3:'٤ أسابيع',
-        feature3_line4:'٥ أيام دراسة في الأسبوع',
+        feature3_line2:'٤٠ ساعة لكل دورة',
+        feature3_line3:'٤ أسابيع للفصل',
+        feature3_line4:'٥ أيام في الأسبوع',
         feature3_line5:'ساعتان يوميًا',
         footer_address:'معهد فاكلتي للغات (FLI) — شارع بغداد، صنعاء',
         footer_contact:'التواصل',

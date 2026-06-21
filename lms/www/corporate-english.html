@@ -34,9 +34,12 @@
     .mobile-menu.active{display:flex}
     .mobile-menu a{text-decoration:none;color:#0f172a;font-weight:500;padding:10px 14px}
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
-    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center}
-    .hero-text h1{margin:0 0 18px;font-size:34px;color:#0b1e4d;font-weight:800}
-    .hero-text p{margin:0 0 28px;color:#475569;line-height:1.75;font-size:17px}
+    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .hero-text h1{margin:0;font-size:34px;color:#0b1e4d;font-weight:800}
+    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:17px}
+    .hero-outcome{background:#e7efff;border-radius:14px;padding:14px 16px;border-inline-start:4px solid var(--accent);box-shadow:0 12px 28px rgba(11,95,255,0.12)}
+    .hero-outcome .label{display:block;color:#0b1e4d;font-weight:800;margin-bottom:6px;font-size:15px}
+    .hero-outcome .value{display:block;color:#1f2937;font-weight:500;line-height:1.65;margin:0}
     .hero-media{position:relative;overflow:hidden}
     .hero-media img{width:100%;height:100%;object-fit:cover;display:block;min-height:420px}
     .features-section{padding:60px 0;background:#fff}
@@ -45,6 +48,7 @@
     .feature-icon{width:48px;height:48px;margin:0 auto 18px;color:var(--accent)}
     .feature-card h3{margin:0 0 12px;font-size:18px;color:#0b1e4d;font-weight:700}
     .feature-card p{margin:0;color:#475569;line-height:1.7;font-size:15px}
+    .feature-duration span{display:block}
     footer{padding:45px 0;margin-top:40px;border-top:1px solid #e2e8f0;color:var(--muted)}
     footer img{height:110px}
     .social-links{display:flex;gap:12px;justify-content:flex-start;margin-top:10px}
@@ -92,28 +96,37 @@
         <img src="/files/corporate-english.jpg" alt="Online Corporate English" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&auto=format&fit=crop'">
       </div>
       <div class="hero-text">
-        <h1>Online Corporate English</h1>
-        <p>Guided training for teams to level-up English fast. Tailored programs for businesses looking to improve their employees' professional English communication skills.</p>
-        <a class="btn" href="/contact">ابدأ التعلّم ←</a>
+        <h1 data-i18n="hero_title">TESOL Program</h1>
+        <p data-i18n="hero_desc">A professional teacher-training program that prepares participants to teach English to speakers of other languages using modern teaching methodologies and classroom practices.</p>
+        <div class="hero-outcome">
+          <span class="label" data-i18n="hero_outcome_label">Key Outcome</span>
+          <p class="value" data-i18n="hero_outcome_value">Gain the skills and confidence needed to start or advance your career as an English language teacher.</p>
+        </div>
+        <a class="btn" href="/contact" data-i18n="hero_cta">ابدأ التعلّم ←</a>
       </div>
     </section>
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
-          <div class="feature-card">
+          <!-- <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             <h3>كيف تعمل الدورة؟</h3>
             <p>برامج مخصصة لفرق العمل مع جلسات مباشرة عبر الإنترنت، تقييمات دورية، ومتابعة فردية لكل موظف.</p>
-          </div>
-          <div class="feature-card">
+          </div> -->
+          <!-- <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M10 9l4 3-4 3V9z"/></svg>
             <h3>ماذا ستتعلّم؟</h3>
             <p>مهارات التواصل المهني، العروض التقديمية، الاجتماعات، المفاوضات، والمراسلات التجارية باللغة الإنجليزية.</p>
-          </div>
+          </div> -->
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <h3>كم مدة الدورة؟</h3>
-            <p>برامج مرنة حسب احتياجات الشركة: من 8 إلى 24 أسبوعاً مع تقارير تقدم شهرية للإدارة.</p>
+            <h3 data-i18n="feature_duration_heading">كم مدة الدورة؟</h3>
+            <p class="feature-duration">
+              <span data-i18n="feature_duration_title">20 hours</span>
+              <span data-i18n="feature_duration_weeks">2 weeks</span>
+              <span data-i18n="feature_duration_days">5 days a week</span>
+              <span data-i18n="feature_duration_daily">2 hours a day</span>
+            </p>
           </div>
         </div>
       </div>
@@ -174,8 +187,48 @@
     function toggleMobileMenu(){const menu=document.getElementById('mobileMenu');const burger=document.querySelector('.hamburger');menu.classList.toggle('active');burger.classList.toggle('active');}
     document.addEventListener('click',evt=>{const menu=document.getElementById('mobileMenu');const burger=document.querySelector('.hamburger');if(!menu||!burger)return;if(!menu.contains(evt.target)&&!burger.contains(evt.target)){menu.classList.remove('active');burger.classList.remove('active');}});
     let currentLang=localStorage.getItem('fli_lang')||'ar';
-    function toggleLanguage(){currentLang=currentLang==='ar'?'en':'ar';localStorage.setItem('fli_lang',currentLang);location.reload();}
-    document.addEventListener('DOMContentLoaded',()=>{document.getElementById('year-page').textContent=new Date().getFullYear();});
+    const translations={
+      en:{
+        hero_title:'TESOL Program',
+        hero_desc:'A professional teacher-training program that prepares participants to teach English to speakers of other languages using modern teaching methodologies and classroom practices.',
+        hero_outcome_label:'Key Outcome',
+        hero_outcome_value:'Gain the skills and confidence needed to start or advance your career as an English language teacher.',
+        hero_cta:'Start learning →',
+        feature_duration_heading:'How long is the course?',
+        feature_duration_title:'20 hours',
+        feature_duration_weeks:'2 weeks',
+        feature_duration_days:'5 days a week',
+        feature_duration_daily:'2 hours a day'
+      },
+      ar:{
+        hero_title:'برنامج TESOL',
+        hero_desc:'برنامج احترافي لإعداد وتأهيل معلمي اللغة الإنجليزية للناطقين بغيرها، يركز على أحدث استراتيجيات التدريس، وإدارة الصف، وتخطيط الدروس، وتقييم المتعلمين.',
+        hero_outcome_label:'المخرج التعليمي',
+        hero_outcome_value:'اكتساب المهارات والمعرفة اللازمة لبدء أو تطوير مسيرة مهنية ناجحة في تدريس اللغة الإنجليزية.',
+        hero_cta:'ابدأ التعلّم ←',
+        feature_duration_heading:'كم مدة الدورة؟',
+        feature_duration_title:'20 ساعة',
+        feature_duration_weeks:'أسبوعان',
+        feature_duration_days:'5 أيام في الأسبوع',
+        feature_duration_daily:'ساعتان يوميًا'
+      }
+    };
+
+    function applyTranslations(lang){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key=el.getAttribute('data-i18n');
+        if(translations[lang]&&translations[lang][key]){
+          el.textContent=translations[lang][key];
+        }
+      });
+      document.querySelectorAll('.lang-switcher').forEach(btn=>{btn.textContent=lang==='en'?'العربية':'English';});
+      document.getElementById('page-wrapper')?.setAttribute('dir',lang==='ar'?'rtl':'ltr');
+      document.documentElement.lang=lang;
+      localStorage.setItem('fli_lang',lang);
+    }
+
+    function toggleLanguage(){currentLang=currentLang==='ar'?'en':'ar';applyTranslations(currentLang);}
+    document.addEventListener('DOMContentLoaded',()=>{document.getElementById('year-page').textContent=new Date().getFullYear();applyTranslations(currentLang);});
   </script>
 </body>
 </html>

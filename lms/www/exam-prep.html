@@ -34,9 +34,13 @@
     .mobile-menu.active{display:flex}
     .mobile-menu a{text-decoration:none;color:#0f172a;font-weight:500;padding:10px 14px}
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
-    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center}
-    .hero-text h1{margin:0 0 18px;font-size:34px;color:#0b1e4d;font-weight:800}
-    .hero-text p{margin:0 0 28px;color:#475569;line-height:1.75;font-size:17px}
+    .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+    .hero-text h1{margin:0;font-size:34px;color:#0b1e4d;font-weight:800}
+    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:17px}
+    .hero-outcome{position:relative;margin-top:4px;padding:16px 20px;border-radius:16px;background:#eef4ff;border:1px solid rgba(11,95,255,0.12);box-shadow:0 10px 26px rgba(11,95,255,0.08);padding-inline-start:26px}
+    .hero-outcome::before{content:'';position:absolute;inset-block:14px;inset-inline-start:0;width:5px;border-radius:12px;background:linear-gradient(180deg,#0b5fff,#0b5fff)}
+    .hero-outcome .label{display:block;color:#0b1e4d;font-weight:800;margin-bottom:6px;font-size:15px}
+    .hero-outcome .value{display:block;color:#1f2937;font-weight:500;line-height:1.65;margin:0}
     .hero-media{position:relative;overflow:hidden}
     .hero-media img{width:100%;height:100%;object-fit:cover;display:block;min-height:420px}
     .features-section{padding:60px 0;background:#fff}
@@ -92,28 +96,32 @@
         <img src="/files/exam-prep.jpg" alt="دورات التحضير للامتحانات" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200&auto=format&fit=crop'">
       </div>
       <div class="hero-text">
-        <h1>دورات التحضير للامتحانات</h1>
-        <p>استعد للنجاح مع دوراتنا التحضيرية لامتحانات IELTS وTOEIC وTOEFL واختبار بيرسون للغة الإنجليزية (PTE). ستضمن دورتنا أنك جاهز للحصول على الدرجة التي تحتاجها.</p>
-        <a class="btn" href="/contact">ابدأ التعلّم ←</a>
+        <h1 data-i18n="hero_title">IELTS Preparation</h1>
+        <p data-i18n="hero_desc">An intensive preparation course designed to help learners succeed in the TOEFL exam through comprehensive training in all test sections.</p>
+        <div class="hero-outcome">
+          <span class="label" data-i18n="hero_outcome_label">Key Outcome</span>
+          <p class="value" data-i18n="hero_outcome_value">Improve test performance and increase the likelihood of achieving your target TOEFL score.</p>
+        </div>
+        <a class="btn" href="/contact" data-i18n="hero_cta">ابدأ التعلّم ←</a>
       </div>
     </section>
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
-          <div class="feature-card">
+          <!-- <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
             <h3>كيف تعمل الدورة؟</h3>
             <p>اختبارات تجريبية أسبوعية مع تحليل مفصّل للنتائج، وجلسات مراجعة فردية لتحديد نقاط الضعف وتقويتها.</p>
-          </div>
-          <div class="feature-card">
+          </div> -->
+          <!-- <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M10 9l4 3-4 3V9z"/></svg>
             <h3>ماذا ستتعلّم؟</h3>
             <p>استراتيجيات الامتحان، إدارة الوقت، مهارات القراءة والاستماع والكتابة والتحدث المطلوبة لكل اختبار.</p>
-          </div>
+          </div> -->
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            <h3>كم مدة الدورة؟</h3>
-            <p>برامج مكثفة: 4 أسابيع للتحضير السريع أو 8 أسابيع للتحضير الشامل مع ضمان تحسين الدرجة.</p>
+            <h3 data-i18n="feature_duration_heading">كم مدة الدورة؟</h3>
+            <!-- <p>برامج مكثفة: 4 أسابيع للتحضير السريع أو 8 أسابيع للتحضير الشامل مع ضمان تحسين الدرجة.</p> -->
           </div>
         </div>
       </div>
@@ -174,8 +182,42 @@
     function toggleMobileMenu(){const menu=document.getElementById('mobileMenu');const burger=document.querySelector('.hamburger');menu.classList.toggle('active');burger.classList.toggle('active');}
     document.addEventListener('click',evt=>{const menu=document.getElementById('mobileMenu');const burger=document.querySelector('.hamburger');if(!menu||!burger)return;if(!menu.contains(evt.target)&&!burger.contains(evt.target)){menu.classList.remove('active');burger.classList.remove('active');}});
     let currentLang=localStorage.getItem('fli_lang')||'ar';
-    function toggleLanguage(){currentLang=currentLang==='ar'?'en':'ar';localStorage.setItem('fli_lang',currentLang);location.reload();}
-    document.addEventListener('DOMContentLoaded',()=>{document.getElementById('year-page').textContent=new Date().getFullYear();});
+    const translations={
+      en:{
+        hero_title:'IELTS Preparation',
+        hero_desc:'An intensive preparation course designed to help learners succeed in the TOEFL exam through comprehensive training in all test sections.',
+        hero_outcome_label:'Key Outcome',
+        hero_outcome_value:'Improve test performance and increase the likelihood of achieving your target TOEFL score.',
+        hero_cta:'Start learning →',
+        feature_duration_heading:'How long is the course?'
+      },
+      ar:{
+        hero_title:'التحضير لاختبار IELTS',
+        hero_desc:'برنامج مكثف يساعد المتعلمين على النجاح في اختبار TOEFL عبر تدريب شامل على جميع أقسام الاختبار.',
+        hero_outcome_label:'المخرج التعليمي',
+        hero_outcome_value:'تحسين الأداء في الامتحان وزيادة فرص تحقيق الدرجة المستهدفة في اختبار TOEFL.',
+        hero_cta:'ابدأ التعلّم ←',
+        feature_duration_heading:'كم مدة الدورة؟'
+      }
+    };
+
+    function applyTranslations(lang){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key=el.getAttribute('data-i18n');
+        if(translations[lang]&&translations[lang][key]){
+          el.textContent=translations[lang][key];
+        }
+      });
+      document.documentElement.lang=lang==='ar'?'ar':'en';
+      document.documentElement.dir=lang==='ar'?'rtl':'ltr';
+      document.querySelectorAll('.hero-text').forEach(el=>{el.style.textAlign=lang==='ar'?'right':'left';});
+      const switcher=document.querySelector('.lang-switcher');
+      if(switcher){switcher.textContent=lang==='ar'?'English':'العربية';}
+      localStorage.setItem('fli_lang',lang);
+    }
+
+    function toggleLanguage(){currentLang=currentLang==='ar'?'en':'ar';applyTranslations(currentLang);}
+    document.addEventListener('DOMContentLoaded',()=>{document.getElementById('year-page').textContent=new Date().getFullYear();applyTranslations(currentLang);});
   </script>
 </body>
 </html>
