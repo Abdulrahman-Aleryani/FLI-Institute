@@ -346,15 +346,19 @@ body{margin:0;padding:0;overflow-x:hidden}
 
 @media (max-width:600px){
   .category-card{
-    max-width:100%;
+    width:100% !important;
+    max-width:none;
     aspect-ratio:auto;
-    height:320px;
     display:flex;
     flex-direction:column;
+    margin:0;
   }
   .category-card img{
-    height:140px;
+    width:100% !important;
+    height:300px;
     flex-shrink:0;
+    object-fit:cover;
+    object-position:center top;
   }
   .category-body{
     position:relative;
@@ -809,8 +813,8 @@ body{margin:0;padding:0;overflow-x:hidden}
   .hero-benefits li{font-size:14px;gap:10px}
   .benefit-check{width:18px;height:18px;font-size:10px}
   .hero-cta{padding:12px 20px;font-size:14px;width:100%;justify-content:center}
-  .category-grid{grid-template-columns:1fr;gap:12px}
-  .category-card{aspect-ratio:16/10}
+  .category-grid{grid-template-columns:1fr;gap:12px;width:100%}
+  .category-card{aspect-ratio:auto}
   .why-learn{padding:40px 24px}
   .why-learn .container{padding:0}
   .why-cards{gap:20px}
@@ -972,7 +976,7 @@ body{margin:0;padding:0;overflow-x:hidden}
     </p>
     <div class="category-grid" style="gap:18px">
       <a href="/online-course" class="category-card">
-        <img src="/files/online-course.jpg" alt="Online English Course" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop'" style="border-radius:14px 14px 0 0;">
+        <img src="/files/online-course.jpg" alt="Online English Course" onerror="this.src='/files/general_english.jpg'" style="border-radius:14px 14px 0 0;">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_online">General English Courses</span>
           <span class="category-desc" data-i18n="cat_online_desc">Progress through levels with flexible online sessions.</span>
@@ -980,7 +984,7 @@ body{margin:0;padding:0;overflow-x:hidden}
         </div>
       </a>
       <a href="/kids-course" class="category-card">
-        <img src="/files/Kids Cover.JPEG" alt="Kids English Course" onerror="this.src='https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=300&fit=crop'" style="border-radius:14px 14px 0 0;">
+        <img src="/files/kids.jpg" alt="Kids English Course" onerror="this.src='https://images.unsplash.com/photo-1529390079861-591de354faf5?w=400&h=300&fit=crop'" style="border-radius:14px 14px 0 0;">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_teens">English for Young Learners</span>
           <span class="category-desc" data-i18n="cat_teens_desc">Fun, interactive classes to build early confidence.</span>
@@ -988,7 +992,7 @@ body{margin:0;padding:0;overflow-x:hidden}
         </div>
       </a>
       <a href="/speaking-course" class="category-card">
-        <img src="/files/conversation-course.jpg" alt="Speaking Courses" onerror="this.src='https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&h=400&fit=crop'" style="border-radius:14px 14px 0 0;">
+        <img src="/files/conversation-course.jpg" alt="Speaking Courses" onerror="this.src='/files/conversation.png'" style="border-radius:14px 14px 0 0;">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_speaking">دورات المحادثة</span>
           <span class="category-desc" data-i18n="cat_speaking_desc">دورات عملية تهدف إلى كسر حاجز الخوف وبناء الثقة في التحدث باللغة الإنجليزية من خلال مواقف حياتية واقعية، نقاشات، وتمارين تواصل مباشرة بإشراف مدرّسين مختصين.</span>
@@ -997,7 +1001,7 @@ body{margin:0;padding:0;overflow-x:hidden}
       </a>
      
       <a href="/business-correspondence" class="category-card">
-        <img src="/files/business-partner.jpg" alt="Business Correspondence English" onerror="this.src='https://images.unsplash.com/photo-1521791055366-0d553872125f?w=600&h=400&fit=crop'">
+        <img src="/files/business-partner.jpg" alt="Business Correspondence English" onerror="this.src='/files/corrospondens.jpg'">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_business_title">المراسلات التجارية</span>
           <span class="category-desc" data-i18n="cat_business_desc">A practical program focused on professional business communication in English, including email writing, reports, memos, and workplace correspondence.</span>
@@ -1008,7 +1012,7 @@ body{margin:0;padding:0;overflow-x:hidden}
       </a>
 
       <a href="/corporate-english" class="category-card">
-        <img src="/files/corporate-english.jpg" alt="Corporate English Course" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop'">
+        <img src="/files/corporate-english.jpg" alt="Corporate English Course" onerror="this.src='/files/tesol.jpg'">
         <div class="category-body">
           <span class="category-title">TESOL Program</span>
           <span class="category-desc" data-i18n="cat_corporate_desc">A professional teacher-training program that prepares participants to teach English to speakers of other languages using modern teaching methodologies and classroom practices.</span>
@@ -1018,7 +1022,7 @@ body{margin:0;padding:0;overflow-x:hidden}
     
      
       <a href="/exam-prep" class="category-card">
-        <img src="/files/exam-prep.jpg" alt="Exam Preparation" onerror="this.src='https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'">
+        <img src="/files/exam-prep.jpg" alt="Exam Preparation" onerror="this.src='/files/IELTS_2.jpg'">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_exam">IELTS Preparation</span>
           <span class="category-desc" data-i18n="cat_exam_desc">An intensive preparation course designed to help learners succeed in the TOEFL exam</span>
@@ -1027,7 +1031,7 @@ body{margin:0;padding:0;overflow-x:hidden}
       </a>
      
       <a href="/computer-course" class="category-card">
-        <img src="/files/computer-course.jpg" alt="Computer Skills Course" onerror="this.src='https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=400&fit=crop'">
+        <img src="/files/computer-course.jpg" alt="Computer Skills Course" onerror="this.src='/files/icdl.jpg'">
         <div class="category-body">
           <span class="category-title" data-i18n="cat_computer_title">Computer Diploma</span>
           <span class="category-desc" data-i18n="cat_computer_desc">The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.</span>

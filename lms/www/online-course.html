@@ -36,7 +36,7 @@
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
     .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:16px}
     .hero-text h1{margin:0;font-size:32px;color:#0b1e4d;font-weight:800;line-height:1.3}
-    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:16px}
+    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:16px;white-space:pre-line}
     .levels-section{padding:70px 0;background:linear-gradient(180deg,#f5f7ff 0%,#ffffff 100%)}
     .levels-header{max-width:720px;margin:0 auto 26px;text-align:center}
     .levels-section h2{margin:0 0 10px;font-size:28px;color:#0b1e4d;font-weight:850}
@@ -60,6 +60,28 @@
     .feature-card p{margin:0;color:#475569;line-height:1.7;font-size:15px}
     .feature-duration span{display:block}
     footer{padding:45px 0;margin-top:40px;border-top:1px solid #e2e8f0;color:var(--muted)}
+    .register-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:3000;pointer-events:none;opacity:0;transition:opacity .2s ease}
+    .register-modal.is-open{pointer-events:auto;opacity:1}
+    .register-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px)}
+    .register-modal__dialog{position:relative;background:#fff;border-radius:16px;padding:24px 24px 16px;max-width:820px;width:90%;box-shadow:0 20px 50px rgba(0,0,0,0.15);direction:rtl}
+    .register-modal__close{position:absolute;top:10px;left:12px;border:none;background:transparent;font-size:24px;cursor:pointer;color:#6b7280}
+    .register-modal__subtitle{margin:6px 0 18px;color:#6b7280;font-size:14px}
+    .register-form{margin-top:6px}
+    .register-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .register-field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#1f2937}
+    .register-field input,.register-field select{padding:12px 10px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+    .register-field input:focus,.register-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,95,255,0.15)}
+    .register-modal .hero-cta{background:var(--accent);color:#fff}
+    .country-code-dropdown{position:relative;width:100%}
+    .country-code-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 10px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;font-size:14px}
+    .country-code-menu{position:absolute;top:110%;left:0;right:0;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.08);padding:10px;display:none;z-index:10;max-height:260px;overflow:hidden}
+    .country-code-menu[aria-hidden="false"]{display:block}
+    .country-code-search{width:100%;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;font-size:13px}
+    .country-code-options{max-height:200px;overflow-y:auto}
+    .country-code-option{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-radius:6px;transition:background .15s}
+    .country-code-option:hover{background:#f3f4f6}
+    .country-code-option img{width:20px;height:15px;object-fit:cover;border-radius:2px}
+    .flag-thumb img{width:20px;height:15px;object-fit:cover;border-radius:2px}
     footer img{height:110px}
     .social-links{display:flex;gap:12px;justify-content:flex-start;margin-top:10px}
     .social-links a{width:44px;height:44px;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;box-shadow:0 15px 30px rgba(15,23,42,0.18);transition:transform 0.2s ease,box-shadow 0.2s ease}
@@ -103,13 +125,23 @@
     </header>
     <section class="hero-section">
       <div class="hero-media">
-        <img src="/files/online-course.jpg" alt="دورة الإنجليزية عبر الإنترنت" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&auto=format&fit=crop'">
+        <img src="/files/online-course.jpg" alt="دورة الإنجليزية عبر الإنترنت" loading="lazy" onerror="this.src='/files/general_english.jpg'">
       </div>
       <div class="hero-text">
         <h1 data-i18n="hero_title">General English Courses</h1>
-        <a class="btn" href="/contact" data-i18n="hero_cta">تواصل للتسجيل →</a>
+        <p data-i18n="hero_desc">The English Language Program at FLi provides a complete learning experience designed to develop learners' English skills through structured levels from beginner to advanced. The program helps students build a strong foundation in English and improve their ability to communicate confidently in daily, academic, and professional situations.
+
+The program is designed for students, professionals, and anyone who wants to learn English or improve their language level through an organised and effective learning system. It focuses on developing speaking, reading, writing, listening, pronunciation, vocabulary, and grammar skills through practical activities and interactive training.
+
+The teaching approach is based on interactive learning, practical conversations, educational activities, and continuous progress monitoring. It provides a complete online learning environment including live classes, assignments, exams, and student progress tracking.
+
+The program content covers general English at different levels, focusing on practical language use and developing learners' ability to understand, communicate, and write accurately. The program consists of three main stages: Beginner, Intermediate, and Advanced, allowing learners to progress step by step from basic English foundations to advanced communication.
+
+After completing the program, learners will be able to communicate more confidently in English, understand conversations and texts, use vocabulary and grammar correctly, and apply English skills in study, work, and everyday life.</p>
+        <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
       </div>
     </section>
+    <!--
     <section class="levels-section">
       <div class="container">
         <div class="levels-header">
@@ -147,6 +179,7 @@
         </div>
       </div>
     </section>
+    -->
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
@@ -237,6 +270,15 @@
         nav_contact:'Contact',
         nav_login:'Login',
         hero_title:'General English Courses',
+        hero_desc:`The English Language Program at FLi provides a complete learning experience designed to develop learners' English skills through structured levels from beginner to advanced. The program helps students build a strong foundation in English and improve their ability to communicate confidently in daily, academic, and professional situations.
+
+The program is designed for students, professionals, and anyone who wants to learn English or improve their language level through an organised and effective learning system. It focuses on developing speaking, reading, writing, listening, pronunciation, vocabulary, and grammar skills through practical activities and interactive training.
+
+The teaching approach is based on interactive learning, practical conversations, educational activities, and continuous progress monitoring. It provides a complete online learning environment including live classes, assignments, exams, and student progress tracking.
+
+The program content covers general English at different levels, focusing on practical language use and developing learners' ability to understand, communicate, and write accurately. The program consists of three main stages: Beginner, Intermediate, and Advanced, allowing learners to progress step by step from basic English foundations to advanced communication.
+
+After completing the program, learners will be able to communicate more confidently in English, understand conversations and texts, use vocabulary and grammar correctly, and apply English skills in study, work, and everyday life.`,
         hero_beginner_title:'American File English Diploma – Beginner Level',
         hero_beginner_desc:'The Beginner English Diploma, based on the internationally recognized American File series, is designed for learners starting from scratch. The program focuses on developing listening, speaking, reading, and writing skills while building essential vocabulary and grammar for everyday communication.',
         hero_beginner_outcome_label:'Key Outcome:',
@@ -253,7 +295,7 @@
         level_beginner_badge:'Beginner',
         level_intermediate_badge:'Intermediate',
         level_advanced_badge:'Advanced',
-        hero_cta:'Contact to enroll →',
+        hero_cta:'Register Now',
         feature_1_title:'How does the course work?',
         feature_1_desc:'Attend live sessions with expert teachers, join international classmates in our digital classroom, and track your goals with personal coaching.',
         feature_2_title:'What will you learn?',
@@ -276,6 +318,15 @@
         nav_contact:'تواصل معنا',
         nav_login:'تسجيل الدخول',
         hero_title:'الدورات العامة للغة الإنجليزية',
+        hero_desc:`يقدم برنامج اللغة الإنجليزية في معهد FLi تجربة تعليمية متكاملة تهدف إلى تطوير مهارات اللغة الإنجليزية لدى المتعلمين من خلال مستويات متدرجة تبدأ من المبتدئ وحتى المستوى المتقدم. صُمم البرنامج لمساعدة الطلاب على بناء أساس قوي في اللغة، وتحسين قدرتهم على التواصل بثقة في المواقف اليومية والأكاديمية والمهنية.
+
+يستهدف البرنامج الطلاب، الموظفين، وكل من يرغب في تعلم اللغة الإنجليزية أو تطوير مستواه بطريقة منظمة وفعّالة. يركز البرنامج على تطوير مهارات التحدث، القراءة، الكتابة، الاستماع، النطق الصحيح، المفردات، والقواعد اللغوية من خلال تطبيقات عملية وتدريبات تفاعلية.
+
+يعتمد أسلوب التدريس على التعليم التفاعلي، والمحادثات العملية، والأنشطة التعليمية، والمتابعة المستمرة لمستوى الطالب، مع توفير بيئة تعلم إلكترونية متكاملة تشمل الحصص المباشرة، الواجبات، الاختبارات، وقياس التقدم.
+
+يتضمن محتوى البرنامج اللغة الإنجليزية العامة بمستوياتها المختلفة، مع التركيز على استخدام اللغة بشكل عملي، وتطوير قدرة الطالب على الفهم والتعبير والكتابة بطريقة صحيحة. يتكون البرنامج من ثلاث مراحل رئيسية: Beginner، Intermediate، وAdvanced، بحيث ينتقل الطالب تدريجياً من تأسيس اللغة إلى استخدامها بمستوى متقدم.
+
+بعد إكمال البرنامج، يصبح المتعلم قادراً على التواصل باللغة الإنجليزية بشكل أكثر ثقة، وفهم النصوص والمحادثات، واستخدام المفردات والقواعد بشكل صحيح، والتعامل مع متطلبات اللغة في الدراسة والعمل والحياة اليومية.`,
         hero_beginner_title:'دبلوم اللغة الإنجليزية – مستوى المبتدئين (American File)',
         hero_beginner_desc:'دبلوم اللغة الإنجليزية للمبتدئين باستخدام سلسلة American File العالمية، مصمم لتأسيس المتدربين في أساسيات اللغة الإنجليزية من الصفر. يركز البرنامج على تطوير مهارات الاستماع والتحدث والقراءة والكتابة، بالإضافة إلى تعلم المفردات والقواعد الأساسية المستخدمة في الحياة اليومية.',
         hero_beginner_outcome_label:'المخرج التعليمي:',
@@ -292,7 +343,7 @@
         level_beginner_badge:'مبتدئ',
         level_intermediate_badge:'متوسط',
         level_advanced_badge:'متقدم',
-        hero_cta:'تواصل للتسجيل →',
+        hero_cta:'سجل الان',
         feature_1_title:'كيف تعمل الدورة؟',
         feature_1_desc:'احضر حصصاً مباشرة مع معلمين خبراء، وانضم لزملاء دوليين في فصلنا الرقمي، وتابع أهدافك مع مدرب شخصي.',
         feature_2_title:'ماذا ستتعلّم؟',
@@ -349,7 +400,95 @@
     document.addEventListener('DOMContentLoaded',()=>{
       document.getElementById('year-page').textContent=new Date().getFullYear();
       applyTranslations(currentLang);
+
+      const openBtnHero=document.getElementById('open-register-modal-hero');
+      const modal=document.getElementById('register-modal');
+      const closeBtn=document.getElementById('register-modal-close');
+      const backdrop=document.getElementById('register-modal-backdrop');
+      const form=document.querySelector('.register-form');
+      const nameInput=document.getElementById('register-name');
+      const dobInput=document.getElementById('register-dob');
+      const emailInput=document.getElementById('register-email');
+      const codeInput=document.getElementById('register-code');
+      const phoneInput=document.getElementById('register-phone');
+      if(!openBtnHero||!modal)return;
+
+      const openModal=(e)=>{
+        e.preventDefault();
+        modal.setAttribute('aria-hidden','false');
+        modal.classList.add('is-open');
+      };
+
+      const closeModal=()=>{
+        modal.setAttribute('aria-hidden','true');
+        modal.classList.remove('is-open');
+      };
+
+      openBtnHero.addEventListener('click',openModal);
+      closeBtn?.addEventListener('click',closeModal);
+      backdrop?.addEventListener('click',closeModal);
+
+      form?.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const msg=[
+          'تسجيل جديد',
+          `الاسم: ${nameInput?.value||''}`,
+          `تاريخ الميلاد: ${dobInput?.value||''}`,
+          `البريد الإلكتروني: ${emailInput?.value||''}`,
+          `رمز الدولة: ${codeInput?.value||''}`,
+          `رقم الهاتف: ${phoneInput?.value||''}`
+        ].join('\n');
+        const waUrl=`https://wa.me/967781405000?text=${encodeURIComponent(msg)}`;
+        window.location.href=waUrl;
+      });
     });
   </script>
+<!-- Register Modal -->
+<div id="register-modal" class="register-modal" aria-hidden="true">
+  <div class="register-modal__backdrop" id="register-modal-backdrop"></div>
+  <div class="register-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+    <button type="button" class="register-modal__close" id="register-modal-close" aria-label="إغلاق">×</button>
+    <h3 id="register-modal-title">نموذج التسجيل</h3>
+    <p class="register-modal__subtitle">املأ البيانات التالية لبدء التسجيل.</p>
+    <form class="register-form">
+      <div class="register-grid">
+        <label class="register-field">
+          <span>الاسم الكامل *</span>
+          <input id="register-name" type="text" placeholder="اكتب اسمك" required>
+        </label>
+        <label class="register-field">
+          <span>تاريخ الميلاد *</span>
+          <input id="register-dob" type="date" required>
+        </label>
+        <label class="register-field">
+          <span>البريد الإلكتروني *</span>
+          <input id="register-email" type="email" placeholder="اكتب بريدك الإلكتروني" required>
+        </label>
+        <label class="register-field">
+          <span>رمز الدولة *</span>
+          <div id="register-code-dropdown" class="country-code-dropdown">
+            <button type="button" class="country-code-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="flag-thumb"><img src="https://flagcdn.com/24x18/ye.png" alt="Yemen flag" loading="lazy"></span>
+              <span class="country-code-text">+967 — اليمن</span>
+              <span class="chevron">▾</span>
+            </button>
+            <div class="country-code-menu" aria-hidden="true">
+              <input type="search" class="form-control country-code-search" placeholder="ابحث عن الدولة أو الرمز" aria-label="Search country code">
+              <div class="country-code-options" role="listbox"></div>
+            </div>
+            <input id="register-code" type="hidden" value="+967">
+          </div>
+        </label>
+        <label class="register-field">
+          <span>رقم الهاتف (اتصال وواتساب) *</span>
+          <input id="register-phone" type="tel" placeholder="أدخل رقم الهاتف" required>
+        </label>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <button type="submit" id="register-submit" class="btn hero-cta" style="padding:12px 26px;">تسجيل</button>
+      </div>
+    </form>
+  </div>
+</div>
 </body>
 </html>
