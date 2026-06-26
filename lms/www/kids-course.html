@@ -135,11 +135,7 @@
     <section class="hero-section">
       <div class="hero-text">
         <h1 data-i18n="hero_title">Kids - English Course</h1>
-        <p data-i18n="hero_desc">Interactive English courses designed specifically for children to develop their listening, speaking, reading, and writing skills through engaging activities and age-appropriate learning methods.</p>
-        <div class="hero-outcome">
-          <span data-i18n="hero_desc_outcome_label">Key Outcome:</span>
-          <span data-i18n="hero_desc_outcome">Children build a strong foundation in English and gain the confidence to communicate and learn effectively.</span>
-        </div>
+        <div data-i18n="hero_desc" class="hero-desc-block"></div>
         <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
       </div>
       <div class="hero-media">
@@ -309,9 +305,17 @@
       en:{
         nav_home:'Home',nav_about:'About',nav_contact:'Contact',nav_team:'Teaching team',nav_login:'Login',
         hero_title:'Kids - English Course',
-        hero_desc:'Interactive English courses designed specifically for children to develop their listening, speaking, reading, and writing skills through engaging activities and age-appropriate learning methods.',
-        hero_desc_outcome_label:'Key Outcome:',
-        hero_desc_outcome:'Children build a strong foundation in English and gain the confidence to communicate and learn effectively.',
+        hero_desc:`The English for Kids Program at FLI provides a fun and engaging learning experience designed to help children learn English in an interactive and simple way. The program focuses on building a strong language foundation through activities and continuous practice.
+
+The program is designed for children at different ages who want to learn English and develop their communication skills according to their needs and levels.
+
+The program helps children develop speaking, listening, reading, and writing skills, increase vocabulary, improve pronunciation, and build confidence in using English.
+
+The teaching approach is based on interactive learning, educational games, group activities, stories, and practical situations that make learning enjoyable and effective.
+
+The program content includes learning letters, sounds, words, basic sentences, and gradually developing English communication skills.
+
+After completing the program, children will be able to use basic English, understand simple words and sentences, and communicate more effectively.`,
         hero_cta:'Register Now',
         feature1_title:'How does the English course work?',
         feature1_desc:'We guarantee your kids will learn English with our proven method. Full-access experience: study in English-only learning centers and join international students in our digital classroom.',
@@ -331,9 +335,17 @@
       ar:{
         nav_home:'الرئيسية',nav_about:'من نحن',nav_contact:'تواصل معنا',nav_team:'فريق التدريس',nav_login:'تسجيل الدخول',
         hero_title:'دورة الإنجليزية للأطفال',
-        hero_desc:'دورات تفاعلية مصممة خصيصًا للأطفال لتنمية مهارات اللغة الإنجليزية في الاستماع والتحدث والقراءة والكتابة من خلال أنشطة ممتعة وأساليب تعليم حديثة تناسب مختلف الأعمار والمستويات.',
-        hero_desc_outcome_label:'المخرج التعليمي:',
-        hero_desc_outcome:'يبني الطفل أساسًا قويًا في اللغة الإنجليزية ويكتسب الثقة اللازمة للتواصل والتعلم باستخدام اللغة.',
+        hero_desc:`يقدم برنامج اللغة الإنجليزية للأطفال في معهد FLI تجربة تعليمية ممتعة ومناسبة للأطفال تساعدهم على اكتساب اللغة الإنجليزية بطريقة تفاعلية ومبسطة. يركز البرنامج على بناء أساس قوي في اللغة من خلال التعلم بالأنشطة والممارسة المستمرة.
+
+يستهدف البرنامج الأطفال في المراحل العمرية المختلفة الراغبين في تعلم اللغة الإنجليزية وتطوير مهارات التواصل لديهم بطريقة تناسب احتياجاتهم ومستواهم.
+
+يساعد البرنامج الأطفال على تطوير مهارات التحدث، الاستماع، القراءة، والكتابة، بالإضافة إلى زيادة المفردات وتحسين النطق وبناء الثقة في استخدام اللغة.
+
+يعتمد أسلوب التدريس على التعلم التفاعلي، الألعاب التعليمية، الأنشطة الجماعية، القصص، والمواقف العملية التي تجعل عملية التعلم أكثر متعة وفعالية.
+
+يتضمن محتوى البرنامج تعليم الحروف والأصوات والكلمات والجمل الأساسية، بالإضافة إلى تطوير مهارات التواصل باللغة الإنجليزية بشكل تدريجي.
+
+بعد إكمال البرنامج، يصبح الطفل قادراً على استخدام أساسيات اللغة الإنجليزية، فهم الكلمات والجمل البسيطة، والتواصل بطريقة أفضل.`,
         hero_cta:'سجل الان',
         feature1_title:'كيف تعمل دورة الإنجليزية؟',
         feature1_desc:'نضمن أن أطفالك سيتعلمون الإنجليزية بطريقتنا المثبتة. تجربة وصول كاملة: ادرس في مراكز تعليم الإنجليزية فقط وانضم إلى طلاب دوليين في فصلنا الرقمي.',
@@ -357,7 +369,13 @@
       wrapper.setAttribute('dir',lang==='ar'?'rtl':'ltr');
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key=el.getAttribute('data-i18n');
-        if(translations[lang][key]) el.textContent=translations[lang][key];
+        if(translations[lang][key]){
+          if(key==='hero_desc'){
+            el.innerHTML=translations[lang][key].split('\n').map(t=>t.trim()).filter(t=>t).map(t=>`<p style="margin:0 0 12px 0;line-height:1.75;">${t}</p>`).join('');
+          }else{
+            el.textContent=translations[lang][key];
+          }
+        }
       });
       document.querySelectorAll('.lang-switcher').forEach(btn=>{
         btn.textContent=lang==='en'?'العربية':'English';

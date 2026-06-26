@@ -49,6 +49,29 @@
     .feature-card p{margin:0;color:#475569;line-height:1.7;font-size:15px}
 
     footer{padding:45px 0;margin-top:40px;border-top:1px solid #e2e8f0;color:var(--muted)}
+    .feature-duration span{display:block}
+    .register-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:3000;pointer-events:none;opacity:0;transition:opacity .2s ease}
+    .register-modal.is-open{pointer-events:auto;opacity:1}
+    .register-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px)}
+    .register-modal__dialog{position:relative;background:#fff;border-radius:16px;padding:24px 24px 16px;max-width:820px;width:90%;box-shadow:0 20px 50px rgba(0,0,0,0.15);direction:rtl}
+    .register-modal__close{position:absolute;top:10px;left:12px;border:none;background:transparent;font-size:24px;cursor:pointer;color:#6b7280}
+    .register-modal__subtitle{margin:6px 0 18px;color:#6b7280;font-size:14px}
+    .register-form{margin-top:6px}
+    .register-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .register-field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#1f2937}
+    .register-field input,.register-field select{padding:12px 10px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+    .register-field input:focus,.register-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,95,255,0.15)}
+    .register-modal .hero-cta{background:var(--accent);color:#fff}
+    .country-code-dropdown{position:relative;width:100%}
+    .country-code-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 10px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;font-size:14px}
+    .country-code-menu{position:absolute;top:110%;left:0;right:0;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.08);padding:10px;display:none;z-index:10;max-height:260px;overflow:hidden}
+    .country-code-menu[aria-hidden="false"]{display:block}
+    .country-code-search{width:100%;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;font-size:13px}
+    .country-code-options{max-height:200px;overflow-y:auto}
+    .country-code-option{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-radius:6px;transition:background .15s}
+    .country-code-option:hover{background:#f3f4f6}
+    .country-code-option img{width:20px;height:15px;object-fit:cover;border-radius:2px}
+    .flag-thumb img{width:20px;height:15px;object-fit:cover;border-radius:2px}
     footer img{height:110px}
     .social-links{display:flex;gap:12px;justify-content:flex-start;margin-top:10px}
     .social-links a{width:44px;height:44px;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;box-shadow:0 15px 30px rgba(15,23,42,0.18);transition:transform 0.2s ease,box-shadow 0.2s ease}
@@ -103,41 +126,48 @@
 
     <section class="hero-section">
       <div class="hero-media">
-        <img src="/files/grammar-writing.jpg" alt="دورة القواعد والكتابة" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=1200&auto=format&fit=crop'">
+        <img src="/files/marketing.jpg" alt="Sales & Marketing Program" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=1200&auto=format&fit=crop'">
       </div>
       <div class="hero-text">
-        <h1>دورة القواعد والكتابة</h1>
-        <p>مخصصة للطلاب الراغبين في تقوية الأساس اللغوي وتحسين الكتابة الأكاديمية والعملية، مع شرح مبسّط وتطبيقات عملية تناسب جميع المستويات.</p>
-        <a class="btn" href="/contact">ابدأ التعلّم ←</a>
+        <h1 data-i18n="hero_title">Sales & Marketing Program</h1>
+        <div data-i18n="hero_desc" class="hero-desc-block"></div>
+        <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
       </div>
     </section>
 
     <section class="features-section">
       <div class="container">
         <div class="features-grid">
+          <!--
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <path d="M12 6v6l4 2"/>
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M12 6v6l4 2"></path>
             </svg>
             <h3>كيف تعمل الدورة؟</h3>
             <p>دروس منظمة تبدأ من الأساسيات وتتدرج نحو القواعد المتقدمة، مع تمارين كتابية يومية وتصحيح فوري من المدرب.</p>
           </div>
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <rect x="3" y="4" width="18" height="14" rx="2"/>
-              <path d="M10 9l4 3-4 3V9z"/>
+              <rect x="3" y="4" width="18" height="14" rx="2"></rect>
+              <path d="M10 9l4 3-4 3V9z"></path>
             </svg>
             <h3>ماذا ستتعلّم؟</h3>
             <p>الأزمنة، تركيب الجمل، علامات الترقيم، كتابة الفقرات والمقالات، والأخطاء الشائعة وكيفية تجنبها.</p>
           </div>
+          -->
           <div class="feature-card">
             <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
               <rect x="3" y="4" width="18" height="18" rx="2"/>
               <path d="M16 2v4M8 2v4M3 10h18"/>
             </svg>
-            <h3>كم مدة الدورة؟</h3>
-            <p>برنامج مرن: 8 أسابيع بمعدل 3 حصص أسبوعياً، أو مسار مكثف لمدة 4 أسابيع مع واجبات يومية.</p>
+            <h3 data-i18n="feature_duration_heading">How long is the course?</h3>
+            <p class="feature-duration">
+              <span data-i18n="feature_duration_title">20 hours</span>
+              <span data-i18n="feature_duration_weeks">2 weeks</span>
+              <span data-i18n="feature_duration_days">5 days a week</span>
+              <span data-i18n="feature_duration_daily">2 hours a day</span>
+            </p>
           </div>
         </div>
       </div>
@@ -195,6 +225,53 @@
       </div>
     </footer>
   </div>
+<!-- Register Modal -->
+<div id="register-modal" class="register-modal" aria-hidden="true">
+  <div class="register-modal__backdrop" id="register-modal-backdrop"></div>
+  <div class="register-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+    <button type="button" class="register-modal__close" id="register-modal-close" aria-label="إغلاق">×</button>
+    <h3 id="register-modal-title">نموذج التسجيل</h3>
+    <p class="register-modal__subtitle">املأ البيانات التالية لبدء التسجيل.</p>
+    <form class="register-form">
+      <div class="register-grid">
+        <label class="register-field">
+          <span>الاسم الكامل *</span>
+          <input id="register-name" type="text" placeholder="اكتب اسمك" required>
+        </label>
+        <label class="register-field">
+          <span>تاريخ الميلاد *</span>
+          <input id="register-dob" type="date" required>
+        </label>
+        <label class="register-field">
+          <span>البريد الإلكتروني *</span>
+          <input id="register-email" type="email" placeholder="اكتب بريدك الإلكتروني" required>
+        </label>
+        <label class="register-field">
+          <span>رمز الدولة *</span>
+          <div id="register-code-dropdown" class="country-code-dropdown">
+            <button type="button" class="country-code-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="flag-thumb"><img src="https://flagcdn.com/24x18/ye.png" alt="Yemen flag" loading="lazy"></span>
+              <span class="country-code-text">+967 — اليمن</span>
+              <span class="chevron">▾</span>
+            </button>
+            <div class="country-code-menu" aria-hidden="true">
+              <input type="search" class="form-control country-code-search" placeholder="ابحث عن الدولة أو الرمز" aria-label="Search country code">
+              <div class="country-code-options" role="listbox"></div>
+            </div>
+            <input id="register-code" type="hidden" value="+967">
+          </div>
+        </label>
+        <label class="register-field">
+          <span>رقم الهاتف (اتصال وواتساب) *</span>
+          <input id="register-phone" type="tel" placeholder="أدخل رقم الهاتف" required>
+        </label>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <button type="submit" id="register-submit" class="btn hero-cta" style="padding:12px 26px;">تسجيل</button>
+      </div>
+    </form>
+  </div>
+</div>
 
   <script>
     function toggleMobileMenu(){
@@ -215,15 +292,97 @@
     });
 
     let currentLang=localStorage.getItem('fli_lang')||'ar';
+    const translations={
+      en:{
+        hero_title:'Sales & Marketing Program',
+        hero_desc:`The Marketing and Sales Diploma at FLI provides a comprehensive and specialised training program designed to help learners understand modern marketing principles while developing professional sales skills and effective customer handling abilities.
 
-    function toggleLanguage(){
-      currentLang=currentLang==='ar'?'en':'ar';
-      localStorage.setItem('fli_lang',currentLang);
-      location.reload();
+The program is designed for entrepreneurs, business owners, sales and marketing professionals, and anyone who wants to improve their skills in persuasion, negotiation, promotion, and building successful, long-term customer relationships.
+
+The program focuses on integrating marketing fundamentals, market research, branding, and digital marketing with key communication skills, understanding customer needs, modern sales techniques, and successfully closing deals.
+
+The teaching approach is highly practical, based on real-world applications, case studies, simulations, market analysis, and evaluating actual sales situations to elevate professional performance.
+
+The content covers marketing concepts and strategies, consumer behaviour, digital marketing, and social media campaign management, alongside the core stages of the sales process, persuasion skills, handling objections, and strategies for sales growth.
+
+After completing the program, learners will be able to thoroughly understand the market, develop and implement effective marketing strategies, and professionally apply sales techniques to achieve optimal results in the workplace.`,
+        hero_cta:'Register Now',
+        feature_duration_heading:'How long is the course?',
+        feature_duration_title:'20 hours',
+        feature_duration_weeks:'2 weeks',
+        feature_duration_days:'5 days a week',
+        feature_duration_daily:'2 hours a day'
+      },
+      ar:{
+        hero_title:'برنامج البيع والتسويق',
+        hero_desc:`يقدم دبلوم التسويق والمبيعات في معهد FLI برنامجاً تدريبياً متكاملاً ومتخصصاً، يهدف إلى تزويد المتعلمين بالفهم الشامل لمبادئ التسويق الحديثة إلى جانب تطوير مهارات البيع الاحترافية والتعامل مع العملاء بطرق فعالة.
+
+يستهدف البرنامج رواد الأعمال، أصحاب المشاريع، موظفي المبيعات والتسويق، وكل من يرغب في تطوير مهاراته في الإقناع، التفاوض، الترويج، وبناء علاقات ناجحة ومستدامة مع العملاء.
+
+يركز البرنامج على الدمج بين أساسيات التسويق ودراسة السوق وبناء العلامة التجارية والتسويق الرقمي، وبين مهارات التواصل الفعّال، فهم احتياجات العملاء، أساليب البيع الحديثة، وإغلاق الصفقات بتميز.
+
+يعتمد أسلوب التدريس على التطبيقات والتدريبات العملية، دراسة الحالات الواقعية، تمارين المحاكاة، وتحليل مواقف البيع وتحليل الأسواق لتطوير الأداء الفعلي للمشاركين.
+
+يتضمن محتوى البرنامج مفاهيم التسويق واستراتيجياته، سلوك المستهلك، التسويق الإلكتروني وإدارة الحملات عبر وسائل التواصل الاجتماعي، بالإضافة إلى مراحل عملية البيع، مهارات الإقناع، التعامل مع الاعتراضات، واستراتيجيات زيادة المبيعات ونمو المؤسسات.
+
+بعد إكمال البرنامج، يصبح المتعلم قادراً على فهم السوق بدقة، تطوير وتنفيذ استراتيجيات تسويقية فعالة، وتطبيق مهارات البيع باحترافية عالية لتحقيق أفضل النتائج في بيئة العمل.`,
+        hero_cta:'سجل الان',
+        feature_duration_heading:'كم مدة الدورة؟',
+        feature_duration_title:'20 ساعة',
+        feature_duration_weeks:'أسبوعان',
+        feature_duration_days:'5 أيام في الأسبوع',
+        feature_duration_daily:'ساعتان يوميًا'
+      }
+    };
+
+    function applyTranslations(lang){
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key=el.getAttribute('data-i18n');
+        if(translations[lang]&&translations[lang][key]){
+          if(key==='hero_desc'){
+            el.innerHTML=translations[lang][key].split('\n').map(t=>t.trim()).filter(t=>t).map(t=>`<p style="margin:0 0 12px 0;line-height:1.75;">${t}</p>`).join('');
+          }else{
+            el.textContent=translations[lang][key];
+          }
+        }
+      });
+      document.querySelectorAll('.lang-switcher').forEach(btn=>{btn.textContent=lang==='en'?'العربية':'English';});
+      document.getElementById('page-wrapper')?.setAttribute('dir',lang==='ar'?'rtl':'ltr');
+      document.documentElement.lang=lang;
+      localStorage.setItem('fli_lang',lang);
     }
+
+    function toggleLanguage(){currentLang=currentLang==='ar'?'en':'ar';applyTranslations(currentLang);}
 
     document.addEventListener('DOMContentLoaded',()=>{
       document.getElementById('year-page').textContent=new Date().getFullYear();
+      applyTranslations(currentLang);
+
+      const openBtnHero=document.getElementById('open-register-modal-hero');
+      const modal=document.getElementById('register-modal');
+      const closeBtn=document.getElementById('register-modal-close');
+      const backdrop=document.getElementById('register-modal-backdrop');
+      const form=document.querySelector('.register-form');
+      const nameInput=document.getElementById('register-name');
+      const dobInput=document.getElementById('register-dob');
+      const emailInput=document.getElementById('register-email');
+      const codeInput=document.getElementById('register-code');
+      const phoneInput=document.getElementById('register-phone');
+      if(!openBtnHero||!modal)return;
+
+      const openModal=(e)=>{e.preventDefault();modal.setAttribute('aria-hidden','false');modal.classList.add('is-open');};
+      const closeModal=()=>{modal.setAttribute('aria-hidden','true');modal.classList.remove('is-open');};
+
+      openBtnHero.addEventListener('click',openModal);
+      closeBtn?.addEventListener('click',closeModal);
+      backdrop?.addEventListener('click',closeModal);
+
+      form?.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const msg=['تسجيل جديد',`الاسم: ${nameInput?.value||''}`,`تاريخ الميلاد: ${dobInput?.value||''}`,`البريد الإلكتروني: ${emailInput?.value||''}`,`رمز الدولة: ${codeInput?.value||''}`,`رقم الهاتف: ${phoneInput?.value||''}`].join('\n');
+        const waUrl=`https://wa.me/967781405000?text=${encodeURIComponent(msg)}`;
+        window.location.href=waUrl;
+      });
     });
   </script>
 </body>

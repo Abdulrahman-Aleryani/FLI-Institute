@@ -52,6 +52,28 @@
     .feature-card p{margin:0;color:#475569;line-height:1.7;font-size:15px}
 
     footer{padding:45px 0;margin-top:40px;border-top:1px solid #e2e8f0;color:var(--muted)}
+    .register-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:3000;pointer-events:none;opacity:0;transition:opacity .2s ease}
+    .register-modal.is-open{pointer-events:auto;opacity:1}
+    .register-modal__backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(4px)}
+    .register-modal__dialog{position:relative;background:#fff;border-radius:16px;padding:24px 24px 16px;max-width:820px;width:90%;box-shadow:0 20px 50px rgba(0,0,0,0.15);direction:rtl}
+    .register-modal__close{position:absolute;top:10px;left:12px;border:none;background:transparent;font-size:24px;cursor:pointer;color:#6b7280}
+    .register-modal__subtitle{margin:6px 0 18px;color:#6b7280;font-size:14px}
+    .register-form{margin-top:6px}
+    .register-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .register-field{display:flex;flex-direction:column;gap:6px;font-size:14px;color:#1f2937}
+    .register-field input,.register-field select{padding:12px 10px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s}
+    .register-field input:focus,.register-field select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,95,255,0.15)}
+    .register-modal .hero-cta{background:var(--accent);color:#fff}
+    .country-code-dropdown{position:relative;width:100%}
+    .country-code-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 10px;border:1px solid #e5e7eb;border-radius:10px;background:#fff;cursor:pointer;font-size:14px}
+    .country-code-menu{position:absolute;top:110%;left:0;right:0;background:#fff;border:1px solid #e5e7eb;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,0.08);padding:10px;display:none;z-index:10;max-height:260px;overflow:hidden}
+    .country-code-menu[aria-hidden="false"]{display:block}
+    .country-code-search{width:100%;padding:8px 10px;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:8px;font-size:13px}
+    .country-code-options{max-height:200px;overflow-y:auto}
+    .country-code-option{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;border-radius:6px;transition:background .15s}
+    .country-code-option:hover{background:#f3f4f6}
+    .country-code-option img{width:20px;height:15px;object-fit:cover;border-radius:2px}
+    .flag-thumb img{width:20px;height:15px;object-fit:cover;border-radius:2px}
     footer img{height:110px}
     .social-links{display:flex;gap:12px;justify-content:flex-start;margin-top:10px}
     .social-links a{width:44px;height:44px;border-radius:16px;display:inline-flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;box-shadow:0 15px 30px rgba(15,23,42,0.18);transition:transform 0.2s ease,box-shadow 0.2s ease}
@@ -106,16 +128,12 @@
 
     <section class="hero-section">
       <div class="hero-media">
-        <img src="/files/business-partner.jpg" alt="دورات المراسلات التجارية" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1521791055366-0d553872125f?w=1200&auto=format&fit=crop'">
+        <img src="/files/corrospondens.jpg" alt="دورات المراسلات التجارية" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1521791055366-0d553872125f?w=1200&auto=format&fit=crop'">
       </div>
       <div class="hero-text">
         <h1 data-i18n="hero_title">دورات المراسلات التجارية</h1>
-        <p data-i18n="hero_desc">برنامج عملي يركز على مهارات المراسلات التجارية باللغة الإنجليزية، بما في ذلك كتابة رسائل البريد الإلكتروني المهنية، والتقارير، والمذكرات، والتواصل الرسمي في بيئة العمل الحديثة.</p>
-        <div class="hero-outcome">
-          <div class="label" data-i18n="hero_outcome_label">المخرج التعليمي</div>
-          <p class="value" data-i18n="hero_outcome_value">اكتساب القدرة على التواصل المهني بفعالية وكتابة المراسلات التجارية وفق المعايير الدولية.</p>
-        </div>
-        <a class="btn" href="/contact">ابدأ التعلّم ←</a>
+        <div data-i18n="hero_desc" class="hero-desc-block"></div>
+        <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
       </div>
     </section>
 
@@ -205,6 +223,53 @@
       </div>
     </footer>
   </div>
+<!-- Register Modal -->
+<div id="register-modal" class="register-modal" aria-hidden="true">
+  <div class="register-modal__backdrop" id="register-modal-backdrop"></div>
+  <div class="register-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+    <button type="button" class="register-modal__close" id="register-modal-close" aria-label="إغلاق">×</button>
+    <h3 id="register-modal-title">نموذج التسجيل</h3>
+    <p class="register-modal__subtitle">املأ البيانات التالية لبدء التسجيل.</p>
+    <form class="register-form">
+      <div class="register-grid">
+        <label class="register-field">
+          <span>الاسم الكامل *</span>
+          <input id="register-name" type="text" placeholder="اكتب اسمك" required>
+        </label>
+        <label class="register-field">
+          <span>تاريخ الميلاد *</span>
+          <input id="register-dob" type="date" required>
+        </label>
+        <label class="register-field">
+          <span>البريد الإلكتروني *</span>
+          <input id="register-email" type="email" placeholder="اكتب بريدك الإلكتروني" required>
+        </label>
+        <label class="register-field">
+          <span>رمز الدولة *</span>
+          <div id="register-code-dropdown" class="country-code-dropdown">
+            <button type="button" class="country-code-trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span class="flag-thumb"><img src="https://flagcdn.com/24x18/ye.png" alt="Yemen flag" loading="lazy"></span>
+              <span class="country-code-text">+967 — اليمن</span>
+              <span class="chevron">▾</span>
+            </button>
+            <div class="country-code-menu" aria-hidden="true">
+              <input type="search" class="form-control country-code-search" placeholder="ابحث عن الدولة أو الرمز" aria-label="Search country code">
+              <div class="country-code-options" role="listbox"></div>
+            </div>
+            <input id="register-code" type="hidden" value="+967">
+          </div>
+        </label>
+        <label class="register-field">
+          <span>رقم الهاتف (اتصال وواتساب) *</span>
+          <input id="register-phone" type="tel" placeholder="أدخل رقم الهاتف" required>
+        </label>
+      </div>
+      <div style="text-align:center;margin-top:16px;">
+        <button type="submit" id="register-submit" class="btn hero-cta" style="padding:12px 26px;">تسجيل</button>
+      </div>
+    </form>
+  </div>
+</div>
 
   <script>
     function toggleMobileMenu(){
@@ -228,9 +293,18 @@
     const translations={
       en:{
         hero_title:'Business Correspondence Courses',
-        hero_desc:'A practical program focused on professional business communication in English, including email writing, reports, memos, and workplace correspondence.',
-        hero_outcome_label:'Key Outcome',
-        hero_outcome_value:'Develop the ability to communicate professionally and produce effective business correspondence that meets international standards.',
+        hero_desc:`The Business Correspondence Program at FLI provides specialised training to develop professional writing and communication skills in the workplace. It helps learners write clear, organised, and effective business messages.
+
+The program is designed for employees, business owners, students, and anyone who wants to improve professional communication and administrative writing skills.
+
+The program focuses on developing email writing, formal letters, reports, requests, and professional responses, while improving writing style and choosing appropriate expressions for workplace communication.
+
+The teaching approach is based on practical applications, analysing real examples, writing exercises, and continuous correction to help learners produce professional correspondence.
+
+The program content covers the basics of business correspondence, types of formal messages, professional communication rules, organising ideas, and using suitable language in different work situations.
+
+After completing the program, learners will be able to write professional business correspondence and communicate effectively in the workplace.`,
+        hero_cta:'Register Now',
         feature_duration_heading:'Course duration',
         feature_duration_title:'20 hours',
         feature_duration_weeks:'2 weeks',
@@ -239,9 +313,18 @@
       },
       ar:{
         hero_title:'دورات المراسلات التجارية',
-        hero_desc:'برنامج عملي يركز على مهارات المراسلات التجارية باللغة الإنجليزية، بما في ذلك كتابة رسائل البريد الإلكتروني المهنية، والتقارير، والمذكرات، والتواصل الرسمي في بيئة العمل الحديثة.',
-        hero_outcome_label:'المخرج التعليمي',
-        hero_outcome_value:'اكتساب القدرة على التواصل المهني بفعالية وكتابة المراسلات التجارية وفق المعايير الدولية.',
+        hero_desc:`يقدم برنامج المراسلات التجارية في معهد FLI تدريباً متخصصاً لتطوير مهارات التواصل الكتابي في بيئة العمل، ومساعدة المتعلمين على كتابة الرسائل والمراسلات المهنية بطريقة واضحة ومنظمة.
+
+يستهدف البرنامج الموظفين، أصحاب الأعمال، الطلاب، وكل من يحتاج إلى تطوير مهارات الكتابة والتواصل في المجال الإداري والمهني.
+
+يركز البرنامج على تطوير مهارات كتابة البريد الإلكتروني، الخطابات الرسمية، التقارير، الطلبات، والردود المهنية، مع تحسين أسلوب الكتابة واختيار العبارات المناسبة في بيئة العمل.
+
+يعتمد أسلوب التدريس على التطبيقات العملية، تحليل نماذج حقيقية، التدريبات الكتابية، وتصحيح الأخطاء لتطوير قدرة المتعلم على إنتاج مراسلات احترافية.
+
+يتضمن محتوى البرنامج أساسيات المراسلات التجارية، أنواع الرسائل الرسمية، قواعد التواصل المهني، تنظيم الأفكار، واستخدام اللغة المناسبة في مختلف المواقف العملية.
+
+بعد إكمال البرنامج، يصبح المتعلم قادراً على كتابة مراسلات تجارية احترافية والتواصل الكتابي بفعالية في بيئة العمل.`,
+        hero_cta:'سجل الان',
         feature_duration_heading:'كم مدة الدورة؟',
         feature_duration_title:'20 ساعة',
         feature_duration_weeks:'أسبوعان',
@@ -254,7 +337,11 @@
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key=el.getAttribute('data-i18n');
         if(translations[lang]&&translations[lang][key]){
-          el.textContent=translations[lang][key];
+          if(key==='hero_desc'){
+            el.innerHTML=translations[lang][key].split('\n').map(t=>t.trim()).filter(t=>t).map(t=>`<p style="margin:0 0 12px 0;line-height:1.75;">${t}</p>`).join('');
+          }else{
+            el.textContent=translations[lang][key];
+          }
         }
       });
       document.querySelectorAll('.lang-switcher').forEach(btn=>{btn.textContent=lang==='en'?'العربية':'English';});
@@ -271,6 +358,32 @@
     document.addEventListener('DOMContentLoaded',()=>{
       document.getElementById('year-bc').textContent=new Date().getFullYear();
       applyTranslations(currentLang);
+
+      const openBtnHero=document.getElementById('open-register-modal-hero');
+      const modal=document.getElementById('register-modal');
+      const closeBtn=document.getElementById('register-modal-close');
+      const backdrop=document.getElementById('register-modal-backdrop');
+      const form=document.querySelector('.register-form');
+      const nameInput=document.getElementById('register-name');
+      const dobInput=document.getElementById('register-dob');
+      const emailInput=document.getElementById('register-email');
+      const codeInput=document.getElementById('register-code');
+      const phoneInput=document.getElementById('register-phone');
+      if(!openBtnHero||!modal)return;
+
+      const openModal=(e)=>{e.preventDefault();modal.setAttribute('aria-hidden','false');modal.classList.add('is-open');};
+      const closeModal=()=>{modal.setAttribute('aria-hidden','true');modal.classList.remove('is-open');};
+
+      openBtnHero.addEventListener('click',openModal);
+      closeBtn?.addEventListener('click',closeModal);
+      backdrop?.addEventListener('click',closeModal);
+
+      form?.addEventListener('submit',(e)=>{
+        e.preventDefault();
+        const msg=['تسجيل جديد',`الاسم: ${nameInput?.value||''}`,`تاريخ الميلاد: ${dobInput?.value||''}`,`البريد الإلكتروني: ${emailInput?.value||''}`,`رمز الدولة: ${codeInput?.value||''}`,`رقم الهاتف: ${phoneInput?.value||''}`].join('\n');
+        const waUrl=`https://wa.me/967781405000?text=${encodeURIComponent(msg)}`;
+        window.location.href=waUrl;
+      });
     });
   </script>
 </body>

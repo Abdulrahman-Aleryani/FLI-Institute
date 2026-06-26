@@ -769,7 +769,20 @@ body{margin:0;padding:0;overflow-x:hidden}
   [dir="rtl"] .hero{flex-direction:column}
   .hero-left{max-width:100%}
   .hero-right{justify-content:center;width:100%}
-  .category-grid{max-width:100%;width:100%}
+  .category-grid{max-width:100%;width:100%;position:relative;overflow:hidden;height:520px}
+  .category-card{position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateX(30px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+  .category-card.cat-slide-active{opacity:1;transform:translateX(0);pointer-events:auto}
+  .cat-slide-dots{display:flex;gap:8px;justify-content:center;margin-top:14px}
+  .cat-slide-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:background .2s}
+  .cat-slide-dot.cat-dot-active{background:var(--accent,#0b5fff)}
+  .cat-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;box-shadow:0 4px 14px rgba(0,0,0,0.15);cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0b5fff;transition:background .2s}
+  .cat-slide-arrow:hover{background:#fff}
+  .cat-slide-arrow.prev{left:10px}
+  .cat-slide-arrow.next{right:10px}
+  @keyframes catArrowWigglePrev{0%,100%{transform:translateY(-50%) translateX(0)}20%{transform:translateY(-50%) translateX(-6px)}40%{transform:translateY(-50%) translateX(0)}60%{transform:translateY(-50%) translateX(-4px)}80%{transform:translateY(-50%) translateX(0)}}
+  @keyframes catArrowWiggleNext{0%,100%{transform:translateY(-50%) translateX(0)}20%{transform:translateY(-50%) translateX(6px)}40%{transform:translateY(-50%) translateX(0)}60%{transform:translateY(-50%) translateX(4px)}80%{transform:translateY(-50%) translateX(0)}}
+  .cat-slide-arrow.wiggle-prev{animation:catArrowWigglePrev 1s ease 2}
+  .cat-slide-arrow.wiggle-next{animation:catArrowWiggleNext 1s ease 2}
   .highlight-mobile-card{display:block}
   .hero-highlight{display:none}
   .why-learn{padding:50px 0}
@@ -813,8 +826,20 @@ body{margin:0;padding:0;overflow-x:hidden}
   .hero-benefits li{font-size:14px;gap:10px}
   .benefit-check{width:18px;height:18px;font-size:10px}
   .hero-cta{padding:12px 20px;font-size:14px;width:100%;justify-content:center}
-  .category-grid{grid-template-columns:1fr;gap:12px;width:100%}
-  .category-card{aspect-ratio:auto}
+  .category-grid{grid-template-columns:1fr;gap:12px;width:100%;position:relative;overflow:hidden;height:520px}
+  .category-card{aspect-ratio:auto;position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateX(30px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
+  .category-card.cat-slide-active{opacity:1;transform:translateX(0);pointer-events:auto}
+  .cat-slide-dots{display:flex;gap:8px;justify-content:center;margin-top:14px}
+  .cat-slide-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:background .2s}
+  .cat-slide-dot.cat-dot-active{background:var(--accent,#0b5fff)}
+  .cat-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;box-shadow:0 4px 14px rgba(0,0,0,0.15);cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0b5fff;transition:background .2s}
+  .cat-slide-arrow:hover{background:#fff}
+  .cat-slide-arrow.prev{left:10px}
+  .cat-slide-arrow.next{right:10px}
+  @keyframes catArrowWigglePrev{0%,100%{transform:translateY(-50%) translateX(0)}20%{transform:translateY(-50%) translateX(-6px)}40%{transform:translateY(-50%) translateX(0)}60%{transform:translateY(-50%) translateX(-4px)}80%{transform:translateY(-50%) translateX(0)}}
+  @keyframes catArrowWiggleNext{0%,100%{transform:translateY(-50%) translateX(0)}20%{transform:translateY(-50%) translateX(6px)}40%{transform:translateY(-50%) translateX(0)}60%{transform:translateY(-50%) translateX(4px)}80%{transform:translateY(-50%) translateX(0)}}
+  .cat-slide-arrow.wiggle-prev{animation:catArrowWigglePrev 1s ease 2}
+  .cat-slide-arrow.wiggle-next{animation:catArrowWiggleNext 1s ease 2}
   .why-learn{padding:40px 24px}
   .why-learn .container{padding:0}
   .why-cards{gap:20px}
@@ -999,7 +1024,22 @@ body{margin:0;padding:0;overflow-x:hidden}
           <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
         </div>
       </a>
-     
+      <a href="/computer-course" class="category-card">
+        <img src="/files/computer-course.jpg" alt="Computer Skills Course" onerror="this.src='/files/icdl.jpg'">
+        <div class="category-body">
+          <span class="category-title" data-i18n="cat_computer_title">Computer Diploma</span>
+          <span class="category-desc" data-i18n="cat_computer_desc">The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
+        </div>
+      </a>
+      <a href="/exam-prep" class="category-card">
+        <img src="/files/exam-prep.jpg" alt="Exam Preparation" onerror="this.src='/files/IELTS_2.jpg'">
+        <div class="category-body">
+          <span class="category-title" data-i18n="cat_exam">IELTS Preparation</span>
+          <span class="category-desc" data-i18n="cat_exam_desc">An intensive preparation course designed to help learners succeed in the TOEFL exam</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
+        </div>
+      </a>
       <a href="/business-correspondence" class="category-card">
         <img src="/files/business-partner.jpg" alt="Business Correspondence English" onerror="this.src='/files/corrospondens.jpg'">
         <div class="category-body">
@@ -1019,36 +1059,14 @@ body{margin:0;padding:0;overflow-x:hidden}
           <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
         </div>
       </a>
-    
-     
-      <a href="/exam-prep" class="category-card">
-        <img src="/files/exam-prep.jpg" alt="Exam Preparation" onerror="this.src='/files/IELTS_2.jpg'">
-        <div class="category-body">
-          <span class="category-title" data-i18n="cat_exam">IELTS Preparation</span>
-          <span class="category-desc" data-i18n="cat_exam_desc">An intensive preparation course designed to help learners succeed in the TOEFL exam</span>
-          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
-        </div>
-      </a>
-     
-      <a href="/computer-course" class="category-card">
-        <img src="/files/computer-course.jpg" alt="Computer Skills Course" onerror="this.src='/files/icdl.jpg'">
-        <div class="category-body">
-          <span class="category-title" data-i18n="cat_computer_title">Computer Diploma</span>
-          <span class="category-desc" data-i18n="cat_computer_desc">The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.</span>
-          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
-        </div>
-      </a>
-      <!--
       <a href="/grammar-writing" class="category-card">
-        <img src="/files/grammar-writing.jpg" alt="Grammar and Writing Course" onerror="this.src='https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&h=400&fit=crop'">
+        <img src="/files/marketing.jpg" alt="Sales & Marketing Program" onerror="this.src='https://images.unsplash.com/photo-1529070538774-1843cb3265df?w=600&h=400&fit=crop'">
         <div class="category-body">
-          <span class="category-title">دورة القواعد والكتابة</span>
-          <span class="category-desc">مخصصة للطلاب الراغبين في تقوية الأساس اللغوي وتحسين الكتابة الأكاديمية والعملية، مع شرح مبسّط وتطبيقات عملية تناسب جميع المستويات.</span>
-          <span class="category-btn">اكتشف المزيد</span>
+          <span class="category-title" data-i18n="cat_marketing_title">Sales & Marketing Program</span>
+          <span class="category-desc" data-i18n="cat_marketing_desc">A professional program designed to develop sales and marketing skills based on modern industry practices</span>
+          <span class="category-btn" data-i18n="cat_register">اكتشف المزيد</span>
         </div>
       </a>
-      
-      -->
     </div>
   </div>
 </section>
@@ -1187,7 +1205,39 @@ body{margin:0;padding:0;overflow-x:hidden}
 </div>
 
 <script>
-// Register modal toggle
+// Mobile category slider auto-rotate
+(function(){
+  var sliderInit=false;
+  function initCatSlider(){
+    if(sliderInit)return;
+    var grid=document.querySelector('.category-grid');
+    if(!grid)return;
+    var cards=grid.querySelectorAll('.category-card');
+    if(cards.length<=1)return;
+    var isMobile=window.matchMedia('(max-width:960px)').matches;
+    if(!isMobile)return;
+    sliderInit=true;
+    var idx=0;
+    cards.forEach(function(c,i){c.classList.toggle('cat-slide-active',i===0);});
+    var dotsContainer=document.createElement('div');
+    dotsContainer.className='cat-slide-dots';
+    cards.forEach(function(_,i){var d=document.createElement('span');d.className='cat-slide-dot'+(i===0?' cat-dot-active':'');d.addEventListener('click',function(){idx=i;show();});dotsContainer.appendChild(d);});
+    grid.parentNode.appendChild(dotsContainer);
+    var dots=dotsContainer.querySelectorAll('.cat-slide-dot');
+    var prevBtn=document.createElement('button');prevBtn.className='cat-slide-arrow prev';prevBtn.innerHTML='&#10094;';prevBtn.setAttribute('aria-label','Previous');
+    var nextBtn=document.createElement('button');nextBtn.className='cat-slide-arrow next';nextBtn.innerHTML='&#10095;';nextBtn.setAttribute('aria-label','Next');
+    grid.parentNode.style.position='relative';grid.parentNode.appendChild(prevBtn);grid.parentNode.appendChild(nextBtn);
+    var autoRotate=null;
+    function startAutoRotate(){if(autoRotate)return;autoRotate=setInterval(function(){idx=(idx+1)%cards.length;show();},5000);}
+    function show(){cards.forEach(function(c,i){c.classList.toggle('cat-slide-active',i===idx);});dots.forEach(function(d,i){d.classList.toggle('cat-dot-active',i===idx);});}
+    prevBtn.addEventListener('click',function(){idx=(idx-1+cards.length)%cards.length;show();});
+    nextBtn.addEventListener('click',function(){idx=(idx+1)%cards.length;show();});
+    if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){prevBtn.classList.remove('wiggle-prev');nextBtn.classList.remove('wiggle-next');void prevBtn.offsetWidth;void nextBtn.offsetWidth;prevBtn.classList.add('wiggle-prev');nextBtn.classList.add('wiggle-next');setTimeout(function(){prevBtn.classList.remove('wiggle-prev');nextBtn.classList.remove('wiggle-next');},2000);startAutoRotate();}});},{threshold:0.3});obs.observe(grid);}else{prevBtn.classList.add('wiggle-prev');nextBtn.classList.add('wiggle-next');startAutoRotate();}
+  }
+  if(document.readyState!=='loading')initCatSlider();else document.addEventListener('DOMContentLoaded',initCatSlider);
+  window.addEventListener('resize',function(){if(window.matchMedia('(max-width:960px)').matches)initCatSlider();});
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   const openBtn = document.getElementById('open-register-modal');
   const modal = document.getElementById('register-modal');
@@ -1395,6 +1445,8 @@ const translations = {
     cat_business_title: "Business Correspondence",
     cat_business_desc: "A practical program focused on professional business communication in English, including email writing, reports, memos, and workplace correspondence.",
     cat_corporate_desc: "A professional teacher-training program that prepares participants to teach English to speakers of other languages using modern teaching methodologies and classroom practices.",
+    cat_marketing_title: "Sales & Marketing Program",
+    cat_marketing_desc: "A professional program designed to develop sales and marketing skills based on modern industry practices",
     cat_computer_title: "Computer Diploma",
     cat_computer_desc: "The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.",
     cat_register: "Discover more",
@@ -1487,6 +1539,8 @@ const translations = {
     cat_business_title: "المراسلات التجارية",
     cat_business_desc: "برنامج عملي يركز على مهارات المراسلات التجارية باللغة الإنجليزية، بما في ذلك كتابة رسائل البريد الإلكتروني المهنية، والتقارير، والمذكرات، والتواصل الرسمي في بيئة العمل الحديثة.",
     cat_corporate_desc: "برنامج احترافي لإعداد وتأهيل معلمي اللغة الإنجليزية للناطقين بغيرها، يركز على أحدث استراتيجيات التدريس، وإدارة الصف، وتخطيط الدروس، وتقييم المتعلمين.",
+    cat_marketing_title: "برنامج البيع والتسويق",
+    cat_marketing_desc: "برنامج احترافي مصمم لتطوير مهارات البيع والتسويق وفق أحدث الممارسات العالمية",
     cat_computer_title: "دبلوم الكمبيوتر",
     cat_computer_desc: "شهادة ICDL هي المعيار العالمي لقياس مهارات استخدام الحاسوب، ومعتمدة من وزارة التربية والتعليم والبحث العلمي - قطاع التعليم الفني والتدريب المهني.",
     cat_register: "اكتشف المزيد",
