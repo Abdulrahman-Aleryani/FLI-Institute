@@ -292,7 +292,7 @@ body{margin:0;padding:0;overflow-x:hidden}
   display:flex;
   flex-direction:column;
   background:#fff;
-  border:2px solid #5e64ff;
+  border:2px solid var(--accent,#0b5fff);
   box-shadow:0 10px 25px rgba(15,23,42,0.08);
   transition:transform 0.2s ease, box-shadow 0.2s ease;
   max-width:320px;
@@ -330,19 +330,21 @@ body{margin:0;padding:0;overflow-x:hidden}
   align-items:center;
   justify-content:center;
   padding:10px 18px;
-  background:#3c2ea3;
+  background:var(--accent,#0b5fff);
   color:#fff;
   border-radius:10px;
   text-decoration:none;
   font-weight:600;
   font-size:14px;
-  box-shadow:0 8px 18px rgba(60,46,163,0.25);
+  box-shadow:0 8px 18px rgba(11,95,255,0.25);
   transition:transform 0.15s ease, box-shadow 0.15s ease;
 }
 .category-btn:hover{
   transform:translateY(-1px);
-  box-shadow:0 12px 22px rgba(60,46,163,0.28);
+  box-shadow:0 12px 22px rgba(11,95,255,0.28);
 }
+.all-programs-btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 28px;background:var(--accent,#0b5fff);color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 8px 20px rgba(11,95,255,0.25);transition:transform 0.2s ease,box-shadow 0.2s ease}
+.all-programs-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(11,95,255,0.35)}
 
 @media (max-width:600px){
   .category-card{
@@ -395,9 +397,9 @@ body{margin:0;padding:0;overflow-x:hidden}
     max-height:34px;
   }
   .category-btn{
-    background:#3c2ea3;
+    background:var(--accent,#0b5fff);
     color:#fff;
-    box-shadow:0 8px 18px rgba(60,46,163,0.25);
+    box-shadow:0 8px 18px rgba(11,95,255,0.25);
     margin-top:auto;
     flex-shrink:0;
     padding:8px 16px;
@@ -772,7 +774,7 @@ body{margin:0;padding:0;overflow-x:hidden}
   .category-grid{max-width:100%;width:100%;position:relative;overflow:hidden;height:520px}
   .category-card{position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateX(30px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .category-card.cat-slide-active{opacity:1;transform:translateX(0);pointer-events:auto}
-  .cat-slide-dots{display:flex;gap:8px;justify-content:center;margin-top:14px}
+  .cat-slide-dots{display:flex;gap:8px;justify-content:center;position:absolute;bottom:8px;left:0;right:0;z-index:15}
   .cat-slide-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:background .2s}
   .cat-slide-dot.cat-dot-active{background:var(--accent,#0b5fff)}
   .cat-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;box-shadow:0 4px 14px rgba(0,0,0,0.15);cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0b5fff;transition:background .2s}
@@ -829,7 +831,7 @@ body{margin:0;padding:0;overflow-x:hidden}
   .category-grid{grid-template-columns:1fr;gap:12px;width:100%;position:relative;overflow:hidden;height:520px}
   .category-card{aspect-ratio:auto;position:absolute;top:0;left:0;width:100%;opacity:0;transform:translateX(30px);transition:opacity .5s ease,transform .5s ease;pointer-events:none}
   .category-card.cat-slide-active{opacity:1;transform:translateX(0);pointer-events:auto}
-  .cat-slide-dots{display:flex;gap:8px;justify-content:center;margin-top:14px}
+  .cat-slide-dots{display:flex;gap:8px;justify-content:center;position:absolute;bottom:8px;left:0;right:0;z-index:15}
   .cat-slide-dot{width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:background .2s}
   .cat-slide-dot.cat-dot-active{background:var(--accent,#0b5fff)}
   .cat-slide-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.9);border:none;box-shadow:0 4px 14px rgba(0,0,0,0.15);cursor:pointer;z-index:20;display:flex;align-items:center;justify-content:center;font-size:20px;color:#0b5fff;transition:background .2s}
@@ -907,7 +909,7 @@ body{margin:0;padding:0;overflow-x:hidden}
     <p class="hero-sub" data-i18n="hero_sub">خطوتك الأولى نحو مستقبل أفضل تبدأ من هنا</p>
     <div class="hero-actions">
       <a class="btn hero-cta" href="/placement-test" data-i18n="hero_cta_primary">
-        أختبر مستواك محانا
+        أختبر مستواك مجاناً
       </a>
       <a
         href="#"
@@ -1068,6 +1070,7 @@ body{margin:0;padding:0;overflow-x:hidden}
         </div>
       </a>
     </div>
+    <div style="text-align:center;margin-top:24px"><a href="/all-programs" class="all-programs-btn" data-i18n="all_programs_btn">جميع البرامج</a></div>
   </div>
 </section>
 
@@ -1222,7 +1225,7 @@ body{margin:0;padding:0;overflow-x:hidden}
     var dotsContainer=document.createElement('div');
     dotsContainer.className='cat-slide-dots';
     cards.forEach(function(_,i){var d=document.createElement('span');d.className='cat-slide-dot'+(i===0?' cat-dot-active':'');d.addEventListener('click',function(){idx=i;show();});dotsContainer.appendChild(d);});
-    grid.parentNode.appendChild(dotsContainer);
+    grid.appendChild(dotsContainer);
     var dots=dotsContainer.querySelectorAll('.cat-slide-dot');
     var prevBtn=document.createElement('button');prevBtn.className='cat-slide-arrow prev';prevBtn.innerHTML='&#10094;';prevBtn.setAttribute('aria-label','Previous');
     var nextBtn=document.createElement('button');nextBtn.className='cat-slide-arrow next';nextBtn.innerHTML='&#10095;';nextBtn.setAttribute('aria-label','Next');
@@ -1232,6 +1235,9 @@ body{margin:0;padding:0;overflow-x:hidden}
     function show(){cards.forEach(function(c,i){c.classList.toggle('cat-slide-active',i===idx);});dots.forEach(function(d,i){d.classList.toggle('cat-dot-active',i===idx);});}
     prevBtn.addEventListener('click',function(){idx=(idx-1+cards.length)%cards.length;show();});
     nextBtn.addEventListener('click',function(){idx=(idx+1)%cards.length;show();});
+    var touchStartX=0,touchEndX=0;
+    grid.addEventListener('touchstart',function(e){touchStartX=e.changedTouches[0].screenX;},{passive:true});
+    grid.addEventListener('touchend',function(e){touchEndX=e.changedTouches[0].screenX;var diff=touchStartX-touchEndX;if(Math.abs(diff)>40){if(diff>0){idx=(idx+1)%cards.length;}else{idx=(idx-1+cards.length)%cards.length;}show();}},{passive:true});
     if('IntersectionObserver' in window){var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){prevBtn.classList.remove('wiggle-prev');nextBtn.classList.remove('wiggle-next');void prevBtn.offsetWidth;void nextBtn.offsetWidth;prevBtn.classList.add('wiggle-prev');nextBtn.classList.add('wiggle-next');setTimeout(function(){prevBtn.classList.remove('wiggle-prev');nextBtn.classList.remove('wiggle-next');},2000);startAutoRotate();}});},{threshold:0.3});obs.observe(grid);}else{prevBtn.classList.add('wiggle-prev');nextBtn.classList.add('wiggle-next');startAutoRotate();}
   }
   if(document.readyState!=='loading')initCatSlider();else document.addEventListener('DOMContentLoaded',initCatSlider);
@@ -1450,6 +1456,7 @@ const translations = {
     cat_computer_title: "Computer Diploma",
     cat_computer_desc: "The ICDL certificate is the global standard for measuring computer skills. It is accredited by the Ministry of Education and Scientific Research – Technical Education and Vocational Training Sector.",
     cat_register: "Discover more",
+    all_programs_btn: "All Programs",
     cat_exam: "IELTS Preparation",
     cat_exam_desc: "An intensive preparation course designed to help learners succeed in the TOEFL exam",
     cat_teens: "Kids - English Course",
@@ -1517,7 +1524,7 @@ const translations = {
     hero_benefit_1: "كلاسات مباشرة تفاعلية",
     hero_benefit_2: "متابعة شخصية لكل طالب",
     hero_benefit_3: "خطط تعليمية تناسب جميع المستويات",
-    hero_cta_primary: "أختبر مستواك محانا",
+    hero_cta_primary: "أختبر مستواك مجاناً",
     hero_benefits_text: "معهد فلاي للغات والحاسوب تأسس عام 2009 كمؤسسة تعليمية متخصصة تقدم برامج تدريبية عالية الجودة في اللغة الإنجليزية وتقنية المعلومات والتطوير المهني. يقدم المعهد دورات اللغة الإنجليزية بمستويات مختلفة، والرخصة الدولية لقيادة الحاسب الآلي (ICDL)، ودورات المراسلات التجارية، وبرامج TESOL لإعداد معلمي اللغة الإنجليزية. يحرص المعهد على تقديم تعلم فعال عبر بيئة تدريبية حديثة ومدربين مؤهلين لمساعدة المتدربين على تطوير مهاراتهم وتحقيق أهدافهم.",
     why_choose_title: "لماذا تختار فلاي؟",
     why_choose_desc: "في معهد فلاي نؤمن بأن التعليم هو الطريق لبناء مستقبل أفضل، لذا نقدم برامج تدريبية عالية الجودة تساعد المتدربين على تطوير مهاراتهم وتحقيق أهدافهم بثقة. يتميز المعهد ببيئة تعليمية حديثة ومدربين مؤهلين وبرامج فعّالة مصممة لتلبية احتياجات المتعلمين في مجالات اللغة الإنجليزية وتقنية المعلومات والتطوير المهني، مع التركيز على الدمج بين المعرفة التطبيقية والخبرة العملية." ,
@@ -1544,6 +1551,7 @@ const translations = {
     cat_computer_title: "دبلوم الكمبيوتر",
     cat_computer_desc: "شهادة ICDL هي المعيار العالمي لقياس مهارات استخدام الحاسوب، ومعتمدة من وزارة التربية والتعليم والبحث العلمي - قطاع التعليم الفني والتدريب المهني.",
     cat_register: "اكتشف المزيد",
+    all_programs_btn: "جميع البرامج",
     cat_exam: "التحضير لاختبار IELTS",
     cat_exam_desc: "برنامج مكثف يساعد المتدربين على الاستعداد لاختبار TOEFL",
     cat_teens: "الأطفال - دورة اللغة الإنجليزية",
@@ -1590,8 +1598,8 @@ const translations = {
     cta_title: "مستعد للبدء؟",
     cta_join: "انضم إلى مجموعة",
     cta_contact: "تواصل معنا",
-    highlight_badge: "حلّق مع FLI",
-    highlight_title: "دورات مرنة عبر الإنترنت وفي الحرم الجامعي.",
+    highlight_badge: "حلّق بلغتك مع FLI",
+    highlight_title: "دورات مرنة عبر الإنترنت وفي المعهد",
     highlight_desc: "تعلّم مع مدرّسين خبراء في معهد فاكلتي للغات — انضم إلى مجموعات في القاعات أو عن بُعد وواصل التقدّم بثبات.",
     footer_address: "معهد فاكلتي للغات (FLI) — شارع بغداد، صنعاء",
     footer_contact: "التواصل",
