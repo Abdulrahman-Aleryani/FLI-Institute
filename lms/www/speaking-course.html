@@ -37,10 +37,23 @@
     .hero-section{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;background:#f1f5f9}
     .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:14px}
     .hero-text h1{margin:0 0 6px;font-size:34px;color:#0b1e4d;font-weight:800}
-    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:17px}
-    .hero-outcome{background:#e7efff;border-radius:14px;padding:14px 16px;border-inline-start:4px solid var(--accent);box-shadow:0 12px 28px rgba(11,95,255,0.12)}
-    .hero-outcome .label{display:block;color:#0b1e4d;font-weight:800;margin-bottom:6px;font-size:15px}
-    .hero-outcome .value{display:block;color:#1f2937;font-weight:500;line-height:1.65;margin:0}
+    .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:17px;white-space:pre-line}
+    .hero-buttons{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .hero-buttons .btn{padding:12px 28px;border-radius:999px;font-weight:700;font-size:15px;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .hero-buttons .btn:hover{transform:translateY(-2px)}
+    .hero-buttons #open-register-modal-hero{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(11,95,255,0.3)}
+    .hero-buttons #open-register-modal-hero:hover{background:#0947cc}
+    .hero-buttons .hero-cta{background:transparent;color:var(--accent);border:2px solid rgba(11,95,255,0.5);box-shadow:none}
+    .hero-buttons .hero-cta:hover{border-color:var(--accent);background:rgba(11,95,255,0.1)}
+    .courses-section{padding:70px 0;background:linear-gradient(180deg,#f5f7ff 0%,#ffffff 100%)}
+    .courses-section-title{margin:0 0 30px;font-size:28px;color:#0b1e4d;font-weight:850;text-align:center}
+    .diploma-block{background:#fff;border-radius:18px;padding:28px 28px 30px;box-shadow:0 18px 40px rgba(71,85,105,0.16);line-height:1.7;margin-bottom:24px;border:1px solid rgba(11,95,255,0.08)}
+    .diploma-title{margin:0 0 12px;font-size:22px;color:#0b1e4d;font-weight:780}
+    .diploma-desc{margin:0 0 16px;color:#475569;line-height:1.75;font-size:16px}
+    .diploma-courses-label{margin:0 0 10px;font-size:16px;color:#0b1e4d;font-weight:700}
+    .diploma-courses-list{margin:0;padding-inline-start:20px;color:#475569;line-height:1.8;font-size:15px}
+    .diploma-courses-list li{margin-bottom:4px}
+    .courses-outro{margin:30px 0 0;color:#475569;line-height:1.75;font-size:16px;text-align:center;padding:0 20px}
     .hero-media{position:relative;overflow:hidden}
     .hero-media img{width:100%;height:100%;object-fit:cover;display:block;min-height:420px}
 
@@ -133,12 +146,62 @@
       </div>
       <div class="hero-text">
         <h1 data-i18n="hero_title">دورات المحادثة</h1>
-        <p data-i18n="hero_desc">برنامج يهدف إلى تطوير الطلاقة والثقة في التحدث باللغة الإنجليزية من خلال مناقشات تفاعلية ومواقف حياتية واقعية تساعد المتدربين على التواصل بفعالية في الحياة اليومية والعملية.</p>
-        <div class="hero-outcome">
-          <span class="label" data-i18n="hero_outcome_label">المخرج التعليمي</span>
-          <p class="value" data-i18n="hero_outcome_value">تحسين مهارات التحدث والنطق وزيادة الثقة في استخدام اللغة الإنجليزية في مختلف المواقف.</p>
+        <p data-i18n="hero_desc">The Conversation Courses at FLi provide a practical learning experience designed to develop learners' ability to speak English with confidence and fluency by focusing on effective communication skills and using the language in daily, academic, and professional situations.
+
+The courses are designed to help students overcome the fear of speaking, improve pronunciation, expand vocabulary, and develop the ability to express ideas clearly and naturally through practical exercises and interactive conversations.
+
+The courses are suitable for students, employees, and anyone who wants to improve their English communication skills and use the language more effectively in daily life, work, and study.
+
+The program focuses on real-life conversations, sentence building, vocabulary development, listening improvement, quick responses, and common expressions through interactive activities and practical situations that reflect real-life communication.
+
+The teaching approach at FLi is based on continuous interaction, group discussions, pronunciation practice, practical activities, and continuous progress monitoring, creating a learning environment that encourages learners to practise English regularly.
+
+The Conversation Courses are divided into progressive levels suitable for different abilities, allowing learners to move from basic communication skills to more advanced conversations with confidence and fluency.</p>
+        <div class="hero-buttons">
+          <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
         </div>
-        <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
+      </div>
+    </section>
+    <section class="courses-section">
+      <div class="container">
+        <h2 class="courses-section-title" data-i18n="courses_title">Courses</h2>
+        <div class="diploma-block">
+          <h3 class="diploma-title" data-i18n="diploma_beginner_title">Beginner Conversation Course</h3>
+          <p class="diploma-desc" data-i18n="diploma_beginner_desc">A foundation level designed to help learners build confidence in using English in simple daily situations.</p>
+          <h4 class="diploma-courses-label" data-i18n="diploma_courses_label">The course includes:</h4>
+          <ul class="diploma-courses-list">
+            <li data-i18n="diploma_beginner_item1">Introducing yourself and talking about personal information</li>
+            <li data-i18n="diploma_beginner_item2">Basic daily conversations</li>
+            <li data-i18n="diploma_beginner_item3">Using common expressions</li>
+            <li data-i18n="diploma_beginner_item4">Improving pronunciation and basic vocabulary</li>
+            <li data-i18n="diploma_beginner_item5">Building simple sentences and expressing ideas</li>
+          </ul>
+        </div>
+        <div class="diploma-block">
+          <h3 class="diploma-title" data-i18n="diploma_intermediate_title">Intermediate Conversation Course</h3>
+          <p class="diploma-desc" data-i18n="diploma_intermediate_desc">A development level designed to improve learners' ability to have more varied conversations and use English more naturally.</p>
+          <h4 class="diploma-courses-label" data-i18n="diploma_courses_label">The course includes:</h4>
+          <ul class="diploma-courses-list">
+            <li data-i18n="diploma_intermediate_item1">Conversations in different situations</li>
+            <li data-i18n="diploma_intermediate_item2">Expressing opinions and ideas</li>
+            <li data-i18n="diploma_intermediate_item3">Developing vocabulary and expressions</li>
+            <li data-i18n="diploma_intermediate_item4">Improving listening and understanding skills</li>
+            <li data-i18n="diploma_intermediate_item5">Practising dialogue and communication with confidence</li>
+          </ul>
+        </div>
+        <div class="diploma-block">
+          <h3 class="diploma-title" data-i18n="diploma_advanced_title">Advanced Conversation Course</h3>
+          <p class="diploma-desc" data-i18n="diploma_advanced_desc">An advanced level designed to develop fluency and the ability to communicate in academic and professional situations at a higher level.</p>
+          <h4 class="diploma-courses-label" data-i18n="diploma_courses_label">The course includes:</h4>
+          <ul class="diploma-courses-list">
+            <li data-i18n="diploma_advanced_item1">Advanced discussions</li>
+            <li data-i18n="diploma_advanced_item2">Organised expression of ideas</li>
+            <li data-i18n="diploma_advanced_item3">Using advanced expressions</li>
+            <li data-i18n="diploma_advanced_item4">Improving fluency and speaking speed</li>
+            <li data-i18n="diploma_advanced_item5">Communicating in English in work and study environments</li>
+          </ul>
+        </div>
+        <p class="courses-outro" data-i18n="courses_outro">After completing the Conversation Courses at FLi, learners will be able to speak English with greater confidence, participate in conversations, express their ideas clearly, and communicate effectively in different situations.</p>
       </div>
     </section>
 
@@ -302,10 +365,43 @@
     const translations={
       en:{
         hero_title:'Conversation Courses',
-        hero_desc:'A course designed to improve fluency and confidence in spoken English through interactive discussions and real-life communication scenarios.',
-        hero_outcome_label:'Key Outcome',
-        hero_outcome_value:'Enhance speaking skills, pronunciation, and confidence when communicating in English in both personal and professional settings.',
+        hero_desc:`The Conversation Courses at FLi provide a practical learning experience designed to develop learners' ability to speak English with confidence and fluency by focusing on effective communication skills and using the language in daily, academic, and professional situations.
+
+The courses are designed to help students overcome the fear of speaking, improve pronunciation, expand vocabulary, and develop the ability to express ideas clearly and naturally through practical exercises and interactive conversations.
+
+The courses are suitable for students, employees, and anyone who wants to improve their English communication skills and use the language more effectively in daily life, work, and study.
+
+The program focuses on real-life conversations, sentence building, vocabulary development, listening improvement, quick responses, and common expressions through interactive activities and practical situations that reflect real-life communication.
+
+The teaching approach at FLi is based on continuous interaction, group discussions, pronunciation practice, practical activities, and continuous progress monitoring, creating a learning environment that encourages learners to practise English regularly.
+
+The Conversation Courses are divided into progressive levels suitable for different abilities, allowing learners to move from basic communication skills to more advanced conversations with confidence and fluency.`,
         hero_cta:'Register Now',
+        hero_cta_primary:'Take your free placement test',
+        courses_title:'Courses',
+        diploma_courses_label:'The course includes:',
+        diploma_beginner_title:'Beginner Conversation Course',
+        diploma_beginner_desc:'A foundation level designed to help learners build confidence in using English in simple daily situations.',
+        diploma_beginner_item1:'Introducing yourself and talking about personal information',
+        diploma_beginner_item2:'Basic daily conversations',
+        diploma_beginner_item3:'Using common expressions',
+        diploma_beginner_item4:'Improving pronunciation and basic vocabulary',
+        diploma_beginner_item5:'Building simple sentences and expressing ideas',
+        diploma_intermediate_title:'Intermediate Conversation Course',
+        diploma_intermediate_desc:"A development level designed to improve learners' ability to have more varied conversations and use English more naturally.",
+        diploma_intermediate_item1:'Conversations in different situations',
+        diploma_intermediate_item2:'Expressing opinions and ideas',
+        diploma_intermediate_item3:'Developing vocabulary and expressions',
+        diploma_intermediate_item4:'Improving listening and understanding skills',
+        diploma_intermediate_item5:'Practising dialogue and communication with confidence',
+        diploma_advanced_title:'Advanced Conversation Course',
+        diploma_advanced_desc:'An advanced level designed to develop fluency and the ability to communicate in academic and professional situations at a higher level.',
+        diploma_advanced_item1:'Advanced discussions',
+        diploma_advanced_item2:'Organised expression of ideas',
+        diploma_advanced_item3:'Using advanced expressions',
+        diploma_advanced_item4:'Improving fluency and speaking speed',
+        diploma_advanced_item5:'Communicating in English in work and study environments',
+        courses_outro:'After completing the Conversation Courses at FLi, learners will be able to speak English with greater confidence, participate in conversations, express their ideas clearly, and communicate effectively in different situations.',
         feature_duration_heading:'How long is the course?',
         feature_duration_title:'40 hours per course',
         feature_duration_weeks:'4 weeks a term',
@@ -314,10 +410,43 @@
       },
       ar:{
         hero_title:'دورات المحادثة',
-        hero_desc:'برنامج يهدف إلى تطوير الطلاقة والثقة في التحدث باللغة الإنجليزية من خلال مناقشات تفاعلية ومواقف حياتية واقعية تساعد المتدربين على التواصل بفعالية في الحياة اليومية والعملية.',
-        hero_outcome_label:'المخرج التعليمي',
-        hero_outcome_value:'تحسين مهارات التحدث والنطق وزيادة الثقة في استخدام اللغة الإنجليزية في مختلف المواقف.',
+        hero_desc:`دورات المحادثة في معهد FLi تقدم تجربة تعليمية عملية تهدف إلى تطوير قدرة المتعلمين على التحدث باللغة الإنجليزية بثقة وطلاقة من خلال التركيز على مهارات التواصل الفعلي واستخدام اللغة في المواقف اليومية والأكاديمية والمهنية.
+
+تم تصميم الدورات لمساعدة الطلاب على التغلب على حاجز الخوف من التحدث، تحسين النطق، زيادة الحصيلة اللغوية، وتطوير القدرة على التعبير عن الأفكار بطريقة واضحة وطبيعية من خلال تدريبات عملية ومحادثات تفاعلية.
+
+تستهدف الدورات الطلاب، الموظفين، وكل من يرغب في تحسين مهارات التواصل باللغة الإنجليزية واستخدامها بشكل أكثر فعالية في الحياة اليومية والعمل والدراسة.
+
+يركز البرنامج على المحادثات الواقعية، بناء الجمل، تطوير المفردات، تحسين الاستماع، سرعة الاستجابة، واستخدام التعبيرات الشائعة من خلال أنشطة تفاعلية ومواقف عملية تحاكي الحياة الحقيقية.
+
+يعتمد أسلوب التدريس في FLi على التفاعل المستمر، النقاشات الجماعية، تمارين النطق، الأنشطة التطبيقية، والمتابعة المستمرة لمستوى المتعلم، مع توفير بيئة تعليمية تساعد الطالب على ممارسة اللغة بشكل مستمر.
+
+تتكون دورات المحادثة من مستويات متدرجة تناسب مختلف المستويات، حيث ينتقل المتعلم من تطوير الأساسيات في التواصل إلى القدرة على إجراء محادثات أكثر تقدماً بثقة وسلاسة.`,
         hero_cta:'سجل الان',
+        hero_cta_primary:'أختبر مستواك مجاناً',
+        courses_title:'المستويات',
+        diploma_courses_label:'تشمل الدورة:',
+        diploma_beginner_title:'Beginner Conversation Course – دورة المحادثة للمبتدئين',
+        diploma_beginner_desc:'مرحلة تأسيسية تهدف إلى مساعدة المتعلم على اكتساب الثقة في استخدام اللغة الإنجليزية في المواقف اليومية البسيطة.',
+        diploma_beginner_item1:'التعريف بالنفس والتحدث عن المعلومات الشخصية',
+        diploma_beginner_item2:'المحادثات اليومية الأساسية',
+        diploma_beginner_item3:'استخدام العبارات الشائعة',
+        diploma_beginner_item4:'تحسين النطق والكلمات الأساسية',
+        diploma_beginner_item5:'تكوين جمل بسيطة والتعبير عن الأفكار',
+        diploma_intermediate_title:'Intermediate Conversation Course – دورة المحادثة المتوسطة',
+        diploma_intermediate_desc:'مرحلة تطويرية تهدف إلى تحسين قدرة المتعلم على إجراء محادثات أكثر تنوعاً واستخدام اللغة بشكل أكثر طبيعية.',
+        diploma_intermediate_item1:'المحادثات في المواقف المختلفة',
+        diploma_intermediate_item2:'التعبير عن الآراء والأفكار',
+        diploma_intermediate_item3:'تطوير المفردات والتعبيرات',
+        diploma_intermediate_item4:'تحسين مهارات الاستماع والفهم',
+        diploma_intermediate_item5:'ممارسة الحوار والتواصل بثقة',
+        diploma_advanced_title:'Advanced Conversation Course – دورة المحادثة المتقدمة',
+        diploma_advanced_desc:'مرحلة متقدمة تهدف إلى تطوير الطلاقة والقدرة على التواصل في المواقف الأكاديمية والمهنية بمستوى أعلى.',
+        diploma_advanced_item1:'المناقشات المتقدمة',
+        diploma_advanced_item2:'التعبير عن الأفكار بطريقة منظمة',
+        diploma_advanced_item3:'استخدام التعبيرات المتقدمة',
+        diploma_advanced_item4:'تحسين الطلاقة وسرعة التحدث',
+        diploma_advanced_item5:'التواصل باللغة الإنجليزية في بيئات العمل والدراسة',
+        courses_outro:'بعد إكمال دورات المحادثة في FLi، يصبح المتعلم قادراً على التحدث باللغة الإنجليزية بثقة أكبر، المشاركة في المحادثات، التعبير عن أفكاره بوضوح، والتواصل بشكل فعال في مختلف المواقف.',
         feature_duration_heading:'كم مدة الدورة؟',
         feature_duration_title:'40 ساعة لكل دورة',
         feature_duration_weeks:'4 أسابيع في الفصل',
@@ -330,7 +459,7 @@
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key=el.getAttribute('data-i18n');
         if(translations[lang]&&translations[lang][key]){
-          el.textContent=translations[lang][key];
+          el.innerHTML=translations[lang][key];
         }
       });
       document.querySelectorAll('.lang-switcher').forEach(btn=>{btn.textContent=lang==='en'?'العربية':'English';});

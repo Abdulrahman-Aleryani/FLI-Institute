@@ -37,6 +37,22 @@
     .hero-text{padding:60px 56px;display:flex;flex-direction:column;justify-content:center;gap:16px}
     .hero-text h1{margin:0;font-size:32px;color:#0b1e4d;font-weight:800;line-height:1.3}
     .hero-text p{margin:0;color:#475569;line-height:1.75;font-size:16px;white-space:pre-line}
+    .hero-buttons{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+    .hero-buttons .btn{padding:12px 28px;border-radius:999px;font-weight:700;font-size:15px;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+    .hero-buttons .btn:hover{transform:translateY(-2px)}
+    .hero-buttons #open-register-modal-hero{background:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(11,95,255,0.3)}
+    .hero-buttons #open-register-modal-hero:hover{background:#0947cc}
+    .hero-buttons .hero-cta{background:transparent;color:var(--accent);border:2px solid rgba(11,95,255,0.5);box-shadow:none}
+    .hero-buttons .hero-cta:hover{border-color:var(--accent);background:rgba(11,95,255,0.1)}
+    .courses-section{padding:70px 0;background:linear-gradient(180deg,#f5f7ff 0%,#ffffff 100%)}
+    .courses-section-title{margin:0 0 30px;font-size:28px;color:#0b1e4d;font-weight:850;text-align:center}
+    .diploma-block{background:#fff;border-radius:18px;padding:28px 28px 30px;box-shadow:0 18px 40px rgba(71,85,105,0.16);line-height:1.7;margin-bottom:24px;border:1px solid rgba(11,95,255,0.08)}
+    .diploma-title{margin:0 0 12px;font-size:22px;color:#0b1e4d;font-weight:780}
+    .diploma-desc{margin:0 0 16px;color:#475569;line-height:1.75;font-size:16px}
+    .diploma-courses-label{margin:0 0 10px;font-size:16px;color:#0b1e4d;font-weight:700}
+    .diploma-courses-list{margin:0;padding-inline-start:20px;color:#475569;line-height:1.8;font-size:15px}
+    .diploma-courses-list li{margin-bottom:4px}
+    .courses-outro{margin:30px 0 0;color:#475569;line-height:1.75;font-size:16px;text-align:center;padding:0 20px}
     .levels-section{padding:70px 0;background:linear-gradient(180deg,#f5f7ff 0%,#ffffff 100%)}
     .levels-header{max-width:720px;margin:0 auto 26px;text-align:center}
     .levels-section h2{margin:0 0 10px;font-size:28px;color:#0b1e4d;font-weight:850}
@@ -129,16 +145,60 @@
       </div>
       <div class="hero-text">
         <h1 data-i18n="hero_title">General English Courses</h1>
-        <p data-i18n="hero_desc">The English Language Program at FLI provides a complete learning experience designed to develop learners' English skills through structured levels from beginner to advanced. The program helps students build a strong foundation in English and improve their ability to communicate confidently in daily, academic, and professional situations.
+        <p data-i18n="hero_desc">The English Language Program at <strong>FLI</strong> provides a complete and structured learning journey designed to develop learners' English skills from beginner to advanced levels. The program helps students build a strong language foundation and improve their ability to communicate confidently in daily, academic, and professional environments.
 
-The program is designed for students, professionals, and anyone who wants to learn English or improve their language level through an organised and effective learning system. It focuses on developing speaking, reading, writing, listening, pronunciation, vocabulary, and grammar skills through practical activities and interactive training.
+The program is designed for students, professionals, and anyone who wants to learn English or improve their language level through an organised and effective learning system. It focuses on developing <strong>speaking, listening, reading, writing, pronunciation, vocabulary, and grammar skills</strong> through practical activities and interactive learning.
 
-The teaching approach is based on interactive learning, practical conversations, educational activities, and continuous progress monitoring. It provides a complete online learning environment including live classes, assignments, exams, and student progress tracking.
+FLI follows an interactive teaching approach with practical conversations, educational activities, continuous assessment, and a complete online learning environment including live classes, assignments, exams, and progress tracking.
 
-The program content covers general English at different levels, focusing on practical language use and developing learners' ability to understand, communicate, and write accurately. The program consists of three main stages: Beginner, Intermediate, and Advanced, allowing learners to progress step by step from basic English foundations to advanced communication.
+The program consists of three main stages: <strong>Beginner, Intermediate, Advanced</strong>, allowing learners to progress step by step from basic English foundations to advanced communication.
 
-After completing the program, learners will be able to communicate more confidently in English, understand conversations and texts, use vocabulary and grammar correctly, and apply English skills in study, work, and everyday life.</p>
-        <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
+<strong>Curriculum: American English File</strong></p>
+        <div class="hero-buttons">
+          <a class="btn" href="#" id="open-register-modal-hero" data-i18n="hero_cta">سجل الان</a>
+          <a class="btn hero-cta" href="/placement-test" data-i18n="hero_cta_primary">أختبر مستواك مجاناً</a>
+        </div>
+      </div>
+    </section>
+    <section class="courses-section">
+      <div class="container">
+        <h2 class="courses-section-title" data-i18n="courses_title">Courses</h2>
+        <div class="diploma-block">
+          <h3 class="diploma-title" data-i18n="diploma_beginner_title">Beginner Diploma</h3>
+          <p class="diploma-desc" data-i18n="diploma_beginner_desc">A foundation stage designed to develop essential English skills and help learners communicate in everyday situations with confidence.</p>
+          <h4 class="diploma-courses-label" data-i18n="diploma_courses_label">Courses:</h4>
+          <ul class="diploma-courses-list">
+            <li>Access A &amp; B</li>
+            <li>Basic A &amp; B</li>
+            <li>Level 1A &amp; 1B</li>
+          </ul>
+        </div>
+        <div class="diploma-block">
+          <h3 class="diploma-title" data-i18n="diploma_intermediate_title">Intermediate Diploma</h3>
+          <p class="diploma-desc" data-i18n="diploma_intermediate_desc">A development stage focused on improving fluency, communication skills, vocabulary, and practical use of English.</p>
+          <h4 class="diploma-courses-label" data-i18n="diploma_courses_label">Courses:</h4>
+          <ul class="diploma-courses-list">
+            <li>Weaving It Together 1</li>
+            <li>Level 2A &amp; 2B</li>
+            <li>Weaving It Together 2</li>
+            <li>Level 3A &amp; 3B</li>
+            <li>Weaving It Together 3</li>
+          </ul>
+        </div>
+        <div class="diploma-block">
+          <h3 class="diploma-title" data-i18n="diploma_advanced_title">Advanced Diploma</h3>
+          <p class="diploma-desc" data-i18n="diploma_advanced_desc">An advanced stage designed to develop professional and academic English skills and prepare learners for higher-level communication and international English requirements.</p>
+          <h4 class="diploma-courses-label" data-i18n="diploma_courses_label">Courses:</h4>
+          <ul class="diploma-courses-list">
+            <li>Level 4A &amp; 4B</li>
+            <li>Weaving It Together 4A</li>
+            <li>Level 5A &amp; 5B</li>
+            <li>Weaving It Together 4B</li>
+            <li>Level 6A &amp; 6B</li>
+            <li>iBT Preparation</li>
+          </ul>
+        </div>
+        <p class="courses-outro" data-i18n="courses_outro">After completing the program, learners will be able to communicate confidently in English, understand different conversations and texts, use vocabulary and grammar accurately, and apply English skills in study, work, and everyday life.</p>
       </div>
     </section>
     <!--
@@ -270,15 +330,15 @@ After completing the program, learners will be able to communicate more confiden
         nav_contact:'Contact',
         nav_login:'Login',
         hero_title:'General English Courses',
-        hero_desc:`The English Language Program at FLI provides a complete learning experience designed to develop learners' English skills through structured levels from beginner to advanced. The program helps students build a strong foundation in English and improve their ability to communicate confidently in daily, academic, and professional situations.
+        hero_desc:`The English Language Program at <strong>FLI</strong> provides a complete and structured learning journey designed to develop learners' English skills from beginner to advanced levels. The program helps students build a strong language foundation and improve their ability to communicate confidently in daily, academic, and professional environments.
 
-The program is designed for students, professionals, and anyone who wants to learn English or improve their language level through an organised and effective learning system. It focuses on developing speaking, reading, writing, listening, pronunciation, vocabulary, and grammar skills through practical activities and interactive training.
+The program is designed for students, professionals, and anyone who wants to learn English or improve their language level through an organised and effective learning system. It focuses on developing <strong>speaking, listening, reading, writing, pronunciation, vocabulary, and grammar skills</strong> through practical activities and interactive learning.
 
-The teaching approach is based on interactive learning, practical conversations, educational activities, and continuous progress monitoring. It provides a complete online learning environment including live classes, assignments, exams, and student progress tracking.
+FLI follows an interactive teaching approach with practical conversations, educational activities, continuous assessment, and a complete online learning environment including live classes, assignments, exams, and progress tracking.
 
-The program content covers general English at different levels, focusing on practical language use and developing learners' ability to understand, communicate, and write accurately. The program consists of three main stages: Beginner, Intermediate, and Advanced, allowing learners to progress step by step from basic English foundations to advanced communication.
+The program consists of three main stages: <strong>Beginner, Intermediate, Advanced</strong>, allowing learners to progress step by step from basic English foundations to advanced communication.
 
-After completing the program, learners will be able to communicate more confidently in English, understand conversations and texts, use vocabulary and grammar correctly, and apply English skills in study, work, and everyday life.`,
+<strong>Curriculum: American English File</strong>`,
         hero_beginner_title:'American File English Diploma – Beginner Level',
         hero_beginner_desc:'The Beginner English Diploma, based on the internationally recognized American File series, is designed for learners starting from scratch. The program focuses on developing listening, speaking, reading, and writing skills while building essential vocabulary and grammar for everyday communication.',
         hero_beginner_outcome_label:'Key Outcome:',
@@ -296,6 +356,16 @@ After completing the program, learners will be able to communicate more confiden
         level_intermediate_badge:'Intermediate',
         level_advanced_badge:'Advanced',
         hero_cta:'Register Now',
+        hero_cta_primary:'Take your free placement test',
+        courses_title:'Courses',
+        diploma_courses_label:'Courses:',
+        diploma_beginner_title:'Beginner Diploma',
+        diploma_beginner_desc:'A foundation stage designed to develop essential English skills and help learners communicate in everyday situations with confidence.',
+        diploma_intermediate_title:'Intermediate Diploma',
+        diploma_intermediate_desc:'A development stage focused on improving fluency, communication skills, vocabulary, and practical use of English.',
+        diploma_advanced_title:'Advanced Diploma',
+        diploma_advanced_desc:'An advanced stage designed to develop professional and academic English skills and prepare learners for higher-level communication and international English requirements.',
+        courses_outro:'After completing the program, learners will be able to communicate confidently in English, understand different conversations and texts, use vocabulary and grammar accurately, and apply English skills in study, work, and everyday life.',
         feature_1_title:'How does the course work?',
         feature_1_desc:'Attend live sessions with expert teachers, join international classmates in our digital classroom, and track your goals with personal coaching.',
         feature_2_title:'What will you learn?',
@@ -318,15 +388,15 @@ After completing the program, learners will be able to communicate more confiden
         nav_contact:'تواصل معنا',
         nav_login:'تسجيل الدخول',
         hero_title:'الدورات العامة للغة الإنجليزية',
-        hero_desc:`يقدم برنامج اللغة الإنجليزية في معهد FLI تجربة تعليمية متكاملة تهدف إلى تطوير مهارات اللغة الإنجليزية لدى المتعلمين من خلال مستويات متدرجة تبدأ من المبتدئ وحتى المستوى المتقدم. صُمم البرنامج لمساعدة الطلاب على بناء أساس قوي في اللغة، وتحسين قدرتهم على التواصل بثقة في المواقف اليومية والأكاديمية والمهنية.
+        hero_desc:`يتميز برنامج اللغة الإنجليزية في معهد <strong>FLI</strong> بتجربة تعليمية متكاملة تهدف إلى تطوير مهارات اللغة الإنجليزية لدى المتعلمين من خلال مسار تدريبي متدرج يبدأ من المستوى المبتدئ وصولاً إلى المستوى المتقدم. تم تصميم البرنامج لمساعدة الطلاب على بناء أساس قوي في اللغة، وتطوير قدرتهم على التواصل بثقة في المواقف اليومية، الأكاديمية، والمهنية.
 
-يستهدف البرنامج الطلاب، الموظفين، وكل من يرغب في تعلم اللغة الإنجليزية أو تطوير مستواه بطريقة منظمة وفعّالة. يركز البرنامج على تطوير مهارات التحدث، القراءة، الكتابة، الاستماع، النطق الصحيح، المفردات، والقواعد اللغوية من خلال تطبيقات عملية وتدريبات تفاعلية.
+يستهدف البرنامج الطلاب، الموظفين، وكل من يرغب في تعلم اللغة الإنجليزية أو تطوير مستواه بطريقة منظمة وفعّالة. يركز البرنامج على تطوير مهارات <strong>التحدث، الاستماع، القراءة، الكتابة، النطق الصحيح، المفردات، والقواعد اللغوية</strong> من خلال تطبيقات عملية، أنشطة تفاعلية، وممارسة مستمرة للغة.
 
-يعتمد أسلوب التدريس على التعليم التفاعلي، والمحادثات العملية، والأنشطة التعليمية، والمتابعة المستمرة لمستوى الطالب، مع توفير بيئة تعلم إلكترونية متكاملة تشمل الحصص المباشرة، الواجبات، الاختبارات، وقياس التقدم.
+يعتمد أسلوب التدريس في FLI على التعليم التفاعلي، المحادثات العملية، الأنشطة التعليمية، والمتابعة المستمرة لمستوى الطالب، مع توفير بيئة تعلم إلكترونية متكاملة تشمل الحصص المباشرة، الواجبات، الاختبارات، وقياس التقدم.
 
-يتضمن محتوى البرنامج اللغة الإنجليزية العامة بمستوياتها المختلفة، مع التركيز على استخدام اللغة بشكل عملي، وتطوير قدرة الطالب على الفهم والتعبير والكتابة بطريقة صحيحة. يتكون البرنامج من ثلاث مراحل رئيسية: Beginner، Intermediate، وAdvanced، بحيث ينتقل الطالب تدريجياً من تأسيس اللغة إلى استخدامها بمستوى متقدم.
+يتكون البرنامج من ثلاث مراحل رئيسية: <strong>مبتدئ، متوسط، عالي</strong>، بحيث ينتقل الطالب تدريجياً من تأسيس اللغة إلى استخدامها بمستوى متقدم.
 
-بعد إكمال البرنامج، يصبح المتعلم قادراً على التواصل باللغة الإنجليزية بشكل أكثر ثقة، وفهم النصوص والمحادثات، واستخدام المفردات والقواعد بشكل صحيح، والتعامل مع متطلبات اللغة في الدراسة والعمل والحياة اليومية.`,
+<strong>المنهج: American English File</strong>`,
         hero_beginner_title:'دبلوم اللغة الإنجليزية – مستوى المبتدئين (American File)',
         hero_beginner_desc:'دبلوم اللغة الإنجليزية للمبتدئين باستخدام سلسلة American File العالمية، مصمم لتأسيس المتدربين في أساسيات اللغة الإنجليزية من الصفر. يركز البرنامج على تطوير مهارات الاستماع والتحدث والقراءة والكتابة، بالإضافة إلى تعلم المفردات والقواعد الأساسية المستخدمة في الحياة اليومية.',
         hero_beginner_outcome_label:'المخرج التعليمي:',
@@ -344,6 +414,16 @@ After completing the program, learners will be able to communicate more confiden
         level_intermediate_badge:'متوسط',
         level_advanced_badge:'متقدم',
         hero_cta:'سجل الان',
+        hero_cta_primary:'أختبر مستواك مجاناً',
+        courses_title:'المستويات',
+        diploma_courses_label:'الدورات:',
+        diploma_beginner_title:'Beginner Diploma – الدبلوم المبتدئ',
+        diploma_beginner_desc:'مرحلة تأسيسية مصممة لبناء أساس قوي في اللغة الإنجليزية. تساعد الطالب على اكتساب المهارات الأساسية في التواصل، وفهم القواعد والمفردات، وتحسين النطق والاستماع، حتى يصبح قادراً على استخدام اللغة في المواقف اليومية بثقة.',
+        diploma_intermediate_title:'Intermediate Diploma – الدبلوم المتوسط',
+        diploma_intermediate_desc:'مرحلة تطويرية تهدف إلى نقل الطالب إلى مستوى أعلى من التواصل باللغة الإنجليزية. تركز على زيادة الطلاقة، تطوير مهارات المحادثة، توسيع الحصيلة اللغوية، وتحسين القدرة على فهم واستخدام اللغة في مواقف مختلفة.',
+        diploma_advanced_title:'Advanced Diploma – الدبلوم المتقدم',
+        diploma_advanced_desc:'مرحلة متقدمة تهدف إلى تطوير مستوى الطالب للوصول إلى استخدام احترافي للغة الإنجليزية. تركز على مهارات التواصل المتقدمة، الفهم العميق، تطوير الكتابة، واستخدام اللغة في المجالات الأكاديمية والمهنية، بالإضافة إلى الاستعداد لاختبارات اللغة الدولية.',
+        courses_outro:'بعد إكمال برنامج FLI، يصبح المتعلم قادراً على التواصل باللغة الإنجليزية بثقة أكبر، فهم المحادثات والنصوص المختلفة، استخدام المفردات والقواعد بشكل صحيح، وتطبيق مهارات اللغة في الدراسة، العمل، والحياة اليومية.',
         feature_1_title:'كيف تعمل الدورة؟',
         feature_1_desc:'احضر حصصاً مباشرة مع معلمين خبراء، وانضم لزملاء دوليين في فصلنا الرقمي، وتابع أهدافك مع مدرب شخصي.',
         feature_2_title:'ماذا ستتعلّم؟',
@@ -374,7 +454,7 @@ After completing the program, learners will be able to communicate more confiden
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key=el.getAttribute('data-i18n');
         if(translations[lang]&&translations[lang][key]){
-          el.textContent=translations[lang][key];
+          el.innerHTML=translations[lang][key];
         }
       });
 
