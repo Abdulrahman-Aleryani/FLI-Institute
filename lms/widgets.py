@@ -25,6 +25,9 @@ def update_website_context(context):
 	Called from hooks.
 	"""
 	context.widgets = Widgets()
+	context.head_include = (context.get("head_include") or "") + (
+		'\n<meta name="google" content="notranslate">'
+	)
 
 
 class Widgets:
