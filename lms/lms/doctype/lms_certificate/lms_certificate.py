@@ -150,7 +150,11 @@ class LMSCertificate(Document):
 
 
 def has_website_permission(doc, ptype, user, verbose=False):
-	return ptype in ["read", "print"]
+	"""The member and, for certificates published on the participant page, anyone signed in.
+	Staff are covered by the DocType permissions."""
+	if ptype not in ["read", "print"]:
+		return False
+	return user == doc.member or bool(doc.published and not doc.revoked)
 
 
 def next_serial_number():

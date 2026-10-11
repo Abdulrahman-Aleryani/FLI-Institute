@@ -12,6 +12,7 @@ from lms.lms.doctype.lms_certificate.lms_certificate import (
 	create_bulk_certificates,
 	create_certificate,
 	get_certificate_status,
+	has_website_permission,
 	is_certified,
 	revoke_certificate,
 )
@@ -118,3 +119,22 @@ class TestLMSCertificate(IntegrationTestCase):
 		again = create_bulk_certificates(batch[0])
 		self.assertEqual(again["created"], [])
 		self.assertEqual(len(again["skipped"]), len(result["created"]) + len(result["skipped"]))
+
+
+class TestCertificateWebsitePermission(IntegrationTestCase):
+	def doc(self, **kwargs):
+		return frappe._dict({"member": "m@example.com", "published": 0, "revoked": 0, **kwargs})
+
+	def test_member_can_print_own(self):
+		self.assertTrue(has_website_permission(self.doc(), "print", "m@example.com"))
+
+	def test_other_user_cannot_print_unpublished(self):
+		self.assertFalse(has_website_permission(self.doc(), "print", "x@example.com"))
+		self.assertFalse(has_website_permission(self.doc(), "read", "Guest"))
+
+	def test_published_is_visible_unless_revoked(self):
+		self.assertTrue(has_website_permission(self.doc(published=1), "read", "x@example.com"))
+		self.assertFalse(has_website_permission(self.doc(published=1, revoked=1), "read", "x@example.com"))
+
+	def test_write_is_never_granted(self):
+		self.assertFalse(has_website_permission(self.doc(), "write", "m@example.com"))
