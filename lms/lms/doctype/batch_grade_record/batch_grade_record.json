@@ -16,7 +16,8 @@
   "communicative_competence",
   "final_oral",
   "exam",
-  "total"
+  "total",
+  "teacher_comments"
  ],
  "fields": [
   {
@@ -89,6 +90,11 @@
    "label": "Total",
    "precision": "2",
    "read_only": 1
+  },
+  {
+   "fieldname": "teacher_comments",
+   "fieldtype": "Small Text",
+   "label": "Teacher Comments"
   }
  ],
  "index_web_pages_for_search": 1,
