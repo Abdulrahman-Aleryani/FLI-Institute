@@ -11,11 +11,13 @@ SHIPPED_HTML = {
 	"8c8c002371af",
 	"cfb9605fc443",
 	"b6a8f9f57877",
+	"83663a69cf2f",
 }
 SHIPPED_CSS = {
 	"bd9bf6ac8b8c",
 	"38bcfbd66100",
 	"ba1eaf766d08",
+	"769d85b9d447",
 }
 
 

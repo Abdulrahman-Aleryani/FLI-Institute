@@ -11,7 +11,6 @@
 	.verify-badge { display: inline-block; padding: 0.35rem 1rem; border-radius: 999px; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase; }
 	.verify-valid { background: #e6f6ec; color: #166534; }
 	.verify-revoked { background: #fdecec; color: #991b1b; }
-	.verify-expired { background: #fef3c7; color: #92400e; }
 	.verify-details { margin: 1.5rem 0 0; padding: 0; list-style: none; text-align: left; }
 	.verify-details li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-top: 1px solid #eef0f2; }
 	.verify-label { color: #6b7280; }
@@ -30,8 +29,6 @@
 			{% if batch_title %}<li><span class="verify-label">{{ _("Batch") }}</span><span class="verify-value">{{ batch_title }}</span></li>{% endif %}
 			{% if start_date %}<li><span class="verify-label">{{ _("Start Date") }}</span><span class="verify-value">{{ start_date }}</span></li>{% endif %}
 			{% if end_date %}<li><span class="verify-label">{{ _("End Date") }}</span><span class="verify-value">{{ end_date }}</span></li>{% endif %}
-			<li><span class="verify-label">{{ _("Issue Date") }}</span><span class="verify-value">{{ issue_date }}</span></li>
-			{% if expiry_date %}<li><span class="verify-label">{{ _("Expiry Date") }}</span><span class="verify-value">{{ expiry_date }}</span></li>{% endif %}
 			<li><span class="verify-label">{{ _("Certificate No.") }}</span><span class="verify-value">{{ serial_number }}</span></li>
 		</ul>
 		{% endif %}

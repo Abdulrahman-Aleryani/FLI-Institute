@@ -18,16 +18,6 @@
 		<template #body-content>
 			<div class="space-y-4">
 				<FormControl
-					type="date"
-					v-model="details.issue_date"
-					:label="__('Issue Date')"
-				/>
-				<FormControl
-					type="date"
-					v-model="details.expiry_date"
-					:label="__('Expiry Date')"
-				/>
-				<FormControl
 					type="select"
 					v-model="details.course"
 					:label="__('Course')"
@@ -79,17 +69,14 @@
 	</Dialog>
 </template>
 <script setup>
-import { inject, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { call, Dialog, FormControl, Switch, toast } from 'frappe-ui'
 import { cleanError } from '@/utils'
 import Link from '@/components/Controls/Link.vue'
 
 const show = defineModel()
-const dayjs = inject('$dayjs')
 const summary = ref(null)
 const details = reactive({
-	issue_date: dayjs().format('YYYY-MM-DD'),
-	expiry_date: null,
 	template: null,
 	course: null,
 	published: true,
@@ -120,8 +107,6 @@ const resolveTemplate = () => {
 
 const reset = () => {
 	summary.value = null
-	details.issue_date = dayjs().format('YYYY-MM-DD')
-	details.expiry_date = null
 	details.published = true
 	details.course = props.batch?.courses?.[0]?.course || null
 	resolveTemplate()
@@ -144,8 +129,6 @@ const generateCertificates = (close) => {
 		{
 			batch: props.batch.name,
 			template: details.template,
-			issue_date: details.issue_date,
-			expiry_date: details.expiry_date,
 			published: details.published ? 1 : 0,
 			course: details.course,
 		},
@@ -171,7 +154,7 @@ const generateCertificates = (close) => {
 const getCourses = () => {
 	return props.batch?.courses.map((course) => {
 		return {
-			label: course.course,
+			label: course.title || course.course,
 			value: course.course,
 		}
 	})

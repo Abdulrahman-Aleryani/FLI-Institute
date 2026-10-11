@@ -23,10 +23,6 @@
 				<div class="text-ink-gray-9 font-semibold">
 					{{ courseTitle }}
 				</div>
-				<div class="text-sm text-ink-gray-7 font-medium">
-					{{ __('Issued On') }}:
-					{{ dayjs(certificate.data.issue_date).format('DD MMM YYYY') }}
-				</div>
 				<div
 					v-if="certificate.data.serial_number"
 					class="text-sm text-ink-gray-7"
@@ -61,7 +57,6 @@ const evaluator = ref(null)
 const { brand } = sessionStore()
 const courses = ref([])
 const user = inject('$user')
-const dayjs = inject('$dayjs')
 const router = useRouter()
 
 const props = defineProps({
@@ -88,7 +83,6 @@ const certificate = createResource({
 		fieldname: [
 			'name',
 			'template',
-			'issue_date',
 			'serial_number',
 			'verification_token',
 		],

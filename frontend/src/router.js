@@ -180,6 +180,10 @@ const routes = [
 		component: () => import('@/pages/CertifiedParticipants.vue'),
 	},
 	{
+		path: '/certifications',
+		redirect: { name: 'CertifiedParticipants' },
+	},
+	{
 		path: '/notifications',
 		name: 'Notifications',
 		component: () => import('@/pages/Notifications.vue'),

@@ -16,10 +16,6 @@
 				<div class="font-medium leading-5 mb-2 text-ink-gray-9">
 					{{ certificate.course_title || certificate.batch_title }}
 				</div>
-				<div class="text-sm text-ink-gray-7 font-medium mt-auto">
-					<span> {{ __('Issued on') }}: </span>
-					{{ dayjs(certificate.issue_date).format('DD MMM YYYY') }}
-				</div>
 				<div
 					v-if="certificate.serial_number"
 					class="text-xs text-ink-gray-5 mt-1"
@@ -94,7 +90,6 @@ import {
 import { computed, inject, onMounted, ref } from 'vue'
 import { cleanError } from '@/utils'
 
-const dayjs = inject('$dayjs')
 const user = inject('$user')
 const canRevoke = computed(
 	() => user.data?.is_moderator || user.data?.is_system_manager,
@@ -124,7 +119,6 @@ const certificates = createListResource({
 		'name',
 		'course_title',
 		'batch_title',
-		'issue_date',
 		'template',
 		'serial_number',
 		'verification_token',

@@ -48,7 +48,6 @@
 .cert-qr-box { left: 20mm; top: 170mm; width: 22mm; height: 22mm; }
 .cert-qr-box .cert-qr { width: 22mm; height: 22mm; }
 .cert-verify { left: 45mm; top: 171mm; width: 90mm; }
-.cert-dates { left: 197mm; top: 171mm; width: 80mm; text-align: right; }
 .cert-label { position: static !important; font-size: 7pt; letter-spacing: 0.24em; text-transform: uppercase; color: #B8893A; font-weight: 600; line-height: 1.2; }
 .cert-value { position: static !important; font-size: 11pt; color: #0F2347; line-height: 1.25; }
 .cert-label-gap { margin-top: 2.2mm; }

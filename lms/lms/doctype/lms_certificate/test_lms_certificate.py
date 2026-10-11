@@ -7,7 +7,6 @@ try:
 	from frappe.tests import IntegrationTestCase
 except ImportError:  # Frappe v15
 	from frappe.tests.utils import FrappeTestCase as IntegrationTestCase
-from frappe.utils import add_days, nowdate
 
 from lms.lms.doctype.lms_certificate.lms_certificate import (
 	create_bulk_certificates,
@@ -22,7 +21,6 @@ def make_certificate(member, **kwargs):
 	doc = {
 		"doctype": "LMS Certificate",
 		"member": member,
-		"issue_date": nowdate(),
 		"template": "Certificate Template",
 	}
 	doc.update(kwargs)
@@ -63,7 +61,6 @@ class TestLMSCertificate(IntegrationTestCase):
 			{
 				"doctype": "LMS Certificate",
 				"member": student[0],
-				"issue_date": nowdate(),
 				"template": "Certificate",
 			}
 		)
@@ -87,7 +84,7 @@ class TestLMSCertificate(IntegrationTestCase):
 		self.assertNotEqual(first.serial_number, "tampered")
 		self.assertNotEqual(first.verification_token, "tampered")
 
-	def test_revoked_and_expired_are_not_certified(self):
+	def test_revoked_are_not_certified(self):
 		course = get_course()
 		if not course:
 			self.skipTest("Needs a course")
@@ -102,11 +99,10 @@ class TestLMSCertificate(IntegrationTestCase):
 		with self.assertRaises(frappe.ValidationError):
 			revoke_certificate(certificate.name, "again")
 
-		reissued = make_certificate("Administrator", course=course, expiry_date=add_days(nowdate(), -1))
-		self.assertFalse(is_certified(course))
-		self.assertEqual(get_certificate_status(0, reissued.expiry_date), "Expired")
-		self.assertEqual(get_certificate_status(1, None), "Revoked")
-		self.assertEqual(get_certificate_status(0, None), "Valid")
+		reissued = make_certificate("Administrator", course=course)
+		self.assertEqual(is_certified(course), reissued.name)
+		self.assertEqual(get_certificate_status(1), "Revoked")
+		self.assertEqual(get_certificate_status(0), "Valid")
 
 	def test_revoke_requires_reason(self):
 		certificate = make_certificate("Administrator")

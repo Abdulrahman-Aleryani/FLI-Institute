@@ -66,6 +66,7 @@
 							:autofocus="false"
 							:showLineNumbers="true"
 							:liveUpdate="true"
+							:autoPair="false"
 						/>
 						<CodeEditor
 							v-model="template.css"
@@ -75,6 +76,7 @@
 							:autofocus="false"
 							:showLineNumbers="true"
 							:liveUpdate="true"
+							:autoPair="false"
 						/>
 						<div>
 							<div class="text-xs text-ink-gray-5 mb-1.5">

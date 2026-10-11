@@ -11,8 +11,6 @@
   "evaluator",
   "evaluator_name",
   "column_break_vwbn",
-  "issue_date",
-  "expiry_date",
   "certificate_template",
   "template",
   "serial_number",
@@ -31,23 +29,11 @@
  ],
  "fields": [
   {
-   "default": "Today",
-   "fieldname": "issue_date",
-   "fieldtype": "Date",
-   "label": "Issue Date",
-   "reqd": 1
-  },
-  {
    "fieldname": "course",
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Course",
    "options": "LMS Course"
-  },
-  {
-   "fieldname": "expiry_date",
-   "fieldtype": "Date",
-   "label": "Expiry Date"
   },
   {
    "fieldname": "member",

@@ -19,7 +19,6 @@ Use `{{ name }}`. Text placeholders are auto-escaped strings (empty string when 
 | `course_title` | text | |
 | `batch_title` | text | |
 | `start_date`, `end_date` | text | batch dates, `dd MMM yyyy` |
-| `issue_date`, `expiry_date` | text | `expiry_date` empty when not set |
 | `serial_number` | text | printed reference only |
 | `certificate_id` | text | |
 | `verification_url` | text | `/verify/<token>` |
@@ -60,14 +59,14 @@ All paths are `/api/method/<dotted path>`.
 | `lms.lms.doctype.lms_certificate.lms_certificate.create_certificate` | `course` | existing certificate (`name`, `course`, `template`) or the new doc | logged-in student (eligibility checked) |
 | `lms.lms.doctype.lms_certificate.lms_certificate.get_resolved_certificate_template` | `course`, `batch` | template name or null | System Manager, Moderator, Batch Evaluator |
 | `lms.lms.doctype.lms_certificate.lms_certificate.revoke_certificate` | `name`, `reason` | `{name, revoked: 1}` | System Manager, Moderator |
-| `lms.lms.doctype.lms_certificate.lms_certificate.create_bulk_certificates` | `batch`, `template`, `issue_date`, `expiry_date`, `published`, `course` | `{created: [names], skipped: [{member, reason}], failed: [{member, error}]}` | System Manager, Moderator |
+| `lms.lms.doctype.lms_certificate.lms_certificate.create_bulk_certificates` | `batch`, `template`, `published`, `course` | `{created: [names], skipped: [{member, reason}], failed: [{member, error}]}` | System Manager, Moderator |
 | `lms.lms.api.save_certificate_details` | existing args + `template`, `certificate_template` | certificate name | evaluator of the course/batch, System Manager, Moderator |
 | `lms.lms.api.save_evaluation_details` | unchanged | evaluation name | same as above |
-| `lms.lms.api.get_certification_details` | `course` | now also returns `serial_number`, `verification_token`, `expiry_date` on `certificate` | logged in |
+| `lms.lms.api.get_certification_details` | `course` | now also returns `serial_number`, `verification_token` on `certificate` | logged in |
 
 ## Security model
 - Each certificate gets `verification_token = secrets.token_urlsafe(16)` and a sequential `serial_number`, both set server side on insert and immutable afterwards. The QR code encodes `/verify/<token>`; there is no lookup by serial.
-- Revoked or expired certificates are not "certified" and are hidden from public listings. Revoked certificates can be re-issued.
+- Revoked certificates are not "certified" and are hidden from public listings. Revoked certificates can be re-issued.
 - LMS Students can no longer create or write LMS Certificates.
 
 ## wkhtmltopdf CSS rules (HTML templates)

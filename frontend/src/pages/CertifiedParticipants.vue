@@ -79,10 +79,6 @@
 											: __('certificate')
 									}}
 								</div>
-								<span class="text-ink-gray-4 md:hidden">·</span>
-								<div class="text-ink-gray-5">
-									{{ dayjs(participant.issue_date).format('DD MMM YYYY') }}
-								</div>
 							</div>
 						</div>
 					</div>
@@ -111,7 +107,7 @@ import {
 	Select,
 	usePageMeta,
 } from 'frappe-ui'
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { GraduationCap } from 'lucide-vue-next'
 import { sessionStore } from '../stores/session'
 import EmptyState from '@/components/EmptyState.vue'
@@ -121,7 +117,6 @@ const filters = ref({})
 const nameFilter = ref('')
 const { brand } = sessionStore()
 const memberCount = ref(0)
-const dayjs = inject('$dayjs')
 
 onMounted(() => {
 	setFiltersFromQuery()

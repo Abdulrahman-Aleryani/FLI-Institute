@@ -83,12 +83,3 @@
 	<div class="cert-label cert-label-gap">Verify at</div>
 	<div class="cert-url">{{ verification_url }}</div>
 </div>
-
-<div class="cert-dates">
-	<div class="cert-label">Date of Issue</div>
-	<div class="cert-value">{{ issue_date }}</div>
-	{% if expiry_date %}
-	<div class="cert-label cert-label-gap">Valid Until</div>
-	<div class="cert-value">{{ expiry_date }}</div>
-	{% endif %}
-</div>

@@ -19,6 +19,7 @@ from frappe.integrations.frappe_providers.frappecloud_billing import (
 	is_fc_site,
 )
 from frappe.query_builder import DocType
+from frappe.query_builder.functions import Max
 from frappe.translate import get_all_translations
 from frappe.utils import (
 	add_days,
@@ -395,7 +396,7 @@ def get_evaluator_details(evaluator):
 
 
 def get_certified_members_query(filters=None):
-	"""Published certificates that are neither revoked nor expired, narrowed by the given filters."""
+	"""Published, non-revoked certificates, narrowed by the given filters."""
 	if isinstance(filters, str):
 		filters = json.loads(filters)
 
@@ -419,9 +420,9 @@ def get_certified_members_query(filters=None):
 def get_certified_participants(filters=None, start=0, page_length=100):
 	Certificate, query = get_certified_members_query(filters)
 	participants = (
-		query.select(Certificate.member, Certificate.issue_date)
+		query.select(Certificate.member)
 		.groupby(Certificate.member)
-		.orderby(Certificate.issue_date, order=frappe.qb.desc)
+		.orderby(Max(Certificate.creation), order=frappe.qb.desc)
 		.limit(cint(page_length))
 		.offset(cint(start))
 		.run(as_dict=True)
@@ -810,8 +811,6 @@ def save_certificate_details(
 	course,
 	batch_name,
 	evaluator,
-	issue_date,
-	expiry_date,
 	template=None,
 	published=True,
 	certificate_template=None,
@@ -824,8 +823,6 @@ def save_certificate_details(
 
 	details = {
 		"published": published,
-		"issue_date": issue_date,
-		"expiry_date": expiry_date,
 		"batch_name": batch_name,
 	}
 	if certificate_template:
@@ -1414,7 +1411,7 @@ def get_certification_details(course):
 	certificate = frappe.db.get_value(
 		"LMS Certificate",
 		{"member": frappe.session.user, "course": course, "revoked": 0},
-		["name", "template", "serial_number", "verification_token", "expiry_date"],
+		["name", "template", "serial_number", "verification_token"],
 		as_dict=1,
 	)
 

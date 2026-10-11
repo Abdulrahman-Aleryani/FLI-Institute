@@ -129,18 +129,6 @@
 								:disabled="!userIsEvaluator()"
 								:filters="{ enabled: 1 }"
 							/>
-							<FormControl
-								type="date"
-								v-model="certificate.issue_date"
-								:disabled="!userIsEvaluator()"
-								:label="__('Issue Date')"
-							/>
-							<FormControl
-								type="date"
-								v-model="certificate.expiry_date"
-								:disabled="!userIsEvaluator()"
-								:label="__('Expiry Date')"
-							/>
 							<Button
 								v-if="userIsEvaluator()"
 								variant="solid"
@@ -295,8 +283,6 @@ const certificateResource = createResource({
 			course: props.event.course,
 			batch_name: props.event.batch_name,
 			published: certificate.published,
-			issue_date: certificate.issue_date,
-			expiry_date: certificate.expiry_date,
 			certificate_template: certificate.certificate_template,
 			evaluator: props.event.evaluator,
 		}
@@ -356,8 +342,6 @@ watch(show, () => {
 		evaluationDetails.reload()
 
 		certificate.published = true
-		certificate.issue_date = dayjs().format('YYYY-MM-DD')
-		certificate.expiry_date = null
 		certificate.certificate_template = null
 		certificate.name = null
 		certificateDetails.reload()

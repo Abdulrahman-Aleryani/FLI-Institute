@@ -76,6 +76,10 @@ const props = defineProps({
 		type: Boolean,
 		default: false,
 	},
+	autoPair: {
+		type: Boolean,
+		default: true,
+	},
 })
 
 const emit = defineEmits(['save', 'update:modelValue'])
@@ -94,6 +98,7 @@ const setupEditor = () => {
 	aceEditor.setOptions({
 		fontSize: '12px',
 		useWorker: false,
+		behavioursEnabled: props.autoPair,
 		showGutter: props.showLineNumbers,
 		wrap: props.showLineNumbers,
 	})

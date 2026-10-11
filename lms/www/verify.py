@@ -30,14 +30,12 @@ def get_context(context):
 		return
 
 	context.found = True
-	context.status = get_certificate_status(certificate.revoked, certificate.expiry_date)
+	context.status = get_certificate_status(certificate.revoked)
 	context.student_name = certificate.member_name
 	context.course_title = certificate.course_title
 	context.batch_title = certificate.batch_title
 	context.start_date = format_date(certificate.start_date, DATE_FORMAT) if certificate.start_date else ""
 	context.end_date = format_date(certificate.end_date, DATE_FORMAT) if certificate.end_date else ""
-	context.issue_date = format_date(certificate.issue_date, DATE_FORMAT) if certificate.issue_date else ""
-	context.expiry_date = format_date(certificate.expiry_date, DATE_FORMAT) if certificate.expiry_date else ""
 	context.serial_number = certificate.serial_number
 
 
@@ -64,8 +62,6 @@ def get_certificate(token):
 			"course_title",
 			"batch_name",
 			"batch_title",
-			"issue_date",
-			"expiry_date",
 			"serial_number",
 			"revoked",
 		],

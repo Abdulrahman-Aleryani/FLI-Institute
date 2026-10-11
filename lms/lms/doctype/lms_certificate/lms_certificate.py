@@ -8,7 +8,7 @@ from frappe import _
 from frappe.email.doctype.email_template.email_template import get_email_template
 from frappe.model.document import Document
 from frappe.model.naming import getseries, make_autoname
-from frappe.utils import cint, nowdate
+from frappe.utils import cint
 
 CERTIFICATE_PRINT_FORMAT = "Certificate Template"
 PRIVILEGED_ROLES = ("System Manager", "Moderator")
@@ -158,32 +158,18 @@ def next_serial_number():
 	return str(int(getseries("LMS-CERT-SERIAL-", 1)) + max(start - 1, 0))
 
 
-def get_active_certificate_filters():
-	"""Filters and or_filters that match certificates that are neither revoked nor expired."""
-	return (
-		{"revoked": 0},
-		[["expiry_date", "is", "not set"], ["expiry_date", ">=", nowdate()]],
-	)
-
-
 def active_certificate_condition(Certificate):
-	return (Certificate.revoked == 0) & (
-		Certificate.expiry_date.isnull() | (Certificate.expiry_date >= nowdate())
-	)
+	return Certificate.revoked == 0
 
 
-def get_certificate_status(revoked, expiry_date):
-	if revoked:
-		return "Revoked"
-	if expiry_date and str(expiry_date) < nowdate():
-		return "Expired"
-	return "Valid"
+def get_certificate_status(revoked):
+	return "Revoked" if revoked else "Valid"
 
 
 def is_certified(course):
-	filters, or_filters = get_active_certificate_filters()
-	filters.update({"member": frappe.session.user, "course": course})
-	certificate = frappe.get_all("LMS Certificate", filters=filters, or_filters=or_filters)
+	certificate = frappe.get_all(
+		"LMS Certificate", filters={"member": frappe.session.user, "course": course, "revoked": 0}
+	)
 	if len(certificate):
 		return certificate[0].name
 	return
@@ -201,7 +187,6 @@ def create_certificate(course):
 			"doctype": "LMS Certificate",
 			"member": frappe.session.user,
 			"course": course,
-			"issue_date": nowdate(),
 		}
 	)
 	certificate.flags.ignore_eligibility = True
@@ -290,9 +275,7 @@ def revoke_certificate(name, reason):
 
 
 @frappe.whitelist()
-def create_bulk_certificates(
-	batch, template=None, issue_date=None, expiry_date=None, published=1, course=None
-):
+def create_bulk_certificates(batch, template=None, published=1, course=None):
 	frappe.only_for(PRIVILEGED_ROLES)
 	if not frappe.db.exists("LMS Batch", batch):
 		frappe.throw(_("Batch {0} does not exist.").format(batch))
@@ -321,7 +304,10 @@ def create_bulk_certificates(
 
 	created, skipped, failed = [], [], []
 	for member in members:
-		if frappe.db.exists("LMS Certificate", {"member": member, "batch_name": batch, "revoked": 0}):
+		duplicate_filters = [{"member": member, "batch_name": batch, "revoked": 0}]
+		if batch_course.get("course"):
+			duplicate_filters.append({"member": member, "course": batch_course.get("course"), "revoked": 0})
+		if any(frappe.db.exists("LMS Certificate", filters) for filters in duplicate_filters):
 			skipped.append({"member": member, "reason": _("Already certified")})
 			continue
 
@@ -336,8 +322,6 @@ def create_bulk_certificates(
 					"course": batch_course.get("course"),
 					"evaluator": batch_course.get("evaluator"),
 					"certificate_template": template,
-					"issue_date": issue_date or nowdate(),
-					"expiry_date": expiry_date,
 					"published": cint(published),
 				}
 			)
