@@ -11,8 +11,11 @@ except ImportError:  # Frappe v15
 	from frappe.tests.utils import FrappeTestCase as IntegrationTestCase
 
 from lms.lms.certificate_renderer import (
+	SAMPLE_GRADES,
+	_sample_parts,
 	build_context,
 	render_html_template,
+	render_template_html,
 	sanitize_css,
 )
 from lms.lms.doctype.lms_certificate.lms_certificate import resolve_certificate_template
@@ -143,3 +146,43 @@ class TestLMSCertificateTemplate(IntegrationTestCase):
 		self.assertEqual((width, height), (20, 20))
 		data = png[png.index(b"IDAT") + 4 : png.index(b"IEND") - 8]
 		self.assertEqual(len(zlib.decompress(data)), 20 * (1 + 3))
+
+
+class TestGradesPage(IntegrationTestCase):
+	def template(self, include):
+		return frappe.get_doc(
+			{
+				"doctype": "LMS Certificate Template",
+				"template_name": "Grades Page Test",
+				"template_type": "HTML",
+				"html": "<div>{{ student_name }}</div>",
+				"include_grades_page": include,
+			}
+		)
+
+	def test_no_page_when_disabled(self):
+		template = self.template(0)
+		html = render_template_html(template, _sample_parts(template), SAMPLE_GRADES)
+		self.assertNotIn("grades-page", html)
+
+	def test_no_page_without_grades(self):
+		template = self.template(1)
+		html = render_template_html(template, _sample_parts(template), None)
+		self.assertNotIn("grades-page", html)
+
+	def test_page_rendered_and_escaped(self):
+		template = self.template(1)
+		grades = dict(SAMPLE_GRADES, teacher_comments="<script>x</script> مرحبا")
+		html = render_template_html(template, _sample_parts(template), grades)
+		self.assertEqual(html.count('class="cert-page'), 2)
+		self.assertIn("page-break-before: always", html)
+		self.assertIn("&lt;script&gt;x&lt;/script&gt; مرحبا", html)
+		self.assertNotIn("<script>x", html)
+		self.assertIn("Excellent", html)
+
+	def test_image_template_also_gets_page(self):
+		template = self.template(1)
+		template.template_type = "Image"
+		template.layout_json = "[]"
+		html = render_template_html(template, _sample_parts(template), SAMPLE_GRADES)
+		self.assertEqual(html.count('class="cert-page'), 2)

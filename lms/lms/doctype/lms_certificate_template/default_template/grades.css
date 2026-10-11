@@ -1,0 +1,15 @@
+.grades-page { position: relative; background: #fff; color: #14233f; font-family: "EB Garamond", "Noto Naskh Arabic", Georgia, "Times New Roman", serif; padding: 18mm 24mm; -webkit-box-sizing: border-box; box-sizing: border-box; }
+.grades-page .gr-frame { position: absolute; left: 6mm; top: 6mm; right: 6mm; bottom: 6mm; border: 0.8mm solid #1E4FA3; }
+.grades-page .gr-header { text-align: center; margin-bottom: 8mm; }
+.grades-page .cert-logo { height: 16mm; width: auto; }
+.grades-page .gr-title { margin-top: 4mm; font-size: 22pt; letter-spacing: 0.3em; text-transform: uppercase; color: #1E4FA3; font-weight: 600; }
+.grades-page .gr-line { font-size: 12pt; margin-bottom: 2mm; }
+.grades-page .gr-label { font-size: 8pt; letter-spacing: 0.22em; text-transform: uppercase; color: #B8893A; font-weight: 600; display: inline-block; width: 38mm; }
+.grades-page .gr-value { font-size: 12pt; color: #0F2347; }
+.grades-page .gr-marks { border-collapse: collapse; margin: 8mm 0; width: 100mm; }
+.grades-page .gr-marks th, .grades-page .gr-marks td { border: 0.25mm solid #B8893A; padding: 2mm 4mm; text-align: center; font-size: 12pt; }
+.grades-page .gr-marks th { font-size: 8pt; letter-spacing: 0.22em; text-transform: uppercase; color: #B8893A; }
+.grades-page .gr-teacher { font-size: 12pt; margin-bottom: 6mm; }
+.grades-page .gr-comments { border: 0.25mm solid #B8893A; padding: 4mm 6mm; }
+.grades-page .gr-text { font-size: 11pt; line-height: 1.4; margin-top: 2mm; }
+.grades-page .gr-ar { font-family: "Noto Naskh Arabic", serif; }

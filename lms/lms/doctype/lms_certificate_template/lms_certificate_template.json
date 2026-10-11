@@ -12,6 +12,7 @@
   "column_break_main",
   "page_size",
   "orientation",
+  "include_grades_page",
   "html_section",
   "html",
   "css",
@@ -144,6 +145,13 @@
    "fieldname": "signer_2_signature",
    "fieldtype": "Attach Image",
    "label": "Signer 2 Signature"
+  },
+  {
+   "default": "0",
+   "description": "Adds a grades report as a second page when the student has submitted grades for the batch.",
+   "fieldname": "include_grades_page",
+   "fieldtype": "Check",
+   "label": "Include Grades Page"
   }
  ],
  "grid_page_length": 50,

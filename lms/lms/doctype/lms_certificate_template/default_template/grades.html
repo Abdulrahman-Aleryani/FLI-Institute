@@ -1,0 +1,22 @@
+<div class="gr-frame"></div>
+<div class="gr-header">
+	{{ logo }}
+	<div class="gr-title">Grades Report</div>
+</div>
+<div class="gr-meta">
+	<div class="gr-line"><span class="gr-label">Name</span> <span class="gr-value{% if student_name_is_arabic %} gr-ar{% endif %}">{{ student_name }}</span></div>
+	<div class="gr-line"><span class="gr-label">Course</span> <span class="gr-value">{{ course_title }}</span></div>
+	<div class="gr-line"><span class="gr-label">Batch</span> <span class="gr-value">{{ batch_title }}</span></div>
+	<div class="gr-line"><span class="gr-label">Term</span> <span class="gr-value">{{ term }}</span></div>
+	<div class="gr-line"><span class="gr-label">Period</span> <span class="gr-value">{{ start_date }} - {{ end_date }}</span></div>
+	<div class="gr-line"><span class="gr-label">Certificate No.</span> <span class="gr-value">{{ serial_number }}</span></div>
+</div>
+<table class="gr-marks">
+	<tr><th>Mark</th><th>Average</th></tr>
+	<tr><td>{{ mark }}</td><td>{{ grade_label }}</td></tr>
+</table>
+<div class="gr-teacher"><span class="gr-label">Teacher</span> <span class="gr-value">{{ teacher_name }}</span></div>
+<div class="gr-comments">
+	<div class="gr-label">Teacher's Comments</div>
+	<div class="gr-text{% if teacher_comments_is_arabic %} gr-ar{% endif %}">{{ teacher_comments }}</div>
+</div>

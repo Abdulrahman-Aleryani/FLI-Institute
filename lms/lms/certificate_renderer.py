@@ -6,6 +6,7 @@ import re
 import struct
 import zlib
 from html import escape
+from pathlib import Path
 
 import frappe
 from frappe import _
@@ -15,7 +16,17 @@ from jinja2.exceptions import SecurityError
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 from markupsafe import Markup
 
+from lms.lms.certificate_grades import collect_grades
+
 # Landscape sizes in mm (width, height). Swapped for Portrait.
+GRADES_FOLDER = Path(__file__).parent / "doctype" / "lms_certificate_template" / "default_template"
+SAMPLE_GRADES = {
+	"mark": 92,
+	"grade_label": "Excellent",
+	"term": "Term 3",
+	"teacher_name": "Sample Teacher",
+	"teacher_comments": "A cooperative and hard-working student with strong speaking and writing.",
+}
 PAGE_SIZES = {"A4": (297, 210), "Letter": (279.4, 215.9)}
 DATE_FORMAT = "dd MMM yyyy"
 MAX_INLINE_FILE_SIZE = 8 * 1024 * 1024
@@ -399,11 +410,32 @@ def _render_image_template(template, values, images):
 	return _page_shell(template, "\n".join(parts))
 
 
-def render_template_html(template, parts):
+def _render_grades_page(template, parts, grades):
+	context = dict(parts[0])
+	for key, value in grades.items():
+		if key == "mark" and float(value).is_integer():
+			value = int(value)
+		context[key] = str(value)
+		context[f"{key}_is_arabic"] = bool(ARABIC_RE.search(context[key]))
+	width, height = _page_dimensions(template)
+	body = render_html_template((GRADES_FOLDER / "grades.html").read_text(encoding="utf-8"), context)
+	css = sanitize_css((GRADES_FOLDER / "grades.css").read_text(encoding="utf-8"))
+	return (
+		f"<style>{css}</style>"
+		f'<div class="cert-page grades-page" style="page-break-before: always; '
+		f'width:{width}mm; height:{height}mm;">{body}</div>'
+	)
+
+
+def render_template_html(template, parts, grades=None):
 	context, values, images = parts
 	if template.template_type == "Image":
-		return _render_image_template(template, values, images)
-	return _page_shell(template, render_html_template(template.html, context), sanitize_css(template.css))
+		html = _render_image_template(template, values, images)
+	else:
+		html = _page_shell(template, render_html_template(template.html, context), sanitize_css(template.css))
+	if template.get("include_grades_page") and grades:
+		html = html.replace("</body>", _render_grades_page(template, parts, grades) + "\n</body>")
+	return html
 
 
 def render_certificate(cert_name, template=None, sample=False):
@@ -417,10 +449,12 @@ def render_certificate(cert_name, template=None, sample=False):
 
 	if sample:
 		parts = _sample_parts(template)
+		grades = SAMPLE_GRADES
 	else:
 		values, images = _collect(cert, template)
 		parts = (build_context(values, images), values, images)
-	return render_template_html(template, parts)
+		grades = collect_grades(cert) if template.include_grades_page else None
+	return render_template_html(template, parts, grades)
 
 
 def render_lms_certificate(name):
@@ -456,7 +490,7 @@ def preview_certificate_template(template, format="html"):
 	else:
 		doc.validate()
 
-	html = render_template_html(doc, _sample_parts(doc))
+	html = render_template_html(doc, _sample_parts(doc), SAMPLE_GRADES)
 	if format == "pdf":
 		from frappe.utils.pdf import get_pdf
 
