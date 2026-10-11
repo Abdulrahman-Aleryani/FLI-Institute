@@ -50,6 +50,15 @@ A JSON list (max 60 elements). Each element:
 
 `student_name` shrinks proportionally when longer than 28 characters.
 
+## Grades page
+
+A template with `include_grades_page` set appends a second page, a grades report, to the certificate PDF. The page is built in (`default_template/grades.html` and `grades.css`) and is not editable per template; it adds no placeholders to the certificate itself.
+
+- Data: the latest submitted `Batch Grade Sheet` of the certificate's batch that has a record for the member. Mark is the record's `total`, `teacher_comments` is entered in the grade sheet, term and teacher come from the sheet.
+- The "Average" label is the highest band in LMS Settings > Certificate Grades whose minimum mark is at or below the mark. Without configured bands: 90 Excellent, 80 Very Good, 70 Good, 60 Pass. A mark below every band shows no label.
+- No batch, no submitted sheet, or no record for the member means no second page. Preview shows sample grades.
+- Page size and orientation follow the template. Values are escaped by the same sandboxed Jinja environment.
+
 ## API
 All paths are `/api/method/<dotted path>`.
 
