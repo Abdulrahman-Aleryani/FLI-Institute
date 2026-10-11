@@ -14,6 +14,7 @@ from lms.lms.certificate_renderer import (
 	SAMPLE_GRADES,
 	_sample_parts,
 	build_context,
+	render_lms_certificate,
 	render_html_template,
 	render_template_html,
 	sanitize_css,
@@ -186,3 +187,26 @@ class TestGradesPage(IntegrationTestCase):
 		template.layout_json = "[]"
 		html = render_template_html(template, _sample_parts(template), SAMPLE_GRADES)
 		self.assertEqual(html.count('class="cert-page'), 2)
+
+
+class TestGradesPrivacy(IntegrationTestCase):
+	def run_render(self, user, has_print):
+		from unittest.mock import patch
+
+		doc = frappe._dict(member="owner@example.com")
+		with (
+			patch("frappe.get_doc", return_value=doc),
+			patch("frappe.has_permission", return_value=has_print),
+			patch("frappe.has_website_permission", return_value=True),
+			patch.object(frappe.local, "session", frappe._dict(user=user)),
+			patch("lms.lms.certificate_renderer.render_certificate", return_value="") as render,
+		):
+			render_lms_certificate("X")
+		return render.call_args.kwargs["include_grades"]
+
+	def test_other_signed_in_user_gets_no_grades(self):
+		self.assertFalse(self.run_render("other@example.com", False))
+
+	def test_member_and_staff_get_grades(self):
+		self.assertTrue(self.run_render("owner@example.com", False))
+		self.assertTrue(self.run_render("staff@example.com", True))

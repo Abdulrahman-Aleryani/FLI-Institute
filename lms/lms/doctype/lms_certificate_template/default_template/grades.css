@@ -1,5 +1,4 @@
-.grades-page { position: relative; background: #fff; color: #14233f; font-family: "EB Garamond", "Noto Naskh Arabic", Georgia, "Times New Roman", serif; padding: 18mm 24mm; -webkit-box-sizing: border-box; box-sizing: border-box; }
-.grades-page .gr-frame { position: absolute; left: 6mm; top: 6mm; right: 6mm; bottom: 6mm; border: 0.8mm solid #1E4FA3; }
+.grades-page { position: relative; background: #fff; color: #14233f; font-family: "EB Garamond", "Noto Naskh Arabic", Georgia, "Times New Roman", serif; padding: 12mm 18mm; border: 0.8mm solid #1E4FA3; -webkit-box-sizing: border-box; box-sizing: border-box; }
 .grades-page .gr-header { text-align: center; margin-bottom: 8mm; }
 .grades-page .cert-logo { height: 16mm; width: auto; }
 .grades-page .gr-title { margin-top: 4mm; font-size: 22pt; letter-spacing: 0.3em; text-transform: uppercase; color: #1E4FA3; font-weight: 600; }

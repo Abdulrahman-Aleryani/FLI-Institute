@@ -422,8 +422,11 @@ def _render_grades_page(template, parts, grades):
 	css = sanitize_css((GRADES_FOLDER / "grades.css").read_text(encoding="utf-8"))
 	return (
 		f"<style>{css}</style>"
-		f'<div class="cert-page grades-page" style="page-break-before: always; '
-		f'width:{width}mm; height:{height}mm;">{body}</div>'
+		# Flows instead of clipping: a long comment continues on a further page. Margin plus
+		# the frame border replace the absolute frame, which only covered the first page.
+		f'<div style="page-break-before: always; padding-top: 6mm;">'
+		f'<div class="cert-page grades-page" style="width:{width - 12:.1f}mm; '
+		f'min-height:{height - 20:.1f}mm; height:auto; margin:0 6mm 6mm 6mm; overflow:visible;">{body}</div></div>'
 	)
 
 
@@ -438,7 +441,7 @@ def render_template_html(template, parts, grades=None):
 	return html
 
 
-def render_certificate(cert_name, template=None, sample=False):
+def render_certificate(cert_name, template=None, sample=False, include_grades=True):
 	cert = frappe.get_doc("LMS Certificate", cert_name)
 	template = template or cert.certificate_template
 	if not template:
@@ -453,15 +456,18 @@ def render_certificate(cert_name, template=None, sample=False):
 	else:
 		values, images = _collect(cert, template)
 		parts = (build_context(values, images), values, images)
-		grades = collect_grades(cert) if template.include_grades_page else None
+		grades = collect_grades(cert) if include_grades and template.include_grades_page else None
 	return render_template_html(template, parts, grades)
 
 
 def render_lms_certificate(name):
 	doc = frappe.get_doc("LMS Certificate", name)
-	if not (frappe.has_permission("LMS Certificate", "print", doc) or frappe.has_website_permission(doc)):
+	has_print = frappe.has_permission("LMS Certificate", "print", doc)
+	if not (has_print or frappe.has_website_permission(doc)):
 		raise frappe.PermissionError
-	return render_certificate(name)
+	# Website permission lets any signed-in user print a certificate, but grades are private
+	# to the member and staff.
+	return render_certificate(name, include_grades=has_print or frappe.session.user == doc.member)
 
 
 def _template_from_input(template):
