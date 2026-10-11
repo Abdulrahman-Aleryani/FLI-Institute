@@ -13,3 +13,4 @@
 .grades-page .gr-comments { border: 0.25mm solid #B8893A; padding: 4mm 6mm; }
 .grades-page .gr-text { font-size: 11pt; line-height: 1.4; margin-top: 2mm; }
 .grades-page .gr-ar { font-family: "Noto Naskh Arabic", serif; }
+.grades-page .gr-comments .gr-label { display: block; width: auto; }

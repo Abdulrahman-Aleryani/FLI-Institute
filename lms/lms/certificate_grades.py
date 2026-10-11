@@ -1,3 +1,5 @@
+from html import unescape
+
 import frappe
 from frappe.utils import flt
 
@@ -51,6 +53,7 @@ def collect_grades(cert):
 				"grade_label": get_grade_label(record.total),
 				"term": sheet.term or "",
 				"teacher_name": sheet.instructor_name or "",
-				"teacher_comments": record.teacher_comments or "",
+				# Frappe stores "&" as "&amp;" in text fields; the template escapes on output
+				"teacher_comments": unescape(record.teacher_comments or ""),
 			}
 	return None

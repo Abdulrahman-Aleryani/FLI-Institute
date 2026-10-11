@@ -69,3 +69,13 @@ class TestCollectGrades(IntegrationTestCase):
 		with patch("frappe.get_all", return_value=[]) as get_all:
 			collect_grades(self.cert())
 		self.assertEqual(get_all.call_args.kwargs["filters"]["docstatus"], 1)
+
+	def test_comments_entities_are_unescaped(self):
+		sheets = [frappe._dict(name="S1", term="3", instructor_name="T")]
+		record = frappe._dict(total=70, teacher_comments="Fast &amp; keen")
+
+		def get_all(doctype, **kwargs):
+			return sheets if doctype == "Batch Grade Sheet" else []
+
+		with patch("frappe.get_all", side_effect=get_all), patch("frappe.db.get_value", return_value=record):
+			self.assertEqual(collect_grades(self.cert())["teacher_comments"], "Fast & keen")
