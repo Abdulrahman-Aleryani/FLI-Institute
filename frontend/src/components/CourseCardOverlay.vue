@@ -277,7 +277,7 @@ const certificate = createResource({
 		window.open(
 			`/api/method/frappe.utils.print_format.download_pdf?doctype=LMS+Certificate&name=${
 				data.name
-			}&format=${encodeURIComponent(data.template)}`,
+			}&format=${encodeURIComponent(data.template)}&no_letterhead=1`,
 			'_blank'
 		)
 	},

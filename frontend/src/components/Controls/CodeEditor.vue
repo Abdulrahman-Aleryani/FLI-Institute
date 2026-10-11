@@ -72,6 +72,14 @@ const props = defineProps({
 		type: String,
 		default: '',
 	},
+	liveUpdate: {
+		type: Boolean,
+		default: false,
+	},
+	autoPair: {
+		type: Boolean,
+		default: true,
+	},
 })
 
 const emit = defineEmits(['save', 'update:modelValue'])
@@ -90,6 +98,7 @@ const setupEditor = () => {
 	aceEditor.setOptions({
 		fontSize: '12px',
 		useWorker: false,
+		behavioursEnabled: props.autoPair,
 		showGutter: props.showLineNumbers,
 		wrap: props.showLineNumbers,
 	})
@@ -112,6 +121,12 @@ const setupEditor = () => {
 	} else {
 		import('ace-builds/src-noconflict/mode-html').then(() => {
 			aceEditor?.session.setMode('ace/mode/html')
+		})
+	}
+	if (props.liveUpdate) {
+		aceEditor.on('change', () => {
+			if (props.readonly || props.showSaveButton) return
+			emit('update:modelValue', aceEditor?.getValue() || '')
 		})
 	}
 	aceEditor.on('blur', () => {
@@ -162,15 +177,21 @@ watch(
 	() => props.type,
 	() => {
 		setupEditor()
-	}
+	},
 )
 
 watch(
 	() => props.modelValue,
 	() => {
+		if (props.liveUpdate && props.modelValue === aceEditor?.getValue()) return
 		resetEditor(props.modelValue as string)
-	}
+	},
 )
 
-defineExpose({ resetEditor })
+const insertAtCursor = (text: string) => {
+	aceEditor?.insert(text)
+	aceEditor?.focus()
+}
+
+defineExpose({ resetEditor, insertAtCursor })
 </script>

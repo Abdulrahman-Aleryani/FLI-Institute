@@ -105,7 +105,6 @@ class TestUtils(unittest.TestCase):
 		certificate = frappe.new_doc("LMS Certificate")
 		certificate.course = course_name
 		certificate.member = member
-		certificate.issue_date = frappe.utils.nowdate()
 		certificate.template = get_default_certificate_template()
 		certificate.save()
 		return certificate

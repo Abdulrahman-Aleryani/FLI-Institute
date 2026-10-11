@@ -69,6 +69,13 @@
 						:label="__('Certification')"
 					/>
 				</div>
+				<Link
+					v-if="batch.certification"
+					doctype="LMS Certificate Template"
+					v-model="batch.certificate_template"
+					:filters="{ enabled: 1 }"
+					:label="__('Certificate Template')"
+				/>
 			</div>
 
 			<div class="px-5 md:px-20 pb-5 space-y-5 border-b mb-5">
@@ -380,6 +387,7 @@ const batch = reactive({
 	category: '',
 	allow_self_enrollment: false,
 	certification: false,
+	certificate_template: '',
 	image: null,
 	paid_batch: false,
 	currency: '',

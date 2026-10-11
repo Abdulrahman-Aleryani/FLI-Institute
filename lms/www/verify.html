@@ -1,0 +1,37 @@
+{% extends "templates/web.html" %}
+
+{% block head_include %}
+<meta name="robots" content="noindex">
+{% endblock %}
+
+{% block page_content %}
+<style>
+	.verify-wrapper { display: flex; justify-content: center; padding: 3rem 1rem; }
+	.verify-card { width: 100%; max-width: 520px; background: #fff; border: 1px solid #e2e6e9; border-radius: 12px; padding: 2rem; text-align: center; }
+	.verify-badge { display: inline-block; padding: 0.35rem 1rem; border-radius: 999px; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.04em; text-transform: uppercase; }
+	.verify-valid { background: #e6f6ec; color: #166534; }
+	.verify-revoked { background: #fdecec; color: #991b1b; }
+	.verify-details { margin: 1.5rem 0 0; padding: 0; list-style: none; text-align: left; }
+	.verify-details li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.6rem 0; border-top: 1px solid #eef0f2; }
+	.verify-label { color: #6b7280; }
+	.verify-value { font-weight: 500; text-align: right; }
+</style>
+<div class="verify-wrapper">
+	<div class="verify-card">
+		<h2>{{ _("Certificate Verification") }}</h2>
+		{% if not found %}
+		<p class="text-muted">{{ _("We could not find a certificate for this link.") }}</p>
+		{% else %}
+		<span class="verify-badge verify-{{ status | lower }}">{{ _(status) }}</span>
+		<ul class="verify-details">
+			<li><span class="verify-label">{{ _("Name") }}</span><span class="verify-value">{{ student_name }}</span></li>
+			{% if course_title %}<li><span class="verify-label">{{ _("Course") }}</span><span class="verify-value">{{ course_title }}</span></li>{% endif %}
+			{% if batch_title %}<li><span class="verify-label">{{ _("Batch") }}</span><span class="verify-value">{{ batch_title }}</span></li>{% endif %}
+			{% if start_date %}<li><span class="verify-label">{{ _("Start Date") }}</span><span class="verify-value">{{ start_date }}</span></li>{% endif %}
+			{% if end_date %}<li><span class="verify-label">{{ _("End Date") }}</span><span class="verify-value">{{ end_date }}</span></li>{% endif %}
+			<li><span class="verify-label">{{ _("Certificate No.") }}</span><span class="verify-value">{{ serial_number }}</span></li>
+		</ul>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

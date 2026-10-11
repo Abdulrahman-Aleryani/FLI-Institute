@@ -22,6 +22,7 @@
   "allow_self_enrollment",
   "column_break_vnrp",
   "certification",
+  "certificate_template",
   "section_break_6",
   "description",
   "column_break_hlqw",
@@ -361,6 +362,13 @@
    "fieldtype": "Link",
    "label": "Zoom Account",
    "options": "LMS Zoom Settings"
+  },
+  {
+   "depends_on": "certification",
+   "fieldname": "certificate_template",
+   "fieldtype": "Link",
+   "label": "Certificate Template",
+   "options": "LMS Certificate Template"
   }
  ],
  "grid_page_length": 50,
@@ -379,7 +387,7 @@
    "link_fieldname": "batch_name"
   }
  ],
- "modified": "2025-12-04 12:54:11.190967",
+ "modified": "2026-10-01 12:00:00.000000",
  "modified_by": "sayali@frappe.io",
  "module": "LMS",
  "name": "LMS Batch",

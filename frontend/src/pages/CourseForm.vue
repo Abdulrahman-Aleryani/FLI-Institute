@@ -254,6 +254,13 @@
 								:label="__('Paid Certificate')"
 							/>
 						</div>
+						<Link
+							v-if="course.enable_certification"
+							doctype="LMS Certificate Template"
+							v-model="course.certificate_template"
+							:filters="{ enabled: 1 }"
+							:label="__('Certificate Template')"
+						/>
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 							<div class="space-y-5">
 								<FormControl
@@ -396,6 +403,7 @@ const course = reactive({
 	upcoming: false,
 	disable_self_learning: false,
 	enable_certification: false,
+	certificate_template: '',
 	paid_course: false,
 	paid_certificate: false,
 	course_price: '',

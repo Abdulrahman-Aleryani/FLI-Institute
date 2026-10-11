@@ -11,36 +11,29 @@
   "evaluator",
   "evaluator_name",
   "column_break_vwbn",
-  "issue_date",
-  "expiry_date",
+  "certificate_template",
   "template",
+  "serial_number",
   "published",
   "section_break_unwn",
   "course",
   "course_title",
   "column_break_ywee",
   "batch_name",
-  "batch_title"
+  "batch_title",
+  "section_break_revocation",
+  "verification_token",
+  "revoked",
+  "revoked_on",
+  "revocation_reason"
  ],
  "fields": [
-  {
-   "default": "Today",
-   "fieldname": "issue_date",
-   "fieldtype": "Date",
-   "label": "Issue Date",
-   "reqd": 1
-  },
   {
    "fieldname": "course",
    "fieldtype": "Link",
    "in_standard_filter": 1,
    "label": "Course",
    "options": "LMS Course"
-  },
-  {
-   "fieldname": "expiry_date",
-   "fieldtype": "Date",
-   "label": "Expiry Date"
   },
   {
    "fieldname": "member",
@@ -118,12 +111,57 @@
    "fieldtype": "Data",
    "label": "Batch Title",
    "read_only": 1
+  },
+  {
+   "fieldname": "certificate_template",
+   "fieldtype": "Link",
+   "label": "Certificate Template",
+   "options": "LMS Certificate Template"
+  },
+  {
+   "fieldname": "serial_number",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Serial Number",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "section_break_revocation",
+   "fieldtype": "Section Break",
+   "label": "Verification"
+  },
+  {
+   "fieldname": "verification_token",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Verification Token",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "revoked",
+   "fieldtype": "Check",
+   "label": "Revoked"
+  },
+  {
+   "fieldname": "revoked_on",
+   "fieldtype": "Datetime",
+   "label": "Revoked On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "revocation_reason",
+   "fieldtype": "Small Text",
+   "label": "Revocation Reason",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-07 19:24:12.272810",
+ "modified": "2026-10-01 12:00:00.000000",
  "modified_by": "sayali@frappe.io",
  "module": "LMS",
  "name": "LMS Certificate",
@@ -154,7 +192,6 @@
    "write": 1
   },
   {
-   "create": 1,
    "email": 1,
    "export": 1,
    "if_owner": 1,
@@ -162,8 +199,7 @@
    "read": 1,
    "report": 1,
    "role": "LMS Student",
-   "share": 1,
-   "write": 1
+   "share": 1
   }
  ],
  "row_format": "Dynamic",

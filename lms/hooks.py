@@ -107,6 +107,7 @@ fixtures = [
 # Website Routes and Redirections
 # ------------------------------
 website_route_rules = [
+    {"from_route": "/verify/<token>", "to_route": "verify"},
     {"from_route": "/lms", "to_route": "lms"},
     {"from_route": "/lms/<path:app_path>", "to_route": "lms"},
     {"from_route": "/placement-test", "to_route": "placement_test"},
@@ -161,6 +162,7 @@ update_website_context = [
 # ----------------
 jinja = {
     "methods": [
+        "lms.lms.certificate_renderer.render_lms_certificate",
         "lms.lms.utils.get_tags",
         "lms.lms.utils.get_lesson_count",
         "lms.lms.utils.get_instructors",

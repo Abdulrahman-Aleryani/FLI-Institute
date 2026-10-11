@@ -1,0 +1,23 @@
+{
+  "name": "Frappe Learning (LMS)",
+  "user": "ubuntu",
+  "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
+  "terminals": [
+    {
+      "name": "bench",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd ~/frappe-bench && bench start",
+      "description": "Frappe dev server: web (:8000), socket.io (:9000), workers, scheduler and JS asset watcher. Serves the built LMS SPA at http://lms.test:8000/lms (Administrator / admin)."
+    },
+    {
+      "name": "frontend-dev",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd ~/frappe-bench/apps/lms/frontend && yarn dev",
+      "description": "Vite dev server with hot-module reload for the Vue frontend at http://lms.test:8080 (proxies API calls to the bench backend on :8000)."
+    }
+  ],
+  "ports": [
+    { "name": "bench-web", "port": 8000 },
+    { "name": "vite-dev", "port": 8080 },
+    { "name": "socketio", "port": 9000 }
+  ]
+}

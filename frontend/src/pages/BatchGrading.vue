@@ -95,7 +95,7 @@
 				</div>
 
 				<div class="overflow-x-auto rounded-xl border border-outline-gray-2 bg-surface-white">
-					<table class="w-full min-w-[900px] text-sm">
+					<table class="w-full min-w-[1160px] text-sm">
 						<thead class="bg-surface-gray-1 text-ink-gray-6">
 							<tr>
 								<th class="px-4 py-3 text-left font-medium">{{ __('Student') }}</th>
@@ -108,6 +108,7 @@
 									<span class="text-xs text-ink-gray-4">/ {{ gradeMax[field] }}</span>
 								</th>
 								<th class="px-4 py-3 text-center font-medium">{{ __('Total') }}</th>
+								<th class="px-4 py-3 text-left font-medium">{{ __('Teacher Comments') }}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -140,6 +141,14 @@
 									>
 										{{ formatNumber(row.total) }}
 									</span>
+								</td>
+								<td class="px-2 py-3 min-w-[260px]">
+									<FormControl
+										v-model="row.teacher_comments"
+										type="textarea"
+										:rows="2"
+										:disabled="isReadOnly"
+									/>
 								</td>
 							</tr>
 						</tbody>
@@ -283,6 +292,7 @@ const populateStudents = async () => {
 			parenttype: 'Batch Grade Sheet',
 			parentfield: 'grade_records',
 			total: 0,
+			teacher_comments: '',
 		}
 		gradeFields.forEach((field) => {
 			record[field] = null

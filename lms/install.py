@@ -5,8 +5,11 @@ from lms.lms.api import give_discussions_permission
 
 
 def after_install():
+	from lms.lms.doctype.lms_certificate_template.lms_certificate_template import create_default_template
+
 	create_batch_source()
 	give_discussions_permission()
+	create_default_template()
 
 
 def after_sync():

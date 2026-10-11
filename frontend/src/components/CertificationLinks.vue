@@ -79,7 +79,7 @@ const downloadCertificate = () => {
 	window.open(
 		`/api/method/frappe.utils.print_format.download_pdf?doctype=LMS+Certificate&name=${
 			certification.data.certificate.name
-		}&format=${encodeURIComponent(certification.data.certificate.template)}`
+		}&format=${encodeURIComponent(certification.data.certificate.template)}&no_letterhead=1`
 	)
 }
 </script>

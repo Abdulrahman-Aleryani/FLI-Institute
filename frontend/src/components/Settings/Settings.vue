@@ -82,6 +82,7 @@ import Coupons from '@/components/Settings/Coupons/Coupons.vue'
 import Transactions from '@/components/Settings/Transactions/Transactions.vue'
 import ZoomSettings from '@/components/Settings/ZoomSettings.vue'
 import Badges from '@/components/Settings/Badges.vue'
+import CertificateTemplates from '@/components/Settings/CertificateTemplates.vue'
 
 const show = defineModel()
 const doctype = ref('LMS Settings')
@@ -232,6 +233,13 @@ const tabsStructure = computed(() => {
 					description: 'Manage the email templates for your learning system',
 					icon: 'MailPlus',
 					template: markRaw(EmailTemplates),
+				},
+				{
+					label: 'Certificate Templates',
+					description:
+						'Design the certificates issued to your students and choose the default',
+					icon: 'FileBadge',
+					template: markRaw(CertificateTemplates),
 				},
 			],
 		},

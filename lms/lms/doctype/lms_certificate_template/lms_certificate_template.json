@@ -1,0 +1,206 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:template_name",
+ "creation": "2026-10-01 12:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "template_name",
+  "template_type",
+  "enabled",
+  "column_break_main",
+  "page_size",
+  "orientation",
+  "include_grades_page",
+  "html_section",
+  "html",
+  "css",
+  "image_section",
+  "background_image",
+  "layout_json",
+  "signers_section",
+  "signer_1_name",
+  "signer_1_title",
+  "signer_1_signature",
+  "column_break_signers",
+  "signer_2_name",
+  "signer_2_title",
+  "signer_2_signature"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Template Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "default": "HTML",
+   "fieldname": "template_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Template Type",
+   "options": "HTML\nImage"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "A4",
+   "fieldname": "page_size",
+   "fieldtype": "Select",
+   "label": "Page Size",
+   "options": "A4\nLetter"
+  },
+  {
+   "default": "Landscape",
+   "fieldname": "orientation",
+   "fieldtype": "Select",
+   "label": "Orientation",
+   "options": "Landscape\nPortrait"
+  },
+  {
+   "depends_on": "eval:doc.template_type=='HTML'",
+   "fieldname": "html_section",
+   "fieldtype": "Section Break",
+   "label": "HTML Template"
+  },
+  {
+   "depends_on": "eval:doc.template_type=='HTML'",
+   "fieldname": "html",
+   "fieldtype": "Code",
+   "label": "HTML",
+   "options": "HTML"
+  },
+  {
+   "depends_on": "eval:doc.template_type=='HTML'",
+   "fieldname": "css",
+   "fieldtype": "Code",
+   "label": "CSS",
+   "options": "CSS"
+  },
+  {
+   "depends_on": "eval:doc.template_type=='Image'",
+   "fieldname": "image_section",
+   "fieldtype": "Section Break",
+   "label": "Image Template"
+  },
+  {
+   "depends_on": "eval:doc.template_type=='Image'",
+   "fieldname": "background_image",
+   "fieldtype": "Attach Image",
+   "label": "Background Image"
+  },
+  {
+   "depends_on": "eval:doc.template_type=='Image'",
+   "fieldname": "layout_json",
+   "fieldtype": "JSON",
+   "label": "Layout"
+  },
+  {
+   "fieldname": "signers_section",
+   "fieldtype": "Section Break",
+   "label": "Signers"
+  },
+  {
+   "fieldname": "signer_1_name",
+   "fieldtype": "Data",
+   "label": "Signer 1 Name"
+  },
+  {
+   "fieldname": "signer_1_title",
+   "fieldtype": "Data",
+   "label": "Signer 1 Title"
+  },
+  {
+   "fieldname": "signer_1_signature",
+   "fieldtype": "Attach Image",
+   "label": "Signer 1 Signature"
+  },
+  {
+   "fieldname": "column_break_signers",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "signer_2_name",
+   "fieldtype": "Data",
+   "label": "Signer 2 Name"
+  },
+  {
+   "fieldname": "signer_2_title",
+   "fieldtype": "Data",
+   "label": "Signer 2 Title"
+  },
+  {
+   "fieldname": "signer_2_signature",
+   "fieldtype": "Attach Image",
+   "label": "Signer 2 Signature"
+  },
+  {
+   "default": "0",
+   "description": "Adds a grades report as a second page when the student has submitted grades for the batch.",
+   "fieldname": "include_grades_page",
+   "fieldtype": "Check",
+   "label": "Include Grades Page"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-10-01 12:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "LMS",
+ "name": "LMS Certificate Template",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Moderator",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "LMS Student"
+  },
+  {
+   "read": 1,
+   "role": "Batch Evaluator"
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "template_name",
+ "track_changes": 1
+}

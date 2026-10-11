@@ -19,6 +19,7 @@ from frappe.integrations.frappe_providers.frappecloud_billing import (
 	is_fc_site,
 )
 from frappe.query_builder import DocType
+from frappe.query_builder.functions import Max
 from frappe.translate import get_all_translations
 from frappe.utils import (
 	add_days,
@@ -33,8 +34,15 @@ from frappe.utils import (
 from frappe.utils.response import Response
 
 from lms.lms.doctype.course_lesson.course_lesson import save_progress
-from lms.lms.utils import get_average_rating, get_batch_details, get_course_details, get_lesson_count
+from lms.lms.utils import (
+	get_average_rating,
+	get_batch_details,
+	get_course_details,
+	get_evaluator,
+	get_lesson_count,
+)
 from lms.lms.doctype.batch_grade_sheet.batch_grade_sheet import ensure_batch_permission
+from lms.lms.doctype.lms_certificate.lms_certificate import active_certificate_condition
 
 # Allow imports like ``lms.lms.api.attendance`` even though this file is a module.
 _attendance_spec = importlib.util.spec_from_file_location(
@@ -299,7 +307,7 @@ def get_chart_details():
 	)
 	details.users = frappe.db.count("User", {"enabled": 1, "name": ["not in", ("Administrator", "Guest")]})
 	details.completions = frappe.db.count("LMS Enrollment", {"progress": ["like", "%100%"]})
-	details.certifications = frappe.db.count("LMS Certificate", {"published": 1})
+	details.certifications = frappe.db.count("LMS Certificate", {"published": 1, "revoked": 0})
 	return details
 
 
@@ -387,33 +395,41 @@ def get_evaluator_details(evaluator):
 	}
 
 
+def get_certified_members_query(filters=None):
+	"""Published, non-revoked certificates, narrowed by the given filters."""
+	if isinstance(filters, str):
+		filters = json.loads(filters)
+
+	Certificate = DocType("LMS Certificate")
+	query = frappe.qb.from_(Certificate).where(
+		(Certificate.published == 1) & active_certificate_condition(Certificate)
+	)
+
+	for field, value in (filters or {}).items():
+		if field == "category":
+			query = query.where(
+				Certificate.course_title.like(f"%{value}%") | Certificate.batch_title.like(f"%{value}%")
+			)
+		elif field == "member_name":
+			query = query.where(Certificate.member_name.like(value[1]))
+
+	return Certificate, query
+
+
 @frappe.whitelist(allow_guest=True)
 def get_certified_participants(filters=None, start=0, page_length=100):
-	or_filters = {}
-	if not filters:
-		filters = {}
-
-	filters.update({"published": 1})
-
-	category = filters.get("category")
-	if category:
-		del filters["category"]
-		or_filters["course_title"] = ["like", f"%{category}%"]
-		or_filters["batch_title"] = ["like", f"%{category}%"]
-
-	participants = frappe.db.get_all(
-		"LMS Certificate",
-		filters=filters,
-		or_filters=or_filters,
-		fields=["member", "issue_date"],
-		group_by="member",
-		order_by="issue_date desc",
-		start=start,
-		page_length=page_length,
+	Certificate, query = get_certified_members_query(filters)
+	participants = (
+		query.select(Certificate.member)
+		.groupby(Certificate.member)
+		.orderby(Max(Certificate.creation), order=frappe.qb.desc)
+		.limit(cint(page_length))
+		.offset(cint(start))
+		.run(as_dict=True)
 	)
 
 	for participant in participants:
-		count = frappe.db.count("LMS Certificate", {"member": participant.member})
+		count = frappe.db.count("LMS Certificate", {"member": participant.member, "revoked": 0})
 		details = frappe.db.get_value(
 			"User",
 			participant.member,
@@ -428,22 +444,8 @@ def get_certified_participants(filters=None, start=0, page_length=100):
 
 @frappe.whitelist(allow_guest=True)
 def get_count_of_certified_members(filters=None):
-	Certificate = DocType("LMS Certificate")
-
-	query = (
-		frappe.qb.from_(Certificate).select(Certificate.member).distinct().where(Certificate.published == 1)
-	)
-
-	if filters:
-		for field, value in filters.items():
-			if field == "category":
-				query = query.where(
-					Certificate.course_title.like(f"%{value}%") | Certificate.batch_title.like(f"%{value}%")
-				)
-			elif field == "member_name":
-				query = query.where(Certificate.member_name.like(value[1]))
-
-	result = query.run(as_dict=True)
+	Certificate, query = get_certified_members_query(filters)
+	result = query.select(Certificate.member).distinct().run(as_dict=True)
 	return len(result) or 0
 
 
@@ -454,6 +456,7 @@ def get_certification_categories():
 		"LMS Certificate",
 		filters={
 			"published": 1,
+			"revoked": 0,
 		},
 		fields=["course_title", "batch_title"],
 	)
@@ -735,6 +738,27 @@ def check_app_permission():
 	return False
 
 
+def validate_evaluator_access(evaluator, course, batch_name=None, member=None):
+	roles = frappe.get_roles()
+	if "System Manager" in roles or "Moderator" in roles:
+		return
+
+	user = frappe.session.user
+	if evaluator != user or "Batch Evaluator" not in roles:
+		raise frappe.PermissionError
+
+	if (
+		(batch_name and get_evaluator(course, batch_name) == user)
+		or get_evaluator(course) == user
+		or frappe.db.exists(
+			"LMS Certificate Request", {"member": member, "course": course, "evaluator": user}
+		)
+	):
+		return
+
+	raise frappe.PermissionError
+
+
 @frappe.whitelist()
 def save_evaluation_details(
 	member,
@@ -751,6 +775,7 @@ def save_evaluation_details(
 	"""
 	Save evaluation details for a member against a course.
 	"""
+	validate_evaluator_access(evaluator, course, batch_name, member)
 	evaluation = frappe.db.exists("LMS Certificate Evaluation", {"member": member, "course": course})
 
 	details = {
@@ -786,23 +811,25 @@ def save_certificate_details(
 	course,
 	batch_name,
 	evaluator,
-	issue_date,
-	expiry_date,
-	template,
+	template=None,
 	published=True,
+	certificate_template=None,
 ):
 	"""
 	Save certificate details for a member against a course.
 	"""
-	certificate = frappe.db.exists("LMS Certificate", {"member": member, "course": course})
+	validate_evaluator_access(evaluator, course, batch_name, member)
+	certificate = frappe.db.exists("LMS Certificate", {"member": member, "course": course, "revoked": 0})
 
 	details = {
 		"published": published,
-		"issue_date": issue_date,
-		"expiry_date": expiry_date,
-		"template": template,
 		"batch_name": batch_name,
 	}
+	if certificate_template:
+		details["certificate_template"] = certificate_template
+		details["template"] = "Certificate Template"
+	elif template:
+		details["template"] = template
 
 	if certificate:
 		frappe.db.set_value("LMS Certificate", certificate, details)
@@ -817,7 +844,8 @@ def save_certificate_details(
 			}
 		)
 		doc.update(details)
-		doc.insert()
+		doc.flags.ignore_eligibility = True
+		doc.insert(ignore_permissions=True)
 		return doc.name
 
 
@@ -1382,8 +1410,8 @@ def get_certification_details(course):
 	paid_certificate = frappe.db.get_value("LMS Course", course, "paid_certificate")
 	certificate = frappe.db.get_value(
 		"LMS Certificate",
-		{"member": frappe.session.user, "course": course},
-		["name", "template"],
+		{"member": frappe.session.user, "course": course, "revoked": 0},
+		["name", "template", "serial_number", "verification_token"],
 		as_dict=1,
 	)
 

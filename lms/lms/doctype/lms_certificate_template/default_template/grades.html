@@ -1,0 +1,35 @@
+<div class="gr-outer"><div class="gr-inner" style="min-height: {{ page_inner_height }}mm;">
+	<div class="gr-header">
+		{% if logo %}<div class="gr-logo">{{ logo }}</div>{% endif %}
+		{% if institute_name %}<div class="gr-wordmark">{{ institute_name }}</div>{% endif %}
+		<div class="gr-title">Grades Report</div>
+		<div class="gr-rule"></div>
+	</div>
+
+	<div class="gr-name{% if student_name_is_arabic %} gr-ar{% endif %}">{{ student_name }}</div>
+	<div class="gr-course">{{ course_title }}</div>
+	{% if batch_title %}<div class="gr-batch">{{ batch_title }}</div>{% endif %}
+
+	<table class="gr-two"><tr>
+		<td class="gr-info">
+			<table class="gr-facts">
+				{% if term %}<tr><td class="gr-label">Term</td><td class="gr-value">{{ term }}</td></tr>{% endif %}
+				{% if start_date %}<tr><td class="gr-label">Period</td><td class="gr-value">{{ start_date }} &ndash; {{ end_date }}</td></tr>{% endif %}
+				{% if teacher_name %}<tr><td class="gr-label">Teacher</td><td class="gr-value">{{ teacher_name }}</td></tr>{% endif %}
+				{% if serial_number %}<tr><td class="gr-label">Certificate No.</td><td class="gr-value">{{ serial_number }}</td></tr>{% endif %}
+			</table>
+		</td>
+		<td class="gr-score">
+			<div class="gr-score-label">Final Mark</div>
+			<div class="gr-score-mark">{{ mark }}</div>
+			{% if grade_label %}<div class="gr-score-grade">{{ grade_label }}</div>{% endif %}
+		</td>
+	</tr></table>
+
+	{% if teacher_comments %}
+	<div class="gr-comments">
+		<div class="gr-label gr-comments-label">Teacher's Comments</div>
+		<div class="gr-text{% if teacher_comments_is_arabic %} gr-ar{% endif %}">{{ teacher_comments }}</div>
+	</div>
+	{% endif %}
+</div></div>

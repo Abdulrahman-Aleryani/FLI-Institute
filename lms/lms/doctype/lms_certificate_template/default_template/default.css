@@ -1,0 +1,55 @@
+.cert-page { background: #fff; color: #14233f; font-family: "EB Garamond", "Noto Naskh Arabic", Georgia, "Times New Roman", "Amiri", serif; }
+.cert-page div, .cert-page svg { position: absolute; }
+.cert-frame { left: 6mm; top: 6mm; width: 285mm; height: 198mm; border: 0.8mm solid #1E4FA3; -webkit-box-sizing: border-box; box-sizing: border-box; }
+.cert-frame-inner { left: 8.5mm; top: 8.5mm; width: 280mm; height: 193mm; border: 0.25mm solid #B8893A; -webkit-box-sizing: border-box; box-sizing: border-box; }
+
+.cert-corner-tl { left: 9mm; top: 9mm; }
+.cert-corner-tr { left: 274mm; top: 9mm; -webkit-transform: scaleX(-1); transform: scaleX(-1); }
+.cert-corner-bl { left: 9mm; top: 187mm; -webkit-transform: scaleY(-1); transform: scaleY(-1); }
+.cert-corner-br { left: 274mm; top: 187mm; -webkit-transform: scale(-1, -1); transform: scale(-1, -1); }
+.cert-watermark { left: 88.5mm; top: 45mm; }
+
+.cert-logo-wrap { left: 0; top: 13mm; width: 297mm; height: 14mm; text-align: center; }
+.cert-logo-wrap .cert-logo { height: 14mm; width: auto; }
+.cert-wordmark { left: 0; top: 29mm; width: 297mm; text-align: center; font-size: 8.5pt; letter-spacing: 0.42em; text-transform: uppercase; color: #1E4FA3; font-weight: 600; }
+.cert-wordmark-large { top: 17mm; font-size: 14pt; letter-spacing: 0.5em; }
+
+.cert-title { left: 0; top: 38mm; width: 297mm; text-align: center; font-size: 25pt; letter-spacing: 0.38em; text-transform: uppercase; color: #1E4FA3; font-weight: 600; line-height: 1; }
+.cert-title-high { top: 32mm; }
+.cert-divider { left: 103.5mm; top: 50mm; }
+.cert-divider-high { top: 44mm; }
+
+.cert-body { left: 0; top: 58mm; width: 297mm; height: 80mm; text-align: center; }
+.cert-body-high { top: 54mm; }
+.cert-lead { left: 0; top: 0; width: 297mm; font-size: 13.5pt; font-style: italic; color: #4a5568; line-height: 1; }
+.cert-name { left: 28mm; top: 8mm; width: 241mm; height: 16mm; line-height: 16mm; font-size: 40pt; color: #0F2347; white-space: nowrap; overflow: hidden; }
+.cert-name-long { font-size: 32pt; }
+.cert-name-xl { font-size: 25pt; }
+.cert-name-rule { left: 73.5mm; top: 28mm; width: 150mm; height: 0; border-top: 0.25mm solid #B8893A; }
+.cert-lead-2 { top: 33mm; }
+.cert-course { left: 25mm; top: 40mm; width: 247mm; font-size: 22pt; font-weight: 600; color: #1E4FA3; line-height: 1.1; }
+.cert-course-long { font-size: 17pt; }
+.cert-batch { left: 0; top: 53mm; width: 297mm; font-size: 10.5pt; letter-spacing: 0.2em; text-transform: uppercase; color: #3a4a66; line-height: 1; }
+.cert-place { left: 0; top: 60mm; width: 297mm; font-size: 9pt; letter-spacing: 0.28em; text-transform: uppercase; color: #B8893A; line-height: 1; }
+
+.cert-signer { top: 138mm; width: 70mm; text-align: center; height: 34mm; }
+.cert-signer-left { left: 34mm; }
+.cert-signer-right { left: 193mm; }
+.cert-signer-center { left: 113.5mm; }
+.cert-signature-box { left: 0; top: 0; width: 70mm; height: 15mm; }
+.cert-signature-box .cert-signature { max-height: 15mm; max-width: 60mm; width: auto; height: auto; }
+.cert-signer-rule { left: 5mm; top: 16mm; width: 60mm; height: 0; border-top: 0.3mm solid #14233f; }
+.cert-signer-name { left: 0; top: 18mm; width: 70mm; font-size: 12pt; font-weight: 600; color: #0F2347; line-height: 1.1; }
+.cert-signer-title { left: 0; top: 24mm; width: 70mm; font-size: 8pt; letter-spacing: 0.22em; text-transform: uppercase; color: #5a6b86; line-height: 1.1; }
+
+.cert-seal { left: 134mm; top: 140mm; }
+.cert-seal-side { left: 219mm; }
+
+.cert-qr-box { left: 20mm; top: 170mm; width: 22mm; height: 22mm; }
+.cert-qr-box .cert-qr { width: 22mm; height: 22mm; }
+.cert-verify { left: 45mm; top: 171mm; width: 90mm; }
+.cert-label { position: static !important; font-size: 7pt; letter-spacing: 0.24em; text-transform: uppercase; color: #B8893A; font-weight: 600; line-height: 1.2; }
+.cert-value { position: static !important; font-size: 11pt; color: #0F2347; line-height: 1.25; }
+.cert-label-gap { margin-top: 2.2mm; }
+.cert-url { position: static !important; font-size: 6.5pt; color: #5a6b86; line-height: 1.25; word-wrap: break-word; width: 90mm; }
+.cert-ar { font-family: "Noto Naskh Arabic", serif; letter-spacing: 0; text-transform: none; }
