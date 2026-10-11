@@ -52,6 +52,13 @@
 						:label="__('Enabled')"
 					/>
 				</div>
+				<div class="flex items-end pb-1">
+					<FormControl
+						v-model="template.include_grades_page"
+						type="checkbox"
+						:label="__('Include grades page')"
+					/>
+				</div>
 			</div>
 
 			<template v-if="template.template_type === 'HTML'">
@@ -203,6 +210,7 @@ const defaults = () => ({
 	template_name: '',
 	template_type: 'HTML',
 	enabled: 1,
+	include_grades_page: 0,
 	page_size: 'A4',
 	orientation: 'Landscape',
 	html: '',
@@ -227,7 +235,11 @@ const orientationOptions = [
 ]
 
 const toPayload = () => {
-	const payload = { ...template, enabled: template.enabled ? 1 : 0 }
+	const payload = {
+		...template,
+		enabled: template.enabled ? 1 : 0,
+		include_grades_page: template.include_grades_page ? 1 : 0,
+	}
 	payload.layout_json = JSON.stringify(layout.value)
 	return payload
 }
