@@ -418,6 +418,7 @@ def _render_grades_page(template, parts, grades):
 		context[key] = str(value)
 		context[f"{key}_is_arabic"] = bool(ARABIC_RE.search(context[key]))
 	width, height = _page_dimensions(template)
+	context["page_inner_height"] = f"{height - 27:.1f}"
 	body = render_html_template((GRADES_FOLDER / "grades.html").read_text(encoding="utf-8"), context)
 	css = sanitize_css((GRADES_FOLDER / "grades.css").read_text(encoding="utf-8"))
 	return (
@@ -425,8 +426,8 @@ def _render_grades_page(template, parts, grades):
 		# Flows instead of clipping: a long comment continues on a further page. Margin plus
 		# the frame border replace the absolute frame, which only covered the first page.
 		f'<div style="page-break-before: always; padding-top: 6mm;">'
-		f'<div class="cert-page grades-page" style="width:{width - 12:.1f}mm; '
-		f'min-height:{height - 20:.1f}mm; height:auto; margin:0 6mm 6mm 6mm; overflow:visible;">{body}</div></div>'
+		f'<div class="grades-page" style="width:{width - 12:.1f}mm; '
+		f'height:auto; margin:0 6mm 6mm 6mm; overflow:visible; position:static;">{body}</div></div>'
 	)
 
 

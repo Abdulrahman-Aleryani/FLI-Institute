@@ -175,7 +175,8 @@ class TestGradesPage(IntegrationTestCase):
 		template = self.template(1)
 		grades = dict(SAMPLE_GRADES, teacher_comments="<script>x</script> مرحبا")
 		html = render_template_html(template, _sample_parts(template), grades)
-		self.assertEqual(html.count('class="cert-page'), 2)
+		self.assertEqual(html.count('class="cert-page"'), 1)
+		self.assertEqual(html.count('class="grades-page"'), 1)
 		self.assertIn("page-break-before: always", html)
 		self.assertIn("&lt;script&gt;x&lt;/script&gt; مرحبا", html)
 		self.assertNotIn("<script>x", html)
@@ -186,7 +187,7 @@ class TestGradesPage(IntegrationTestCase):
 		template.template_type = "Image"
 		template.layout_json = "[]"
 		html = render_template_html(template, _sample_parts(template), SAMPLE_GRADES)
-		self.assertEqual(html.count('class="cert-page'), 2)
+		self.assertEqual(html.count('class="grades-page"'), 1)
 
 
 class TestGradesPrivacy(IntegrationTestCase):
