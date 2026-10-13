@@ -50,7 +50,7 @@ class TestCollectGrades(IntegrationTestCase):
 		def get_value(doctype, filters, fields, as_dict=False):
 			if filters["parent"] == "S2":
 				return None
-			return frappe._dict(total=92, teacher_comments="Great")
+			return frappe._dict(total=92, teacher_comments="Great", final_exam=23, unit_quiz_1=14)
 
 		def get_all(doctype, **kwargs):
 			if doctype == "Batch Grade Sheet":

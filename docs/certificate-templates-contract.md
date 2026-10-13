@@ -18,11 +18,12 @@ Use `{{ name }}`. Text placeholders are auto-escaped strings (empty string when 
 | `student_name` | text | |
 | `course_title` | text | |
 | `batch_title` | text | |
-| `start_date`, `end_date` | text | batch dates, `dd MMM yyyy` |
+| `start_date`, `end_date` | text | batch dates, `dd-MMM-yyyy` |
 | `serial_number` | text | printed reference only |
 | `certificate_id` | text | |
 | `verification_url` | text | `/verify/<token>` |
 | `logo_url` | text | URL / data URI of the site logo (HTML templates only, not placeable in image layouts) |
+| `background_url` | text | data URI of the template's `background_image` (lets an HTML template use a full-page background; not placeable in image layouts) |
 | `signer_1_name`, `signer_1_title`, `signer_2_name`, `signer_2_title` | text | from the template |
 | `evaluator_name` | text | |
 | `institute_name` | text | Website Settings `app_name` |
@@ -54,7 +55,7 @@ A JSON list (max 60 elements). Each element:
 
 A template with `include_grades_page` set appends a second page, a grades report, to the certificate PDF. The page is built in (`default_template/grades.html` and `grades.css`) and is not editable per template; it adds no placeholders to the certificate itself.
 
-- Data: the latest submitted `Batch Grade Sheet` of the certificate's batch that has a record for the member. Mark is the record's `total`, `teacher_comments` is entered in the grade sheet, term and teacher come from the sheet.
+- Data: the latest submitted `Batch Grade Sheet` of the certificate's batch that has a record for the member. Mark is the record's `total`, `teacher_comments` is entered in the grade sheet, term and teacher come from the sheet. The page also shows a marks breakdown table built from the record's component fields (`components` context list, defined by `GRADE_COMPONENTS` in `batch_grade_sheet.py`).
 - The "Average" label is the highest band in LMS Settings > Certificate Grades whose minimum mark is at or below the mark. Without configured bands: 90 Excellent, 80 Very Good, 70 Good, 60 Pass. A mark below every band shows no label.
 - No batch, no submitted sheet, or no record for the member means no second page. Preview shows sample grades.
 - Page size and orientation follow the template. Values are escaped by the same sandboxed Jinja environment.

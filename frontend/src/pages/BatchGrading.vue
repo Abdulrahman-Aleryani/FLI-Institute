@@ -168,36 +168,36 @@ import EmptyState from '@/components/EmptyState.vue'
 
 const MAX_TOTAL = 100
 const gradeFields = [
+	'final_exam',
+	'unit_quiz_1',
+	'homework',
 	'attendance',
-	'participation',
-	'assignments',
-	'speaking',
+	'class_participation',
+	'story_discussion',
 	'writing',
-	'communicative_competence',
-	'final_oral',
-	'exam',
+	'oral_exam',
 ]
 
 const gradeLabels = {
+	final_exam: __('Final Exam'),
+	unit_quiz_1: __('Unit Quiz 1'),
+	homework: __('Homework'),
 	attendance: __('Attendance'),
-	participation: __('Participation'),
-	assignments: __('Assignments'),
-	speaking: __('Speaking'),
+	class_participation: __('Class Participation'),
+	story_discussion: __('Story Discussion'),
 	writing: __('Writing'),
-	communicative_competence: __('Comm. Competence'),
-	final_oral: __('Final Oral'),
-	exam: __('Exam'),
+	oral_exam: __('Oral Exam'),
 }
 
 const gradeMax = {
+	final_exam: 25,
+	unit_quiz_1: 15,
+	homework: 10,
 	attendance: 10,
-	participation: 10,
-	assignments: 10,
-	speaking: 10,
-	writing: 15,
-	communicative_competence: 10,
-	final_oral: 10,
-	exam: 25,
+	class_participation: 10,
+	story_discussion: 10,
+	writing: 10,
+	oral_exam: 10,
 }
 
 const route = useRoute()

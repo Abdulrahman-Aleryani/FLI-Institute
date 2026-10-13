@@ -4,14 +4,14 @@ from frappe.model.document import Document
 from frappe.utils import flt
 
 GRADE_COMPONENTS = {
+	"final_exam": {"label": _("Final Exam"), "max": 25},
+	"unit_quiz_1": {"label": _("Unit Quiz 1"), "max": 15},
+	"homework": {"label": _("Homework"), "max": 10},
 	"attendance": {"label": _("Attendance"), "max": 10},
-	"participation": {"label": _("Participation"), "max": 10},
-	"assignments": {"label": _("Assignments"), "max": 10},
-	"speaking": {"label": _("Speaking"), "max": 10},
-	"writing": {"label": _("Writing"), "max": 15},
-	"communicative_competence": {"label": _("Communicative Competence"), "max": 10},
-	"final_oral": {"label": _("Final Oral"), "max": 10},
-	"exam": {"label": _("Exam"), "max": 25},
+	"class_participation": {"label": _("Class Participation"), "max": 10},
+	"story_discussion": {"label": _("Story Discussion"), "max": 10},
+	"writing": {"label": _("Writing"), "max": 10},
+	"oral_exam": {"label": _("Oral Exam"), "max": 10},
 }
 GRADE_FIELDS = tuple(GRADE_COMPONENTS.keys())
 MAX_TOTAL = sum(component["max"] for component in GRADE_COMPONENTS.values())

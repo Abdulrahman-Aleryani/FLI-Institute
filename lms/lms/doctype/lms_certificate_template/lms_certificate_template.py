@@ -100,6 +100,20 @@ def validate_layout(layout_json):
 	return cleaned
 
 
+def _asset_file_url(filename: str) -> str:
+	"""Save a bundled certificate image into site files and return its /files/ URL."""
+	from frappe.utils.file_manager import save_file
+
+	file_url = f"/files/{filename}"
+	if frappe.db.exists("File", {"file_url": file_url}):
+		return file_url
+
+	path = frappe.get_app_path("lms", "lms", "public", "images", filename)
+	if not Path(path).exists():
+		return ""
+	return save_file(fname=filename, content=Path(path).read_bytes(), is_private=0).file_url
+
+
 def create_default_template():
 	"""Create the stock FLI template and make it the default. Safe to run repeatedly."""
 	if not frappe.db.exists("LMS Certificate Template", DEFAULT_TEMPLATE_NAME):
@@ -114,6 +128,11 @@ def create_default_template():
 				"orientation": "Landscape",
 				"html": (folder / "default.html").read_text(encoding="utf-8"),
 				"css": (folder / "default.css").read_text(encoding="utf-8"),
+				"background_image": _asset_file_url("fli-certificate-template.jpg"),
+				"signer_1_name": "Ziyad Al Gaboby PhD",
+				"signer_1_title": "Executive Manager",
+				"signer_1_signature": _asset_file_url("fli-signature-ziyad.png"),
+				"include_grades_page": 1,
 			}
 		).insert(ignore_permissions=True)
 

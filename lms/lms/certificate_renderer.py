@@ -26,9 +26,19 @@ SAMPLE_GRADES = {
 	"term": "Term 3",
 	"teacher_name": "Sample Teacher",
 	"teacher_comments": "A cooperative and hard-working student with strong speaking and writing.",
+	"components": [
+		{"key": "final_exam", "label": "Final Exam", "mark": 23, "max": 25},
+		{"key": "unit_quiz_1", "label": "Unit Quiz 1", "mark": 13.5, "max": 15},
+		{"key": "homework", "label": "Homework", "mark": 9.5, "max": 10},
+		{"key": "attendance", "label": "Attendance", "mark": 10, "max": 10},
+		{"key": "class_participation", "label": "Class Participation", "mark": 9, "max": 10},
+		{"key": "story_discussion", "label": "Story Discussion", "mark": 9, "max": 10},
+		{"key": "writing", "label": "Writing", "mark": 9, "max": 10},
+		{"key": "oral_exam", "label": "Oral Exam", "mark": 9, "max": 10},
+	],
 }
 PAGE_SIZES = {"A4": (297, 210), "Letter": (279.4, 215.9)}
-DATE_FORMAT = "dd MMM yyyy"
+DATE_FORMAT = "dd-MMM-yyyy"
 MAX_INLINE_FILE_SIZE = 8 * 1024 * 1024
 MAX_LAYOUT_ELEMENTS = 60
 LONG_NAME_LENGTH = 28
@@ -44,6 +54,7 @@ TEXT_KEYS = (
 	"certificate_id",
 	"verification_url",
 	"logo_url",
+	"background_url",
 	"signer_1_name",
 	"signer_1_title",
 	"signer_2_name",
@@ -52,7 +63,7 @@ TEXT_KEYS = (
 	"institute_name",
 )
 IMAGE_KEYS = ("qr_code", "logo", "signature_1", "signature_2")
-LAYOUT_FIELDS = tuple(key for key in TEXT_KEYS if key != "logo_url") + IMAGE_KEYS
+LAYOUT_FIELDS = tuple(key for key in TEXT_KEYS if key not in ("logo_url", "background_url")) + IMAGE_KEYS
 
 ARABIC_FALLBACK = '"Noto Naskh Arabic", "Amiri", serif'
 FONT_STACKS = {
@@ -209,6 +220,7 @@ def build_context(values, images):
 	for key in TEXT_KEYS:
 		context[f"{key}_is_arabic"] = bool(ARABIC_RE.search(context[key]))
 	context["logo_url"] = images.get("logo") or ""
+	context["background_url"] = images.get("background") or ""
 	context["qr_code"] = _image_markup(images.get("qr_code"), "cert-qr", "QR code")
 	context["logo"] = _image_markup(images.get("logo"), "cert-logo", "Logo")
 	context["signature_1"] = _image_markup(images.get("signature_1"), "cert-signature", "Signature")
@@ -261,6 +273,7 @@ def _collect(cert, template):
 		"qr_code": _qr_data_uri(verification_url) if verification_url else "",
 		"signature_1": _file_to_url(template.signer_1_signature),
 		"signature_2": _file_to_url(template.signer_2_signature),
+		"background": _file_to_url(template.get("background_image")),
 	}
 	return values, images
 
@@ -276,8 +289,8 @@ def _sample_parts(template=None):
 		"student_name": "Afnan Khaled Mohammed Ali Al-Ashwal",
 		"course_title": "English for Communication, Level 6A",
 		"batch_title": "Batch 24 - Evening",
-		"start_date": "05 Jan 2026",
-		"end_date": "30 Mar 2026",
+		"start_date": "05-Jan-2026",
+		"end_date": "30-Mar-2026",
 		"serial_number": "120539",
 		"certificate_id": "SAMPLE-CERTIFICATE",
 		"verification_url": "https://example.com/verify/sample-verification-token",
@@ -293,7 +306,10 @@ def _sample_parts(template=None):
 		"qr_code": _qr_data_uri(values["verification_url"]),
 		"signature_1": "",
 		"signature_2": "",
+		"background": "",
 	}
+	if template and template.get("background_image"):
+		images["background"] = _file_to_url(template.get("background_image"))
 	if template:
 		for index in (1, 2):
 			if template.get(f"signer_{index}_name"):
@@ -413,21 +429,24 @@ def _render_image_template(template, values, images):
 def _render_grades_page(template, parts, grades):
 	context = dict(parts[0])
 	for key, value in grades.items():
+		if isinstance(value, list | dict):
+			context[key] = value
+			continue
 		if key == "mark" and float(value).is_integer():
 			value = int(value)
 		context[key] = str(value)
 		context[f"{key}_is_arabic"] = bool(ARABIC_RE.search(context[key]))
 	width, height = _page_dimensions(template)
-	context["page_inner_height"] = f"{height - 27:.1f}"
+	context["page_inner_height"] = f"{height - 19:.1f}"
 	body = render_html_template((GRADES_FOLDER / "grades.html").read_text(encoding="utf-8"), context)
 	css = sanitize_css((GRADES_FOLDER / "grades.css").read_text(encoding="utf-8"))
 	return (
 		f"<style>{css}</style>"
-		# Flows instead of clipping: a long comment continues on a further page. Margin plus
-		# the frame border replace the absolute frame, which only covered the first page.
+		# Locked to a single page: fixed height plus hidden overflow clips instead of
+		# flowing, so the report can never spill onto a third page.
 		f'<div style="page-break-before: always; padding-top: 6mm;">'
 		f'<div class="grades-page" style="width:{width - 12:.1f}mm; '
-		f'height:auto; margin:0 6mm 6mm 6mm; overflow:visible; position:static;">{body}</div></div>'
+		f'height:{height - 12:.1f}mm; margin:0 6mm 6mm 6mm; overflow:hidden; position:static;">{body}</div></div>'
 	)
 
 

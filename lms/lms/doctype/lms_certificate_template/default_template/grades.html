@@ -10,14 +10,38 @@
 	<div class="gr-course">{{ course_title }}</div>
 	{% if batch_title %}<div class="gr-batch">{{ batch_title }}</div>{% endif %}
 
-	<table class="gr-two"><tr>
-		<td class="gr-info">
-			<table class="gr-facts">
-				{% if term %}<tr><td class="gr-label">Term</td><td class="gr-value">{{ term }}</td></tr>{% endif %}
-				{% if start_date %}<tr><td class="gr-label">Period</td><td class="gr-value">{{ start_date }} &ndash; {{ end_date }}</td></tr>{% endif %}
-				{% if teacher_name %}<tr><td class="gr-label">Teacher</td><td class="gr-value">{{ teacher_name }}</td></tr>{% endif %}
-				{% if serial_number %}<tr><td class="gr-label">Certificate No.</td><td class="gr-value">{{ serial_number }}</td></tr>{% endif %}
-			</table>
+	{% if components %}
+	<div class="gr-breakdown">
+		<table class="gr-marks">
+			<thead>
+				<tr>
+					<th class="gr-marks-head gr-marks-head-name">Component</th>
+					<th class="gr-marks-head">Mark</th>
+					<th class="gr-marks-head">Out of</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in components %}
+				<tr>
+					<td class="gr-marks-name">{{ item.label }}</td>
+					<td class="gr-marks-value">{{ item.mark }}</td>
+					<td class="gr-marks-max">{{ item.max }}</td>
+				</tr>
+				{% endfor %}
+				<tr class="gr-marks-total">
+					<td class="gr-marks-name">Total</td>
+					<td class="gr-marks-value">{{ mark }}</td>
+					<td class="gr-marks-max">100</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	{% endif %}
+
+	<table class="gr-footer"><tr>
+		<td class="gr-facts">
+			{% if term %}<div class="gr-fact"><span class="gr-label">Term</span><span class="gr-fact-value">{{ term }}</span></div>{% endif %}
+			{% if start_date %}<div class="gr-fact"><span class="gr-label">Study Period</span><span class="gr-fact-value">{{ start_date }} &ndash; {{ end_date }}</span></div>{% endif %}
 		</td>
 		<td class="gr-score">
 			<div class="gr-score-label">Final Mark</div>
