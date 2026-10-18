@@ -1,85 +1,14 @@
-<div class="cert-frame"></div>
-<div class="cert-frame-inner"></div>
+{% if background_url %}<img class="cert-bg" src="{{ background_url }}" alt="">{% endif %}
 
-<svg class="cert-corner cert-corner-tl" viewBox="0 0 20 20" width="14mm" height="14mm"><path d="M1 19 A18 18 0 0 1 19 1" fill="none" stroke="#B8893A" stroke-width="0.6"/><path d="M1 13 A12 12 0 0 1 13 1" fill="none" stroke="#B8893A" stroke-width="0.4"/><path d="M1 1 L3.4 3.4 L1 5.8 L-1.4 3.4 Z" transform="translate(2.2,0.8)" fill="#B8893A"/></svg>
-<svg class="cert-corner cert-corner-tr" viewBox="0 0 20 20" width="14mm" height="14mm"><path d="M1 19 A18 18 0 0 1 19 1" fill="none" stroke="#B8893A" stroke-width="0.6"/><path d="M1 13 A12 12 0 0 1 13 1" fill="none" stroke="#B8893A" stroke-width="0.4"/><path d="M1 1 L3.4 3.4 L1 5.8 L-1.4 3.4 Z" transform="translate(2.2,0.8)" fill="#B8893A"/></svg>
-<svg class="cert-corner cert-corner-bl" viewBox="0 0 20 20" width="14mm" height="14mm"><path d="M1 19 A18 18 0 0 1 19 1" fill="none" stroke="#B8893A" stroke-width="0.6"/><path d="M1 13 A12 12 0 0 1 13 1" fill="none" stroke="#B8893A" stroke-width="0.4"/><path d="M1 1 L3.4 3.4 L1 5.8 L-1.4 3.4 Z" transform="translate(2.2,0.8)" fill="#B8893A"/></svg>
-<svg class="cert-corner cert-corner-br" viewBox="0 0 20 20" width="14mm" height="14mm"><path d="M1 19 A18 18 0 0 1 19 1" fill="none" stroke="#B8893A" stroke-width="0.6"/><path d="M1 13 A12 12 0 0 1 13 1" fill="none" stroke="#B8893A" stroke-width="0.4"/><path d="M1 1 L3.4 3.4 L1 5.8 L-1.4 3.4 Z" transform="translate(2.2,0.8)" fill="#B8893A"/></svg>
+<div class="cert-name{% if student_name_is_arabic %} cert-ar{% endif %}">{{ student_name }}</div>
+<div class="cert-hours">40-hour</div>
+<div class="cert-course{% if course_title_is_arabic %} cert-ar{% endif %}">{{ course_title or batch_title }}</div>
+<div class="cert-date cert-date-from">{{ start_date }}</div>
+<div class="cert-date cert-date-to">{{ end_date }}</div>
 
-<svg class="cert-watermark" viewBox="-60 -60 120 120" width="120mm" height="120mm">
-	<g fill="none" stroke="#EDF1F8" stroke-width="0.35">
-		<ellipse cx="0" cy="0" rx="56" ry="20"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(20)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(40)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(60)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(80)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(100)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(120)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(140)"/>
-		<ellipse cx="0" cy="0" rx="56" ry="20" transform="rotate(160)"/>
-		<circle cx="0" cy="0" r="58" stroke="#E9EDF6"/>
-		<circle cx="0" cy="0" r="40"/>
-		<circle cx="0" cy="0" r="22"/>
-		<circle cx="0" cy="0" r="8" stroke="#E9EDF6"/>
-	</g>
-</svg>
+{% if signature_1 %}<div class="cert-signature-wrap">{{ signature_1 }}</div>{% endif %}
 
-{% if logo %}
-<div class="cert-logo-wrap">{{ logo }}</div>
-<div class="cert-wordmark">Faculty Language Institute</div>
-{% else %}
-<div class="cert-wordmark cert-wordmark-large">Faculty Language Institute</div>
-{% endif %}
-
-<div class="cert-title{% if not logo %} cert-title-high{% endif %}">Certificate of Completion</div>
-<svg class="cert-divider{% if not logo %} cert-divider-high{% endif %}" viewBox="0 0 120 6" width="90mm" height="4.5mm"><line x1="0" y1="3" x2="53" y2="3" stroke="#B8893A" stroke-width="0.35"/><line x1="67" y1="3" x2="120" y2="3" stroke="#B8893A" stroke-width="0.35"/><path d="M60 0.2 L63.2 3 L60 5.8 L56.8 3 Z" fill="#B8893A"/></svg>
-
-<div class="cert-body{% if not logo %} cert-body-high{% endif %}">
-	<div class="cert-lead">This is to certify that</div>
-	<div class="cert-name{% if student_name|length > 38 %} cert-name-xl{% elif student_name|length > 28 %} cert-name-long{% endif %}{% if student_name_is_arabic %} cert-ar{% endif %}">{{ student_name }}</div>
-	<div class="cert-name-rule"></div>
-	<div class="cert-lead cert-lead-2">has successfully completed</div>
-	<div class="cert-course{% if course_title|length > 60 %} cert-course-long{% endif %}{% if course_title_is_arabic %} cert-ar{% endif %}">{{ course_title }}</div>
-	{% if batch_title or (start_date and end_date) %}
-	<div class="cert-batch{% if batch_title_is_arabic %} cert-ar{% endif %}">{% if batch_title %}{{ batch_title }}{% endif %}{% if start_date and end_date %}{% if batch_title %} &middot; {% endif %}{{ start_date }} &ndash; {{ end_date }}{% endif %}</div>
-	{% endif %}
-	<div class="cert-place">Faculty Language Institute &middot; Sana'a, Republic of Yemen</div>
-</div>
-
-{% if signer_1_name or signer_2_name %}
-{% if signer_1_name %}
-<div class="cert-signer {% if signer_2_name %}cert-signer-left{% else %}cert-signer-center{% endif %}">
-	<div class="cert-signature-box">{{ signature_1 }}</div>
-	<div class="cert-signer-rule"></div>
-	<div class="cert-signer-name">{{ signer_1_name }}</div>
-	<div class="cert-signer-title">{{ signer_1_title }}</div>
-</div>
-{% endif %}
-{% if signer_2_name %}
-<div class="cert-signer {% if signer_1_name %}cert-signer-right{% else %}cert-signer-center{% endif %}">
-	<div class="cert-signature-box">{{ signature_2 }}</div>
-	<div class="cert-signer-rule"></div>
-	<div class="cert-signer-name">{{ signer_2_name }}</div>
-	<div class="cert-signer-title">{{ signer_2_title }}</div>
-</div>
-{% endif %}
-{% endif %}
-
-<svg class="cert-seal{% if signer_1_name and not signer_2_name or signer_2_name and not signer_1_name %} cert-seal-side{% endif %}" viewBox="-30 -30 60 60" width="26mm" height="26mm">
-	<circle r="28.5" fill="#fff" stroke="#B8893A" stroke-width="0.8"/>
-	<circle r="26.2" fill="none" stroke="#B8893A" stroke-width="2.2" stroke-dasharray="0.5 1.3"/>
-	<circle r="23" fill="none" stroke="#1E4FA3" stroke-width="1"/>
-	<circle r="21" fill="none" stroke="#1E4FA3" stroke-width="0.4"/>
-	<text x="0" y="-9" text-anchor="middle" font-family="EB Garamond, Georgia, serif" font-size="4" letter-spacing="0.9" fill="#B8893A">FACULTY</text>
-	<text x="0" y="6" text-anchor="middle" font-family="EB Garamond, Georgia, serif" font-weight="600" font-size="15" letter-spacing="1" fill="#1E4FA3">FLI</text>
-	<line x1="-9" y1="10" x2="9" y2="10" stroke="#B8893A" stroke-width="0.4"/>
-	<text x="0" y="16" text-anchor="middle" font-family="EB Garamond, Georgia, serif" font-size="3.6" letter-spacing="0.9" fill="#B8893A">SANA'A</text>
-</svg>
-
-<div class="cert-qr-box">{{ qr_code }}</div>
 <div class="cert-verify">
-	<div class="cert-label">Certificate No.</div>
-	<div class="cert-value">{{ serial_number }}</div>
-	<div class="cert-label cert-label-gap">Verify at</div>
-	<div class="cert-url">{{ verification_url }}</div>
+	{{ qr_code }}
+	<div class="cert-serial">{{ serial_number or certificate_id }}</div>
 </div>

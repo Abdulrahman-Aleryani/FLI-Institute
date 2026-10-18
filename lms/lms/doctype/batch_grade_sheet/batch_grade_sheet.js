@@ -1,12 +1,12 @@
 const gradeFields = [
+	"final_exam",
+	"unit_quiz_1",
+	"homework",
 	"attendance",
-	"participation",
-	"assignments",
-	"speaking",
+	"class_participation",
+	"story_discussion",
 	"writing",
-	"communicative_competence",
-	"final_oral",
-	"exam",
+	"oral_exam",
 ];
 const MAX_TOTAL = 100;
 

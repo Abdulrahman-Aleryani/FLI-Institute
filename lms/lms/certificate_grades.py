@@ -3,6 +3,8 @@ from html import unescape
 import frappe
 from frappe.utils import flt
 
+from lms.lms.doctype.batch_grade_sheet.batch_grade_sheet import GRADE_COMPONENTS, GRADE_FIELDS
+
 DEFAULT_GRADE_BANDS = [
 	(90, "Excellent"),
 	(80, "Very Good"),
@@ -44,7 +46,7 @@ def collect_grades(cert):
 		record = frappe.db.get_value(
 			"Batch Grade Record",
 			{"parent": sheet.name, "parenttype": "Batch Grade Sheet", "student": cert.member},
-			["total", "teacher_comments"],
+			["total", "teacher_comments"] + list(GRADE_FIELDS),
 			as_dict=True,
 		)
 		if record:
@@ -55,5 +57,14 @@ def collect_grades(cert):
 				"teacher_name": sheet.instructor_name or "",
 				# Frappe stores "&" as "&amp;" in text fields; the template escapes on output
 				"teacher_comments": unescape(record.teacher_comments or ""),
+				"components": [
+					{
+						"key": fieldname,
+						"label": str(GRADE_COMPONENTS[fieldname]["label"]),
+						"mark": flt(record.get(fieldname)),
+						"max": GRADE_COMPONENTS[fieldname]["max"],
+					}
+					for fieldname in GRADE_FIELDS
+				],
 			}
 	return None
