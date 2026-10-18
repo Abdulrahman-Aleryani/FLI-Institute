@@ -14,21 +14,21 @@
 			<div v-if="quiz.data?.duration" class="leading-5">
 				{{
 					__(
-						'Please ensure that you complete all the questions in {0} minutes.'
+						'Please ensure that you complete all the questions in {0} minutes.',
 					).format(quiz.data.duration)
 				}}
 			</div>
 			<div v-if="quiz.data?.duration" class="leading-5">
 				{{
 					__(
-						'If you fail to do so, the quiz will be automatically submitted when the timer ends.'
+						'If you fail to do so, the quiz will be automatically submitted when the timer ends.',
 					)
 				}}
 			</div>
 			<div v-if="quiz.data.passing_percentage" class="leading-relaxed">
 				{{
 					__(
-						'You will have to get {0}% correct answers in order to pass the quiz.'
+						'You will have to get {0}% correct answers in order to pass the quiz.',
 					).format(quiz.data.passing_percentage)
 				}}
 			</div>
@@ -37,17 +37,17 @@
 					__('You can attempt this quiz {0}.').format(
 						quiz.data.max_attempts == 1
 							? '1 time'
-							: `${quiz.data.max_attempts} times`
+							: `${quiz.data.max_attempts} times`,
 					)
 				}}
 			</div>
 			<div v-if="quiz.data.enable_negative_marking" class="leading-5">
 				{{
 					__(
-						'If you answer incorrectly, {0} {1} will be deducted from your score for each incorrect answer.'
+						'If you answer incorrectly, {0} {1} will be deducted from your score for each incorrect answer.',
 					).format(
 						quiz.data.marks_to_cut,
-						quiz.data.marks_to_cut == 1 ? 'mark' : 'marks'
+						quiz.data.marks_to_cut == 1 ? 'mark' : 'marks',
 					)
 				}}
 			</div>
@@ -94,7 +94,7 @@
 				>
 					{{
 						__(
-							'You have already exceeded the maximum number of attempts allowed for this quiz.'
+							'You have already exceeded the maximum number of attempts allowed for this quiz.',
 						)
 					}}
 				</div>
@@ -134,6 +134,7 @@
 								type="radio"
 								:name="encodeURIComponent(questionDetails.data.question)"
 								class="w-3.5 h-3.5 text-ink-gray-9 focus:ring-outline-gray-modals"
+								:checked="selectedOptions[index - 1]"
 								@change="markAnswer(index)"
 							/>
 
@@ -142,6 +143,7 @@
 								type="checkbox"
 								:name="encodeURIComponent(questionDetails.data.question)"
 								class="w-3.5 h-3.5 text-ink-gray-9 rounded-sm focus:ring-outline-gray-modals"
+								:checked="selectedOptions[index - 1]"
 								@change="markAnswer(index)"
 							/>
 							<div
@@ -213,35 +215,42 @@
 							{{
 								__('Question {0} of {1}').format(
 									activeQuestion,
-									questions.length
+									questions.length,
 								)
 							}}
 						</div>
-						<Button
-							v-if="
-								quiz.data.show_answers &&
-								!showAnswers.length &&
-								questionDetails.data.type != 'Open Ended'
-							"
-							@click="checkAnswer()"
-						>
-							<span>
-								{{ __('Check') }}
-							</span>
-						</Button>
-						<Button
-							v-else-if="activeQuestion != questions.length"
-							@click="nextQuestion()"
-						>
-							<span>
-								{{ __('Next') }}
-							</span>
-						</Button>
-						<Button v-else @click="submitQuiz()">
-							<span>
-								{{ __('Submit') }}
-							</span>
-						</Button>
+						<div class="flex items-center space-x-2">
+							<Button v-if="activeQuestion > 1" @click="previousQuestion()">
+								<span>
+									{{ __('Previous') }}
+								</span>
+							</Button>
+							<Button
+								v-if="
+									quiz.data.show_answers &&
+									!showAnswers.length &&
+									questionDetails.data.type != 'Open Ended'
+								"
+								@click="checkAnswer()"
+							>
+								<span>
+									{{ __('Check') }}
+								</span>
+							</Button>
+							<Button
+								v-else-if="activeQuestion != questions.length"
+								@click="nextQuestion()"
+							>
+								<span>
+									{{ __('Next') }}
+								</span>
+							</Button>
+							<Button v-else @click="submitQuiz()">
+								<span>
+									{{ __('Submit') }}
+								</span>
+							</Button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -256,18 +265,18 @@
 			>
 				{{
 					__(
-						"Your submission has been successfully saved. The instructor will review and grade it shortly, and you'll be notified of your final result."
+						"Your submission has been successfully saved. The instructor will review and grade it shortly, and you'll be notified of your final result.",
 					)
 				}}
 			</div>
 			<div v-else class="text-ink-gray-7">
 				{{
 					__(
-						'You got {0}% correct answers with a score of {1} out of {2}'
+						'You got {0}% correct answers with a score of {1} out of {2}',
 					).format(
 						Math.ceil(quizSubmission.data.percentage),
 						quizSubmission.data.score,
-						quizSubmission.data.score_out_of
+						quizSubmission.data.score_out_of,
 					)
 				}}
 			</div>
@@ -461,7 +470,7 @@ watch(
 			attempts.reload()
 			resetQuiz()
 		}
-	}
+	},
 )
 
 const quizSubmission = createResource({
@@ -491,12 +500,32 @@ watch(activeQuestion, (value) => {
 })
 
 watch(
+	() => questionDetails.data,
+	() => {
+		if (!questionDetails.data) return
+		let quizData = JSON.parse(localStorage.getItem(quiz.data.title)) || []
+		let saved = quizData.find((q) => q.question_name == currentQuestion.value)
+		if (!saved || !saved.answer) return
+		if (questionDetails.data.type == 'Choices') {
+			saved.answer.split(',').forEach((answer) => {
+				for (let i = 1; i <= 4; i++) {
+					if (questionDetails.data[`option_${i}`] == answer)
+						selectedOptions[i - 1] = 1
+				}
+			})
+		} else {
+			possibleAnswer.value = saved.answer
+		}
+	},
+)
+
+watch(
 	() => props.quizName,
 	(newName) => {
 		if (newName) {
 			quiz.reload()
 		}
-	}
+	},
 )
 
 const startQuiz = () => {
@@ -577,15 +606,27 @@ const addToLocalStorage = () => {
 
 	if (quizData) {
 		let existingQuestion = quizData.find(
-			(q) => q.question_name == questionData.question_name
+			(q) => q.question_name == questionData.question_name,
 		)
-		if (!existingQuestion) {
+		if (existingQuestion) {
+			existingQuestion.answer = questionData.answer
+			existingQuestion.is_correct = questionData.is_correct
+		} else {
 			quizData.push(questionData)
 		}
 	} else {
 		quizData = [questionData]
 	}
 	localStorage.setItem(quiz.data.title, JSON.stringify(quizData))
+}
+
+const previousQuestion = () => {
+	if (activeQuestion.value <= 1) return
+	addToLocalStorage()
+	activeQuestion.value = activeQuestion.value - 1
+	selectedOptions.splice(0, selectedOptions.length, ...[0, 0, 0, 0])
+	showAnswers.length = 0
+	possibleAnswer.value = null
 }
 
 const nextQuestion = () => {
@@ -636,7 +677,7 @@ const createSubmission = () => {
 					}, 3000)
 				}
 			},
-		}
+		},
 	)
 }
 
