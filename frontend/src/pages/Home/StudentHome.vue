@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-if="myCourses.data?.length" class="mt-10">
+		<div v-if="!isStudentOnly && myCourses.data?.length" class="mt-10">
 			<div class="flex items-center justify-between mb-3">
 				<span class="font-semibold text-lg text-ink-gray-9">
 					{{
@@ -64,7 +64,7 @@
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-5 mt-10">
+		<div v-if="!isStudentOnly" class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-5 mt-10">
 			<UpcomingEvaluations :forHome="true" />
 			<div v-if="myLiveClasses.data?.length">
 				<div class="font-semibold text-lg mb-3 text-ink-gray-9">
@@ -138,9 +138,9 @@
 	</div>
 </template>
 <script setup lang="ts">
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import { createResource, Tooltip } from 'frappe-ui'
-import { formatTime } from '@/utils'
+import { formatTime, isStudentOnly as checkStudentOnly } from '@/utils'
 import {
 	Calendar,
 	Clock,
@@ -168,6 +168,10 @@ const myCourses = createResource({
 const myBatches = createResource({
 	url: 'lms.lms.api.get_my_batches',
 	auto: true,
+})
+
+const isStudentOnly = computed(() => {
+	return checkStudentOnly({ data: user.data })
 })
 
 const getClassEnd = (cls: { date: string; time: string; duration: number }) => {

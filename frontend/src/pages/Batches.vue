@@ -156,7 +156,10 @@ const title = ref('')
 const certification = ref(false)
 const filters = ref({})
 const is_student = computed(() => user.data?.is_student)
-const currentTab = ref(is_student.value ? 'All' : 'Upcoming')
+const isStudentOnly = computed(
+	() => is_student.value && !user.data?.is_system_manager
+)
+const currentTab = ref(isStudentOnly.value ? 'Enrolled' : 'Upcoming')
 const orderBy = ref('start_date')
 const readOnlyMode = window.read_only_mode
 const router = useRouter()
@@ -313,7 +316,17 @@ watch(currentTab, () => {
 	updateBatches()
 })
 
+watch(isStudentOnly, (val) => {
+	if (val) {
+		currentTab.value = 'Enrolled'
+		updateBatches()
+	}
+})
+
 const batchTabs = computed(() => {
+	if (isStudentOnly.value) {
+		return [{ label: __('Enrolled') }]
+	}
 	let tabs = [
 		{
 			label: __('All'),
@@ -323,7 +336,8 @@ const batchTabs = computed(() => {
 	if (
 		user.data?.is_moderator ||
 		user.data?.is_instructor ||
-		user.data?.is_evaluator
+		user.data?.is_evaluator ||
+		user.data?.is_system_manager
 	) {
 		tabs.push({ label: __('Upcoming') })
 		tabs.push({ label: __('Archived') })

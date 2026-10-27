@@ -402,6 +402,11 @@ export function getUserTimezone() {
 	}
 }
 
+export function isStudentOnly(userResource) {
+	const data = userResource?.data
+	return !!data?.is_student && !data?.is_system_manager
+}
+
 export function getSidebarLinks() {
 	let links = getSidebarItems()
 
@@ -482,6 +487,9 @@ const getSidebarItems = () => {
 						'CourseForm',
 						'LessonForm',
 					],
+					condition: () => {
+						return !isStudentOnly(userResource)
+					},
 				},
 				{
 					label: 'Programs',

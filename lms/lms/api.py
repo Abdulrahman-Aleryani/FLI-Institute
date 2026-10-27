@@ -2077,7 +2077,8 @@ def get_my_batches():
 
 	batches = get_my_latest_batches()
 
-	if not len(batches):
+	staff_roles = {"Moderator", "Course Creator", "Batch Evaluator", "Interviewer", "System Manager"}
+	if not len(batches) and staff_roles.intersection(frappe.get_roles()):
 		batches = get_upcoming_batches()
 
 	for batch in batches:
