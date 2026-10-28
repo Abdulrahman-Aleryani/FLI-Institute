@@ -33,7 +33,7 @@ website_theme_scss = "lms/public/scss/website"
 
 # Home Pages
 # ----------
-home_page = "home"
+home_page = "index"
 # home_page = "home"  # Commented out to allow Website Settings to control home page
 
 # Installation
@@ -110,6 +110,8 @@ website_route_rules = [
     {"from_route": "/verify/<token>", "to_route": "verify"},
     {"from_route": "/lms", "to_route": "lms"},
     {"from_route": "/lms/<path:app_path>", "to_route": "lms"},
+    {"from_route": "/placement-test/index", "to_route": "placement-test/index"},
+    {"from_route": "/placement-test/index.html", "to_route": "placement-test/index"},
     {"from_route": "/placement-test", "to_route": "placement_test"},
     {"from_route": "/placement-test/<level>", "to_route": "placement_test"},
     {"from_route": "/placement-test/<test_id>", "to_route": "placement_test"},
