@@ -13,7 +13,10 @@
 		</router-link>
 	</header>
 	<div class="mx-auto w-full max-w-4xl pt-6 pb-10">
-		<div class="flex flex-col md:flex-row justify-between mb-4 px-3">
+		<div
+			v-if="canViewDirectory"
+			class="flex flex-col md:flex-row justify-between mb-4 px-3"
+		>
 			<div class="text-xl font-semibold text-ink-gray-7 mb-4 md:mb-0">
 				{{ memberCount }} {{ __('certified members') }}
 			</div>
@@ -38,71 +41,113 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="participants.data?.length" class="divide-y">
-			<template v-for="participant in participants.data">
-				<router-link
-					:to="{
-						name: 'ProfileCertificates',
-						params: {
-							username: participant.username,
-						},
-					}"
-					class="flex sm:rounded px-3 py-2 sm:h-15 hover:bg-surface-gray-2"
-				>
-					<div class="flex items-center w-full space-x-3">
-						<Avatar
-							:image="participant.user_image"
-							class="size-8 rounded-full object-contain"
-							:label="participant.full_name"
-							size="2xl"
-						/>
-						<div class="flex flex-col md:flex-row w-full">
-							<div class="flex-1">
-								<div class="text-base font-medium text-ink-gray-8">
-									{{ participant.full_name }}
+		<template v-if="canViewDirectory">
+			<div v-if="participants.data?.length" class="divide-y">
+				<template v-for="participant in participants.data">
+					<router-link
+						:to="{
+							name: 'ProfileCertificates',
+							params: {
+								username: participant.username,
+							},
+						}"
+						class="flex sm:rounded px-3 py-2 sm:h-15 hover:bg-surface-gray-2"
+					>
+						<div class="flex items-center w-full space-x-3">
+							<Avatar
+								:image="participant.user_image"
+								class="size-8 rounded-full object-contain"
+								:label="participant.full_name"
+								size="2xl"
+							/>
+							<div class="flex flex-col md:flex-row w-full">
+								<div class="flex-1">
+									<div class="text-base font-medium text-ink-gray-8">
+										{{ participant.full_name }}
+									</div>
+									<div
+										v-if="participant.headline"
+										class="mt-1.5 text-base text-ink-gray-5"
+									>
+										{{ participant.headline }}
+									</div>
 								</div>
 								<div
-									v-if="participant.headline"
-									class="mt-1.5 text-base text-ink-gray-5"
+									class="flex items-center space-x-3 md:space-x-24 text-sm md:text-base mt-1.5"
 								>
-									{{ participant.headline }}
-								</div>
-							</div>
-							<div
-								class="flex items-center space-x-3 md:space-x-24 text-sm md:text-base mt-1.5"
-							>
-								<div class="text-ink-gray-5">
-									{{ participant.certificate_count }}
-									{{
-										participant.certificate_count > 1
-											? __('certificates')
-											: __('certificate')
-									}}
+									<div class="text-ink-gray-5">
+										{{ participant.certificate_count }}
+										{{
+											participant.certificate_count > 1
+												? __('certificates')
+												: __('certificate')
+										}}
+									</div>
 								</div>
 							</div>
 						</div>
+					</router-link>
+				</template>
+			</div>
+			<EmptyState v-else type="Certified Members" />
+			<div
+				v-if="!participants.list.loading && participants.hasNextPage"
+				class="flex justify-center mt-5"
+			>
+				<Button @click="participants.next()">
+					{{ __('Load More') }}
+				</Button>
+			</div>
+		</template>
+		<template v-else>
+			<div
+				v-if="myCertificates.data?.length"
+				class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-3"
+			>
+				<div
+					v-for="certificate in myCertificates.data"
+					:key="certificate.name"
+					class="flex flex-col bg-surface-white border rounded-lg p-3 cursor-pointer hover:bg-surface-menu-bar"
+					@click="openCertificate(certificate)"
+				>
+					<div class="font-medium leading-5 mb-2 text-ink-gray-9">
+						{{ certificate.course_title || certificate.batch_title }}
 					</div>
-				</router-link>
-			</template>
-		</div>
-		<EmptyState v-else type="Certified Members" />
-		<div
-			v-if="!participants.list.loading && participants.hasNextPage"
-			class="flex justify-center mt-5"
-		>
-			<Button @click="participants.next()">
-				{{ __('Load More') }}
-			</Button>
-		</div>
+					<div
+						v-if="certificate.serial_number"
+						class="text-xs text-ink-gray-5 mt-1"
+					>
+						{{ __('Certificate No.') }}: {{ certificate.serial_number }}
+					</div>
+					<div class="flex items-center space-x-2 mt-2">
+						<Badge v-if="certificate.revoked" theme="red">
+							{{ __('Revoked') }}
+						</Badge>
+						<a
+							v-if="certificate.verification_token"
+							:href="`/verify/${certificate.verification_token}`"
+							target="_blank"
+							class="text-xs text-ink-blue-3 hover:underline"
+							@click.stop
+						>
+							{{ __('Verify') }}
+						</a>
+					</div>
+				</div>
+			</div>
+			<EmptyState v-else type="Certificates" />
+		</template>
 	</div>
 </template>
 <script setup>
 import {
 	Avatar,
+	Badge,
 	Breadcrumbs,
 	Button,
 	call,
 	createListResource,
+	createResource,
 	FormControl,
 	Select,
 	usePageMeta,
@@ -110,18 +155,44 @@ import {
 import { computed, onMounted, ref } from 'vue'
 import { GraduationCap } from 'lucide-vue-next'
 import { sessionStore } from '../stores/session'
+import { usersStore } from '../stores/user'
 import EmptyState from '@/components/EmptyState.vue'
 
 const currentCategory = ref('')
 const filters = ref({})
 const nameFilter = ref('')
 const { brand } = sessionStore()
+const { userResource } = usersStore()
 const memberCount = ref(0)
+
+const canViewDirectory = computed(() => {
+	const data = userResource.data
+	return (
+		data?.is_moderator ||
+		data?.is_instructor ||
+		data?.is_evaluator ||
+		data?.is_system_manager ||
+		data?.roles?.includes('Administrator')
+	)
+})
 
 onMounted(() => {
 	setFiltersFromQuery()
 	updateParticipants()
 })
+
+const myCertificates = createResource({
+	url: 'lms.lms.api.get_my_certificates',
+	auto: true,
+})
+
+const openCertificate = (certificate) => {
+	window.open(
+		`/api/method/frappe.utils.print_format.download_pdf?doctype=LMS+Certificate&name=${
+			certificate.name
+		}&format=${encodeURIComponent(certificate.template)}&no_letterhead=1`,
+	)
+}
 
 const participants = createListResource({
 	doctype: 'LMS Certificate',
@@ -202,16 +273,20 @@ const setFiltersFromQuery = () => {
 	currentCategory.value = queries.get('category') || ''
 }
 
+const pageTitle = computed(() =>
+	canViewDirectory.value ? __('Certified Members') : __('My Certificates'),
+)
+
 const breadcrumbs = computed(() => [
 	{
-		label: __('Certified Members'),
+		label: pageTitle.value,
 		route: { name: 'CertifiedParticipants' },
 	},
 ])
 
 usePageMeta(() => {
 	return {
-		title: __('Certified Members'),
+		title: pageTitle.value,
 		icon: brand.favicon,
 	}
 })

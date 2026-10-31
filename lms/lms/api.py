@@ -395,6 +395,18 @@ def get_evaluator_details(evaluator):
 	}
 
 
+CERTIFIED_DIRECTORY_ROLES = frozenset(
+	["Administrator", "System Manager", "Moderator", "Course Creator", "Batch Evaluator"]
+)
+
+
+def can_view_certified_directory():
+	"""Whether the session user may browse the full certified members directory."""
+	if frappe.session.user == "Guest":
+		return False
+	return bool(set(frappe.get_roles()) & CERTIFIED_DIRECTORY_ROLES)
+
+
 def get_certified_members_query(filters=None):
 	"""Published, non-revoked certificates, narrowed by the given filters."""
 	if isinstance(filters, str):
@@ -404,6 +416,9 @@ def get_certified_members_query(filters=None):
 	query = frappe.qb.from_(Certificate).where(
 		(Certificate.published == 1) & active_certificate_condition(Certificate)
 	)
+
+	if not can_view_certified_directory():
+		query = query.where(Certificate.member == frappe.session.user)
 
 	for field, value in (filters or {}).items():
 		if field == "category":
@@ -452,12 +467,15 @@ def get_count_of_certified_members(filters=None):
 @frappe.whitelist(allow_guest=True)
 def get_certification_categories():
 	categories = []
+	filters = {
+		"published": 1,
+		"revoked": 0,
+	}
+	if not can_view_certified_directory():
+		filters["member"] = frappe.session.user
 	docs = frappe.get_all(
 		"LMS Certificate",
-		filters={
-			"published": 1,
-			"revoked": 0,
-		},
+		filters=filters,
 		fields=["course_title", "batch_title"],
 	)
 
@@ -467,6 +485,26 @@ def get_certification_categories():
 			categories.append(category)
 
 	return categories
+
+
+@frappe.whitelist()
+def get_my_certificates():
+	"""All certificates issued to the logged-in member, for the "My Certificates" view."""
+	return frappe.get_all(
+		"LMS Certificate",
+		filters={"member": frappe.session.user},
+		fields=[
+			"name",
+			"course_title",
+			"batch_title",
+			"template",
+			"serial_number",
+			"verification_token",
+			"revoked",
+			"creation",
+		],
+		order_by="creation desc",
+	)
 
 
 @frappe.whitelist()
