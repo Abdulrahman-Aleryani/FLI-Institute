@@ -1045,3 +1045,28 @@
   20%, 50% { opacity: 0; }
 }
 @import url(https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap);
+/* Mobile header compaction: keep language switcher, Register Now and the
+   hamburger button inside the viewport on narrow screens */
+@media (width <= 767px) {
+  .site-header .container-wide { width: calc(100% - 20px); gap: 6px; }
+  .site-header .container-wide > a { gap: 5px; }
+  .site-header .container-wide > div { gap: 5px; }
+  .site-header .logo-image { width: 38px; height: 38px; }
+  .site-header .brand-name { max-width: 95px; font-size: 10px; line-height: 1.15; }
+  .site-header button[aria-label="Switch language"] { padding: 4px 6px; gap: 4px; }
+  .site-header button[aria-label="Open menu"] { flex-shrink: 0; margin-inline-end: 4px; }
+  .site-header .fli-register-btn {
+    height: 32px; padding: 5px 8px; font-size: 11px; gap: 3px; flex-shrink: 0;
+  }
+  .site-header .fli-register-btn svg { width: 11px; height: 11px; }
+}
+@media (width <= 480px) {
+  .site-header .fli-register-btn svg { display: none; }
+}
+
+/* Campus location card is now a link to Google Maps */
+a.campus-label { text-decoration: none; color: var(--foreground); cursor: pointer; transition: transform .2s ease, box-shadow .2s ease; }
+a.campus-label strong { color: #0f172a !important; }
+a.campus-label .text-muted-foreground { color: #64748b !important; }
+a.campus-label:hover { transform: translateY(-3px); box-shadow: 0 16px 38px oklch(18% .025 240 / .2); }
+a.campus-label:active { transform: translateY(-1px); }
