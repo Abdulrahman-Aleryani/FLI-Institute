@@ -16,6 +16,16 @@ GRADE_COMPONENTS = {
 GRADE_FIELDS = tuple(GRADE_COMPONENTS.keys())
 MAX_TOTAL = sum(component["max"] for component in GRADE_COMPONENTS.values())
 
+GRADING_ADMIN_ROLES = ("System Manager", "Moderator", "LMS Manager")
+
+
+def is_grading_admin(user: str | None = None) -> bool:
+	"""Whether the user may manage or reopen grades for any batch."""
+	user = user or frappe.session.user
+	if user == "Administrator":
+		return True
+	return bool(set(frappe.get_roles(user)) & set(GRADING_ADMIN_ROLES))
+
 
 def ensure_batch_permission(batch: str, user: str | None = None) -> None:
 	"""Ensure the given user can manage grades for the batch."""
@@ -23,7 +33,7 @@ def ensure_batch_permission(batch: str, user: str | None = None) -> None:
 		frappe.throw(_("Batch is required."), frappe.ValidationError)
 
 	user = user or frappe.session.user
-	if user == "Administrator" or frappe.db.get_value("Has Role", {"parent": user, "role": "System Manager"}):
+	if is_grading_admin(user):
 		return
 
 	exists = frappe.db.exists(

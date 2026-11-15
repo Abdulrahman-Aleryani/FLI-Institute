@@ -47,11 +47,11 @@
 						</p>
 					</div>
 					<div class="flex flex-wrap gap-2">
-						<Button variant="outline" :disabled="isReadOnly || isSaving" :loading="isSaving" @click="saveSheet">
+						<Button variant="outline" :disabled="!canEdit || isSaving" :loading="isSaving" @click="saveSheet">
 							<template #prefix>
 								<Save class="h-4 w-4 stroke-1.5" />
 							</template>
-							{{ __('Save Draft') }}
+							{{ isReadOnly ? __('Save Changes') : __('Save Draft') }}
 						</Button>
 						<Button
 							variant="solid"
@@ -65,6 +65,18 @@
 							</template>
 							{{ __('Submit') }}
 						</Button>
+						<Button
+							v-if="isAdmin && gradeSheet.docstatus === 1"
+							variant="outline"
+							:disabled="isReopening"
+							:loading="isReopening"
+							@click="reopenSheet"
+						>
+							<template #prefix>
+								<LockOpen class="h-4 w-4 stroke-1.5" />
+							</template>
+							{{ __('Reopen for Instructor') }}
+						</Button>
 					</div>
 				</div>
 
@@ -72,7 +84,11 @@
 					v-if="gradeSheet.docstatus === 1"
 					class="rounded-lg border border-outline-gray-2 bg-surface-green-1 px-4 py-3 text-sm text-ink-green-8"
 				>
-					{{ __('This grade sheet has been submitted and is read-only.') }}
+					{{
+						isAdmin
+							? __('This grade sheet is submitted. As an administrator you can still edit grades or reopen it for the instructor.')
+							: __('This grade sheet has been submitted and is read-only.')
+					}}
 				</div>
 
 				<div
@@ -130,7 +146,7 @@
 										:min="0"
 										:max="gradeMax[field]"
 										:step="0.5"
-										:disabled="isReadOnly"
+										:disabled="!canEdit"
 										@input="onFieldChange(row, field)"
 									/>
 								</td>
@@ -147,7 +163,7 @@
 										v-model="row.teacher_comments"
 										type="textarea"
 										:rows="2"
-										:disabled="isReadOnly"
+										:disabled="!canEdit"
 									/>
 								</td>
 							</tr>
@@ -161,9 +177,9 @@
 
 <script setup>
 import { Badge, Breadcrumbs, Button, FormControl, call, createResource, toast } from 'frappe-ui'
-import { computed, inject, onMounted, ref } from 'vue'
+import { computed, getCurrentInstance, inject, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { Check, RefreshCcw, Save } from 'lucide-vue-next'
+import { Check, LockOpen, RefreshCcw, Save } from 'lucide-vue-next'
 import EmptyState from '@/components/EmptyState.vue'
 
 const MAX_TOTAL = 100
@@ -203,6 +219,8 @@ const gradeMax = {
 const route = useRoute()
 const router = useRouter()
 const user = inject('$user')
+const app = getCurrentInstance()
+const { $dialog } = app.appContext.config.globalProperties
 
 const gradeSheet = ref(null)
 const sheetName = ref(route.params.sheetName || '')
@@ -211,13 +229,13 @@ const totalsWarning = ref(false)
 const validationErrors = ref([])
 const isSaving = ref(false)
 const isSubmitting = ref(false)
+const isReopening = ref(false)
 
 const sheetResource = createResource({
-	url: 'frappe.client.get',
+	url: 'lms.lms.api.get_grade_sheet',
 	makeParams(values) {
 		return {
-			doctype: 'Batch Grade Sheet',
-			name: values.name,
+			sheet_name: values.name,
 		}
 	},
 	auto: false,
@@ -237,6 +255,17 @@ const sheetResource = createResource({
 
 const tableRows = computed(() => gradeSheet.value?.grade_records || [])
 const isReadOnly = computed(() => gradeSheet.value?.docstatus === 1)
+const isAdmin = computed(() => {
+	const data = user.data
+	if (!data) return false
+	return (
+		data.name === 'Administrator' ||
+		data.is_system_manager ||
+		data.is_moderator ||
+		data.roles?.includes('LMS Manager')
+	)
+})
+const canEdit = computed(() => !isReadOnly.value || isAdmin.value)
 const sheetTitle = computed(() => gradeSheet.value?.batch_title || route.params.batchName)
 const instructorDisplayName = computed(
 	() => instructorName.value || user.data?.full_name || user.data?.name || __('Unknown Instructor')
@@ -356,7 +385,12 @@ const saveSheet = async () => {
 	isSaving.value = true
 	validationErrors.value = []
 	try {
-		const saved = await callWithError('frappe.client.save', { doc: serializeDoc() })
+		const saved = isAdmin.value
+			? await callWithError('lms.lms.api.save_grade_sheet', {
+					sheet_name: gradeSheet.value.name,
+					grade_records: serializeDoc().grade_records,
+				})
+			: await callWithError('frappe.client.save', { doc: serializeDoc() })
 		if (saved) {
 			gradeSheet.value = normalizeDoc(saved)
 			recalculateAllTotals()
@@ -372,7 +406,13 @@ const submitSheet = async () => {
 	isSubmitting.value = true
 	validationErrors.value = []
 	try {
-		const submitted = await callWithError('frappe.client.submit', { doc: serializeDoc() })
+		const submitted = isAdmin.value
+			? await callWithError('lms.lms.api.save_grade_sheet', {
+					sheet_name: gradeSheet.value.name,
+					grade_records: serializeDoc().grade_records,
+					submit: 1,
+				})
+			: await callWithError('frappe.client.submit', { doc: serializeDoc() })
 		if (submitted) {
 			gradeSheet.value = normalizeDoc(submitted)
 			recalculateAllTotals()
@@ -384,6 +424,38 @@ const submitSheet = async () => {
 	} finally {
 		isSubmitting.value = false
 	}
+}
+
+const reopenSheet = () => {
+	if (!gradeSheet.value) return
+	$dialog({
+		title: __('Reopen Grade Sheet'),
+		message: __(
+			'This will revert the grade sheet back to Draft so the instructor can edit it again. Continue?'
+		),
+		actions: [
+			{
+				label: __('Reopen'),
+				variant: 'solid',
+				onClick: async (closeDialog) => {
+					isReopening.value = true
+					try {
+						const reopened = await callWithError('lms.lms.api.reopen_grade_sheet', {
+							sheet_name: gradeSheet.value.name,
+						})
+						if (reopened) {
+							gradeSheet.value = normalizeDoc(reopened)
+							recalculateAllTotals()
+							toast.success(__('Grade sheet reopened'))
+						}
+					} finally {
+						isReopening.value = false
+						closeDialog()
+					}
+				},
+			},
+		],
+	})
 }
 
 const normalizeDoc = (doc) => ({

@@ -22,7 +22,7 @@
 		<template v-else>
 			<div class="mb-6">
 				<h1 class="text-2xl font-semibold text-ink-gray-9">
-					{{ __('Your teaching batches') }}
+					{{ isAdmin ? __('All batches') : __('Your teaching batches') }}
 				</h1>
 				<p class="text-ink-gray-6 mt-1">
 					{{ __('Select a batch to open its grading sheet.') }}
@@ -100,10 +100,22 @@ const dayjs = inject('$dayjs')
 const openingBatch = ref('')
 const { brand } = sessionStore()
 
+const isAdmin = computed(() => {
+	const data = user.data
+	if (!data) return false
+	return (
+		data.name === 'Administrator' ||
+		data.is_system_manager ||
+		data.is_moderator ||
+		data.roles?.includes('LMS Manager')
+	)
+})
+
 const canAccess = computed(() => {
 	const data = user.data
 	if (!data) return false
 	return (
+		isAdmin.value ||
 		data.is_instructor ||
 		data.is_moderator ||
 		data.roles?.includes('Instructor') ||

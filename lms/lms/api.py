@@ -41,7 +41,12 @@ from lms.lms.utils import (
 	get_evaluator,
 	get_lesson_count,
 )
-from lms.lms.doctype.batch_grade_sheet.batch_grade_sheet import ensure_batch_permission
+from lms.lms.doctype.batch_grade_sheet.batch_grade_sheet import (
+	GRADE_COMPONENTS,
+	ensure_batch_permission,
+	is_grading_admin,
+	recalculate_row_total,
+)
 from lms.lms.doctype.lms_certificate.lms_certificate import active_certificate_condition
 
 # Allow imports like ``lms.lms.api.attendance`` even though this file is a module.
@@ -214,6 +219,13 @@ def _require_logged_in_user():
 def get_batches_for_current_instructor():
 	user = _require_logged_in_user()
 
+	if is_grading_admin(user):
+		return frappe.get_all(
+			"LMS Batch",
+			fields=["name", "title", "start_date", "end_date", "timezone"],
+			order_by="start_date asc",
+		)
+
 	Batch = DocType("LMS Batch")
 	CourseInstructor = DocType("Course Instructor")
 
@@ -258,14 +270,18 @@ def get_or_create_grade_sheet(batch_name=None):
 	user = _require_logged_in_user()
 	ensure_batch_permission(batch_name, user=user)
 
+	filters = {
+		"batch": batch_name,
+		"docstatus": ["!=", 2],
+	}
+	if not is_grading_admin(user):
+		filters["instructor"] = user
+
 	existing = frappe.get_all(
 		"Batch Grade Sheet",
-		filters={
-			"batch": batch_name,
-			"instructor": user,
-			"docstatus": ["!=", 2],
-		},
+		filters=filters,
 		fields=["name"],
+		order_by="modified desc",
 		limit=1,
 	)
 
@@ -275,9 +291,131 @@ def get_or_create_grade_sheet(batch_name=None):
 		_cleanup_invalid_user_permission_doctypes()
 		doc = frappe.new_doc("Batch Grade Sheet")
 		doc.batch = batch_name
-		doc.instructor = user
-		doc.insert()
+		doc.instructor = _default_sheet_instructor(batch_name, user)
+		doc.insert(ignore_permissions=is_grading_admin(user))
 
+	return doc.as_dict()
+
+
+def _default_sheet_instructor(batch_name, user):
+	"""Attribute a new sheet to the batch's assigned instructor when one exists."""
+	if is_grading_admin(user):
+		return (
+			frappe.db.get_value(
+				"Course Instructor",
+				{"parent": batch_name, "parenttype": "LMS Batch"},
+				"instructor",
+			)
+			or user
+		)
+	return user
+
+
+@frappe.whitelist()
+def get_grade_sheet(sheet_name):
+	"""Return a grade sheet if the user may manage grades for its batch."""
+	if not sheet_name:
+		frappe.throw(_("Grade sheet is required."), frappe.ValidationError)
+
+	user = _require_logged_in_user()
+	doc = frappe.get_doc("Batch Grade Sheet", sheet_name)
+	ensure_batch_permission(doc.batch, user=user)
+	return doc.as_dict()
+
+
+@frappe.whitelist()
+def save_grade_sheet(sheet_name, grade_records=None, submit=False):
+	"""Admin-only save that also works on submitted grade sheets."""
+	user = _require_logged_in_user()
+	if not is_grading_admin(user):
+		frappe.throw(
+			_("Only administrators can directly update grade sheets."),
+			frappe.PermissionError,
+		)
+
+	doc = frappe.get_doc("Batch Grade Sheet", sheet_name)
+	ensure_batch_permission(doc.batch, user=user)
+
+	records = grade_records if isinstance(grade_records, list) else frappe.parse_json(grade_records)
+	records = records or []
+	submit = cint(submit)
+
+	if doc.docstatus == 0:
+		doc.set(
+			"grade_records",
+			[
+				{
+					**record,
+					"doctype": "Batch Grade Record",
+					"parent": doc.name,
+					"parenttype": "Batch Grade Sheet",
+					"parentfield": "grade_records",
+				}
+				for record in records
+			],
+		)
+		ignore_permissions = frappe.flags.ignore_permissions
+		frappe.flags.ignore_permissions = True
+		try:
+			if submit:
+				doc.submit()
+			else:
+				doc.save()
+		finally:
+			frappe.flags.ignore_permissions = ignore_permissions
+		return doc.as_dict()
+
+	if doc.docstatus != 1:
+		frappe.throw(_("Cancelled grade sheets cannot be updated."), frappe.ValidationError)
+
+	_update_submitted_grade_rows(doc, records)
+	doc.update_modified()
+	return frappe.get_doc("Batch Grade Sheet", doc.name).as_dict()
+
+
+def _update_submitted_grade_rows(doc, records):
+	existing_rows = {row.name: row for row in doc.grade_records}
+	for record in records:
+		row = existing_rows.get(record.get("name"))
+		if not row:
+			continue
+
+		merged = frappe._dict(row.as_dict())
+		for fieldname in GRADE_COMPONENTS:
+			merged[fieldname] = record.get(fieldname)
+		merged.teacher_comments = record.get("teacher_comments")
+
+		recalculate_row_total(merged, enforce_limits=True)
+
+		updates = {fieldname: merged.get(fieldname) for fieldname in GRADE_COMPONENTS}
+		updates["total"] = merged.total
+		updates["teacher_comments"] = merged.teacher_comments
+		frappe.db.set_value("Batch Grade Record", row.name, updates, update_modified=False)
+
+
+@frappe.whitelist()
+def reopen_grade_sheet(sheet_name):
+	"""Admin-only: revert a submitted grade sheet back to Draft."""
+	user = _require_logged_in_user()
+	if not is_grading_admin(user):
+		frappe.throw(
+			_("Only administrators can reopen a submitted grade sheet."),
+			frappe.PermissionError,
+		)
+
+	doc = frappe.get_doc("Batch Grade Sheet", sheet_name)
+	if doc.docstatus != 1:
+		frappe.throw(_("Only submitted grade sheets can be reopened."), frappe.ValidationError)
+
+	frappe.db.set_value("Batch Grade Sheet", doc.name, "docstatus", 0)
+	frappe.db.sql(
+		"UPDATE `tabBatch Grade Record` SET docstatus = 0 WHERE parent = %s", doc.name
+	)
+	doc.reload()
+	doc.add_comment(
+		"Info",
+		_("Grade sheet reopened by {0}.").format(frappe.utils.get_fullname(user)),
+	)
 	return doc.as_dict()
 
 
