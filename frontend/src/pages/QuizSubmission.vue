@@ -2,8 +2,8 @@
 	<header
 		class="sticky top-0 z-10 flex items-center justify-between border-b bg-surface-white px-3 py-2.5 sm:px-5"
 	>
-		<Breadcrumbs v-if="submissionDetails.doc" :items="breadcrumbs" />
-		<div class="space-x-2">
+		<Breadcrumbs v-if="submissionDoc" :items="breadcrumbs" />
+		<div v-if="!batchMode" class="space-x-2">
 			<Badge
 				v-if="submissionDetails.isDirty"
 				:label="__('Not Saved')"
@@ -15,19 +15,19 @@
 			</Button>
 		</div>
 	</header>
-	<div v-if="submissionDetails.doc" class="w-2/3 border-x mx-auto py-5">
+	<div v-if="submissionDoc" class="w-2/3 border-x mx-auto py-5">
 		<div class="text-xl px-10 font-semibold text-ink-gray-9 mb-5">
-			{{ submissionDetails.doc.member_name }}
+			{{ submissionDoc.member_name }}
 		</div>
 		<div class="space-y-4 border-b pb-5 px-10">
 			<div class="grid grid-cols-2 gap-5">
 				<FormControl
-					v-model="submissionDetails.doc.quiz_title"
+					v-model="submissionDoc.quiz_title"
 					:label="__('Quiz')"
 					:disabled="true"
 				/>
 				<FormControl
-					v-model="submissionDetails.doc.member_name"
+					v-model="submissionDoc.member_name"
 					:label="__('Member')"
 					:disabled="true"
 				/>
@@ -35,12 +35,12 @@
 
 			<div class="grid grid-cols-2 gap-5">
 				<FormControl
-					v-model="submissionDetails.doc.score"
+					v-model="submissionDoc.score"
 					:label="__('Score')"
 					:disabled="true"
 				/>
 				<FormControl
-					v-model="submissionDetails.doc.percentage"
+					v-model="submissionDoc.percentage"
 					:label="__('Percentage')"
 					:disabled="true"
 				/>
@@ -49,7 +49,7 @@
 
 		<div class="divide-y">
 			<div
-				v-for="(row, index) in submissionDetails.doc.result"
+				v-for="(row, index) in submissionDoc.result"
 				class="py-5 px-10 space-y-4"
 			>
 				<div class="text-ink-gray-9">
@@ -61,7 +61,11 @@
 					<span class="leading-5" v-html="row.answer"></span>
 				</div>
 				<div class="grid grid-cols-2 gap-5">
-					<FormControl v-model="row.marks" :label="__('Marks')" />
+					<FormControl
+						v-model="row.marks"
+						:label="__('Marks')"
+						:disabled="batchMode"
+					/>
 					<FormControl
 						v-model="row.marks_out_of"
 						:label="__('Marks out of')"
@@ -75,6 +79,7 @@
 <script setup>
 import {
 	createDocumentResource,
+	createResource,
 	Breadcrumbs,
 	FormControl,
 	Button,
@@ -83,16 +88,23 @@ import {
 	toast,
 } from 'frappe-ui'
 import { computed, onBeforeUnmount, onMounted, inject } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { sessionStore } from '@/stores/session'
 
 const { brand } = sessionStore()
 const router = useRouter()
+const route = useRoute()
 const user = inject('$user')
 
+const batchMode = computed(() => !!route.query.batch)
+
 onMounted(() => {
-	if (!user.data?.is_instructor && !user.data?.is_moderator)
-		router.push({ name: 'Courses' })
+	const allowed =
+		user.data?.is_instructor ||
+		user.data?.is_moderator ||
+		user.data?.is_evaluator ||
+		user.data?.is_system_manager
+	if (!allowed) router.push({ name: 'Courses' })
 
 	window.addEventListener('keydown', keyboardShortcut)
 })
@@ -119,10 +131,22 @@ const props = defineProps({
 	},
 })
 
-const submissionDetails = createDocumentResource({
-	doctype: 'LMS Quiz Submission',
-	name: props.submission,
-	auto: true,
+const submissionDetails = batchMode.value
+	? createResource({
+			url: 'lms.lms.utils.get_quiz_submission_details',
+			params: {
+				submission: props.submission,
+			},
+			auto: true,
+		})
+	: createDocumentResource({
+			doctype: 'LMS Quiz Submission',
+			name: props.submission,
+			auto: true,
+		})
+
+const submissionDoc = computed(() => {
+	return batchMode.value ? submissionDetails.data : submissionDetails.doc
 })
 
 const breadcrumbs = computed(() => {
@@ -132,17 +156,19 @@ const breadcrumbs = computed(() => {
 			route: {
 				name: 'QuizSubmissionList',
 				params: {
-					quizID: submissionDetails.doc.quiz,
+					quizID: submissionDoc.value.quiz,
 				},
+				query: route.query,
 			},
 		},
 		{
-			label: submissionDetails.doc.quiz_title,
+			label: submissionDoc.value.quiz_title,
 		},
 	]
 })
 
 const saveSubmission = () => {
+	if (batchMode.value) return
 	submissionDetails.save.submit(
 		{},
 		{
@@ -155,7 +181,7 @@ const saveSubmission = () => {
 
 usePageMeta(() => {
 	return {
-		title: `${submissionDetails.doc?.quiz_title}`,
+		title: `${submissionDoc.value?.quiz_title}`,
 		icon: brand.favicon,
 	}
 })

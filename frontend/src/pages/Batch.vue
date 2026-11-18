@@ -11,6 +11,12 @@
 				>
 					{{ __('Generate Certificates') }}
 				</Button>
+				<Button
+					v-if="canCheckSubmissions"
+					@click="showQuizSubmissionsModal = true"
+				>
+					{{ __('Check Submissions') }}
+				</Button>
 				<Button v-if="canMakeAnnouncement()" @click="openAnnouncementModal()">
 					<span>
 						{{ __('Make an Announcement') }}
@@ -79,7 +85,10 @@
 								/>
 							</div>
 							<div v-else-if="tab.label == 'Assessments'">
-								<Assessments :batch="batch.data.name" />
+								<Assessments
+									:batch="batch.data.name"
+									:canViewSubmissions="canCheckSubmissions"
+								/>
 							</div>
 							<div v-else-if="tab.label == 'Announcements'">
 								<Announcements :batch="batch.data.name" />
@@ -206,6 +215,11 @@
 		v-model="openCertificateDialog"
 		:batch="batch.data"
 	/>
+	<QuizSubmissionsModal
+		v-if="batch.data"
+		v-model="showQuizSubmissionsModal"
+		:batch="batch.data.name"
+	/>
 </template>
 <script setup>
 import { computed, inject, ref, onMounted, watch } from 'vue'
@@ -245,12 +259,14 @@ import AnnouncementModal from '@/components/Modals/AnnouncementModal.vue'
 import Discussions from '@/components/Discussions.vue'
 import DateRange from '@/components/Common/DateRange.vue'
 import BulkCertificates from '@/components/Modals/BulkCertificates.vue'
+import QuizSubmissionsModal from '@/components/Modals/QuizSubmissionsModal.vue'
 import BatchFeedback from '@/components/BatchFeedback.vue'
 import dayjs from 'dayjs/esm'
 
 const user = inject('$user')
 const showAnnouncementModal = ref(false)
 const openCertificateDialog = ref(false)
+const showQuizSubmissionsModal = ref(false)
 const route = useRoute()
 const router = useRouter()
 const { brand } = sessionStore()
@@ -380,6 +396,16 @@ const canMakeAnnouncement = () => {
 
 const isAdmin = computed(() => {
 	return user.data?.is_moderator || user.data?.is_evaluator
+})
+
+const canCheckSubmissions = computed(() => {
+	if (!user?.data) return false
+
+	if (user.data.is_system_manager || user.data.is_moderator) return true
+
+	return batch.data?.instructors?.some(
+		(instructor) => instructor.name === user.data.name
+	)
 })
 
 usePageMeta(() => {

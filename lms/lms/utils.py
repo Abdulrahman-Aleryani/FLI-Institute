@@ -1327,6 +1327,125 @@ def get_batch_student_details(student):
 	return details
 
 
+def can_review_batch_submissions(batch, member=None):
+	"""Check if the member can review quiz submissions of a batch's students.
+
+	Allowed for Administrator, System Manager, Moderator, and the
+	instructors assigned to that specific batch.
+	"""
+	if not member:
+		member = frappe.session.user
+
+	if member == "Administrator":
+		return True
+
+	roles = frappe.get_roles(member)
+	if "System Manager" in roles or "Moderator" in roles:
+		return True
+
+	return bool(
+		frappe.db.exists(
+			"Course Instructor",
+			{"parent": batch, "parenttype": "LMS Batch", "instructor": member},
+		)
+	)
+
+
+def is_student_in_instructors_batch(student, instructor=None):
+	"""Check if the student is enrolled in any batch the instructor is assigned to."""
+	if not instructor:
+		instructor = frappe.session.user
+
+	batches = frappe.get_all(
+		"Course Instructor",
+		{"instructor": instructor, "parenttype": "LMS Batch"},
+		pluck="parent",
+	)
+	if not batches:
+		return False
+
+	return bool(
+		frappe.db.exists("LMS Batch Enrollment", {"member": student, "batch": ["in", batches]})
+	)
+
+
+@frappe.whitelist()
+def get_batch_quizzes(batch):
+	"""Return the quizzes assigned to a batch for the Check Submissions flow."""
+	if not can_review_batch_submissions(batch):
+		frappe.throw(_("Not Permitted"), frappe.PermissionError)
+
+	quizzes = []
+	for assessment in frappe.get_all(
+		"LMS Assessment",
+		{"parent": batch, "assessment_type": "LMS Quiz"},
+		["name", "assessment_name"],
+		order_by="idx",
+	):
+		quizzes.append(
+			{
+				"name": assessment.name,
+				"quiz": assessment.assessment_name,
+				"title": frappe.db.get_value("LMS Quiz", assessment.assessment_name, "title"),
+			}
+		)
+	return quizzes
+
+
+@frappe.whitelist()
+def get_batch_quiz_submissions(quiz, batch):
+	"""Return quiz submissions of students enrolled in the given batch.
+
+	Includes every attempt (retakes) of each enrolled student and excludes
+	submissions by members of other batches.
+	"""
+	if not can_review_batch_submissions(batch):
+		frappe.throw(_("Not Permitted"), frappe.PermissionError)
+
+	if not frappe.db.exists(
+		"LMS Assessment",
+		{"parent": batch, "assessment_type": "LMS Quiz", "assessment_name": quiz},
+	):
+		frappe.throw(_("This quiz is not assigned to this batch."))
+
+	students = frappe.get_all("LMS Batch Enrollment", {"batch": batch}, pluck="member")
+	if not students:
+		return []
+
+	return frappe.get_all(
+		"LMS Quiz Submission",
+		filters={"quiz": quiz, "member": ["in", students]},
+		fields=[
+			"name",
+			"member",
+			"member_name",
+			"score",
+			"percentage",
+			"quiz_title",
+			"creation",
+		],
+		order_by="member_name asc, creation asc",
+	)
+
+
+@frappe.whitelist()
+def get_quiz_submission_details(submission):
+	"""Return a quiz submission's details for review.
+
+	Batch instructors can only read submissions of students enrolled in a
+	batch where they are an assigned instructor.
+	"""
+	doc = frappe.get_doc("LMS Quiz Submission", submission)
+
+	if doc.has_permission("read"):
+		return doc.as_dict()
+
+	if is_student_in_instructors_batch(doc.member):
+		return doc.as_dict()
+
+	frappe.throw(_("Not Permitted"), frappe.PermissionError)
+
+
 def calculate_student_progress(batch, details):
 	batch_courses = frappe.get_all("Batch Course", {"parent": batch}, ["course", "title"])
 	assessments = frappe.get_all(

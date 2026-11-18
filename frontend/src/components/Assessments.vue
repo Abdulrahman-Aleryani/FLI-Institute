@@ -107,6 +107,10 @@ const props = defineProps({
 		type: String,
 		required: true,
 	},
+	canViewSubmissions: {
+		type: Boolean,
+		default: false,
+	},
 	rows: {
 		type: Array,
 	},
@@ -191,6 +195,17 @@ const getRowRoute = (row) => {
 			}
 		}
 	} else {
+		if (props.canViewSubmissions) {
+			return {
+				name: 'QuizSubmissionList',
+				params: {
+					quizID: row.assessment_name,
+				},
+				query: {
+					batch: props.batch,
+				},
+			}
+		}
 		return {
 			name: 'QuizPage',
 			params: {
