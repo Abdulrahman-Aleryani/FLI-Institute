@@ -189,6 +189,24 @@ class TestGradesPage(IntegrationTestCase):
 		html = render_template_html(template, _sample_parts(template), SAMPLE_GRADES)
 		self.assertEqual(html.count('class="grades-page"'), 1)
 
+	def test_failing_grades_render_report_only(self):
+		template = self.template(1)
+		template.html = "<div>CERTIFICATE PAGE {{ student_name }}</div>"
+		grades = dict(SAMPLE_GRADES, mark=50)
+		html = render_template_html(template, _sample_parts(template), grades)
+		self.assertNotIn("CERTIFICATE PAGE", html)
+		# The report must be the first page — a leading break would leave a blank page.
+		self.assertNotIn("page-break-before", html)
+		self.assertEqual(html.count('class="grades-page"'), 1)
+
+	def test_passing_boundary_keeps_certificate(self):
+		template = self.template(1)
+		template.html = "<div>CERTIFICATE PAGE {{ student_name }}</div>"
+		grades = dict(SAMPLE_GRADES, mark=75)
+		html = render_template_html(template, _sample_parts(template), grades)
+		self.assertIn("CERTIFICATE PAGE", html)
+		self.assertEqual(html.count('class="grades-page"'), 1)
+
 
 class TestGradesPrivacy(IntegrationTestCase):
 	def run_render(self, user, has_print):

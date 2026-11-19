@@ -1,6 +1,8 @@
 # Copyright (c) 2021, FOSS United and Contributors
 # See license.txt
 
+from unittest.mock import patch
+
 import frappe
 
 try:
@@ -115,10 +117,62 @@ class TestLMSCertificate(IntegrationTestCase):
 		if not batch:
 			self.skipTest("Needs a batch")
 		result = create_bulk_certificates(batch[0])
-		self.assertEqual(set(result), {"created", "skipped", "failed"})
+		self.assertEqual(set(result), {"created", "updated", "skipped", "failed"})
 		again = create_bulk_certificates(batch[0])
 		self.assertEqual(again["created"], [])
 		self.assertEqual(len(again["skipped"]), len(result["created"]) + len(result["skipped"]))
+
+	def test_bulk_skips_students_not_enrolled(self):
+		batch = frappe.get_all("LMS Batch", pluck="name", limit=1)
+		if not batch:
+			self.skipTest("Needs a batch")
+		result = create_bulk_certificates(batch[0], students=["ghost@example.com"])
+		self.assertEqual(result["created"], [])
+		self.assertEqual(result["updated"], [])
+		self.assertEqual(result["skipped"][0]["member"], "ghost@example.com")
+
+	def test_bulk_selected_member_is_updated_not_skipped(self):
+		batch = frappe.get_all("LMS Batch", pluck="name", limit=1)
+		members = (
+			batch
+			and frappe.get_all(
+				"LMS Batch Enrollment", {"batch": batch[0]}, pluck="member", limit=1
+			)
+		)
+		if not members:
+			self.skipTest("Needs a batch with students")
+
+		result = create_bulk_certificates(batch[0], students=[members[0]])
+		self.assertEqual(len(result["created"]) + len(result["updated"]), 1)
+
+		again = create_bulk_certificates(batch[0], students=[members[0]])
+		self.assertEqual(again["updated"], result["created"] or result["updated"])
+		self.assertEqual(again["created"], [])
+		self.assertEqual(again["skipped"], [])
+
+	def test_enforce_passing_grade_unpublishes_failures(self):
+		doc = frappe.get_doc(
+			{
+				"doctype": "LMS Certificate",
+				"member": "s@example.com",
+				"batch_name": "B-1",
+				"published": 1,
+			}
+		)
+		with patch(
+			"lms.lms.doctype.lms_certificate.lms_certificate.collect_grades",
+			return_value={"mark": 50},
+		):
+			doc.enforce_passing_grade()
+		self.assertEqual(doc.published, 0)
+
+		with patch(
+			"lms.lms.doctype.lms_certificate.lms_certificate.collect_grades",
+			return_value={"mark": 80},
+		):
+			doc.published = 1
+			doc.enforce_passing_grade()
+		self.assertEqual(doc.published, 1)
 
 
 class TestCertificateWebsitePermission(IntegrationTestCase):

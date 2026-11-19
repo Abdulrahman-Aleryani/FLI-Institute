@@ -16,7 +16,7 @@ from jinja2.exceptions import SecurityError
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 from markupsafe import Markup
 
-from lms.lms.certificate_grades import collect_grades
+from lms.lms.certificate_grades import collect_grades, is_passing
 
 # Landscape sizes in mm (width, height). Swapped for Portrait.
 GRADES_FOLDER = Path(__file__).parent / "doctype" / "lms_certificate_template" / "default_template"
@@ -426,7 +426,7 @@ def _render_image_template(template, values, images):
 	return _page_shell(template, "\n".join(parts))
 
 
-def _render_grades_page(template, parts, grades):
+def _grades_block(template, parts, grades):
 	context = dict(parts[0])
 	for key, value in grades.items():
 		if isinstance(value, list | dict):
@@ -440,6 +440,11 @@ def _render_grades_page(template, parts, grades):
 	context["page_inner_height"] = f"{height - 19:.1f}"
 	body = render_html_template((GRADES_FOLDER / "grades.html").read_text(encoding="utf-8"), context)
 	css = sanitize_css((GRADES_FOLDER / "grades.css").read_text(encoding="utf-8"))
+	return css, body, width, height
+
+
+def _render_grades_page(template, parts, grades):
+	css, body, width, height = _grades_block(template, parts, grades)
 	return (
 		f"<style>{css}</style>"
 		# Locked to a single page: fixed height plus hidden overflow clips instead of
@@ -450,8 +455,28 @@ def _render_grades_page(template, parts, grades):
 	)
 
 
+def _render_grades_document(template, parts, grades):
+	"""Standalone grades report for failing students.
+
+	The completion certificate is omitted entirely, so the report must start on
+	the first page — a leading page break would render as a blank page.
+	"""
+	css, body, width, height = _grades_block(template, parts, grades)
+	block = (
+		f"<style>{css}</style>"
+		f'<div style="padding-top: 6mm;">'
+		f'<div class="grades-page" style="width:{width - 12:.1f}mm; '
+		f'height:{height - 12:.1f}mm; margin:0 6mm 6mm 6mm; overflow:hidden; position:static;">{body}</div></div>'
+	)
+	return _page_shell(template, block)
+
+
 def render_template_html(template, parts, grades=None):
 	context, values, images = parts
+	if grades and not is_passing(grades):
+		# Below the passing mark the PDF is the grades report alone; there is no
+		# completion certificate to print.
+		return _render_grades_document(template, parts, grades)
 	if template.template_type == "Image":
 		html = _render_image_template(template, values, images)
 	else:
@@ -476,7 +501,7 @@ def render_certificate(cert_name, template=None, sample=False, include_grades=Tr
 	else:
 		values, images = _collect(cert, template)
 		parts = (build_context(values, images), values, images)
-		grades = collect_grades(cert) if include_grades and template.include_grades_page else None
+		grades = collect_grades(cert) if include_grades else None
 	return render_template_html(template, parts, grades)
 
 

@@ -7,7 +7,12 @@ try:
 except ImportError:  # Frappe v15
 	from frappe.tests.utils import FrappeTestCase as IntegrationTestCase
 
-from lms.lms.certificate_grades import DEFAULT_GRADE_BANDS, collect_grades, get_grade_label
+from lms.lms.certificate_grades import (
+	DEFAULT_GRADE_BANDS,
+	collect_grades,
+	get_grade_label,
+	is_passing,
+)
 
 
 class TestGradeLabel(IntegrationTestCase):
@@ -23,6 +28,18 @@ class TestGradeLabel(IntegrationTestCase):
 	def test_unordered_bands(self):
 		bands = [(60, "Pass"), (90, "Excellent")]
 		self.assertEqual(get_grade_label(95, bands), "Excellent")
+
+
+class TestIsPassing(IntegrationTestCase):
+	def test_missing_grades_pass(self):
+		self.assertTrue(is_passing(None))
+		self.assertTrue(is_passing({}))
+
+	def test_boundary(self):
+		self.assertTrue(is_passing({"mark": 75}))
+		self.assertTrue(is_passing({"mark": 75.0}))
+		self.assertFalse(is_passing({"mark": 74.99}))
+		self.assertFalse(is_passing({"mark": 0}))
 
 
 class TestCollectGrades(IntegrationTestCase):
@@ -47,10 +64,26 @@ class TestCollectGrades(IntegrationTestCase):
 			frappe._dict(name="S1", term="3", instructor_name="First"),
 		]
 
-		def get_value(doctype, filters, fields, as_dict=False):
+		real_get_value = frappe.db.get_value
+		record = frappe._dict(
+			total=92,
+			teacher_comments="Great",
+			final_exam=25,
+			unit_quiz_1=15,
+			homework=10,
+			attendance=10,
+			class_participation=10,
+			story_discussion=10,
+			writing=10,
+			oral_exam=2,
+		)
+
+		def get_value(doctype, filters, *args, **kwargs):
+			if doctype != "Batch Grade Record":
+				return real_get_value(doctype, filters, *args, **kwargs)
 			if filters["parent"] == "S2":
 				return None
-			return frappe._dict(total=92, teacher_comments="Great", final_exam=23, unit_quiz_1=14)
+			return record
 
 		def get_all(doctype, **kwargs):
 			if doctype == "Batch Grade Sheet":
@@ -79,3 +112,37 @@ class TestCollectGrades(IntegrationTestCase):
 
 		with patch("frappe.get_all", side_effect=get_all), patch("frappe.db.get_value", return_value=record):
 			self.assertEqual(collect_grades(self.cert())["teacher_comments"], "Fast & keen")
+
+	def test_stored_total_is_recomputed_from_components(self):
+		# A stored ``total`` that drifted from the component marks must not leak
+		# through: the earned total is summed again from the components.
+		sheets = [frappe._dict(name="S1", term="3", instructor_name="T")]
+		record = frappe._dict(total=100, attendance=10, writing=15)
+		real_get_value = frappe.db.get_value
+
+		def get_value(doctype, *args, **kwargs):
+			if doctype == "Batch Grade Record":
+				return record
+			return real_get_value(doctype, *args, **kwargs)
+
+		def get_all(doctype, **kwargs):
+			return sheets if doctype == "Batch Grade Sheet" else []
+
+		with patch("frappe.get_all", side_effect=get_all), patch("frappe.db.get_value", side_effect=get_value):
+			grades = collect_grades(self.cert())
+
+		self.assertEqual(grades["mark"], 25)
+		self.assertFalse(is_passing(grades))
+
+	def test_stored_total_used_when_components_empty(self):
+		sheets = [frappe._dict(name="S1", term="3", instructor_name="T")]
+		record = frappe._dict(total=80)
+
+		def get_all(doctype, **kwargs):
+			return sheets if doctype == "Batch Grade Sheet" else []
+
+		with patch("frappe.get_all", side_effect=get_all), patch("frappe.db.get_value", return_value=record):
+			grades = collect_grades(self.cert())
+
+		self.assertEqual(grades["mark"], 80)
+		self.assertTrue(is_passing(grades))

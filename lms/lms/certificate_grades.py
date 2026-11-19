@@ -3,7 +3,11 @@ from html import unescape
 import frappe
 from frappe.utils import flt
 
-from lms.lms.doctype.batch_grade_sheet.batch_grade_sheet import GRADE_COMPONENTS, GRADE_FIELDS
+from lms.lms.doctype.batch_grade_sheet.batch_grade_sheet import (
+	GRADE_COMPONENTS,
+	GRADE_FIELDS,
+	recalculate_row_total,
+)
 
 DEFAULT_GRADE_BANDS = [
 	(90, "Excellent"),
@@ -11,6 +15,19 @@ DEFAULT_GRADE_BANDS = [
 	(70, "Good"),
 	(60, "Pass"),
 ]
+
+PASSING_MARK = 75
+
+
+def is_passing(grades):
+	"""Whether collected grades meet the passing mark.
+
+	When a student has no grade record, failure cannot be proven, so the
+	certificate is treated as passing.
+	"""
+	if not grades:
+		return True
+	return flt(grades.get("mark")) >= PASSING_MARK
 
 
 def get_grade_bands():
@@ -29,6 +46,19 @@ def get_grade_label(mark, bands=None):
 		if mark >= minimum:
 			return label
 	return ""
+
+
+def earned_total(record):
+	"""Earned total from the component marks, not the stored ``total`` field.
+
+	``total`` can drift from the components — e.g. when a row is written
+	directly — so the marks are summed again, matching ``recalculate_row_total``.
+	Over-max marks count as entered (they are what was earned on record); when
+	no component mark exists at all, the stored total is the only thing to go on.
+	"""
+	if any(record.get(fieldname) not in (None, "") for fieldname in GRADE_FIELDS):
+		return recalculate_row_total(record)
+	return flt(record.total)
 
 
 def collect_grades(cert):
@@ -50,9 +80,10 @@ def collect_grades(cert):
 			as_dict=True,
 		)
 		if record:
+			mark = earned_total(record)
 			return {
-				"mark": flt(record.total),
-				"grade_label": get_grade_label(record.total),
+				"mark": mark,
+				"grade_label": get_grade_label(mark),
 				"term": sheet.term or "",
 				"teacher_name": sheet.instructor_name or "",
 				# Frappe stores "&" as "&amp;" in text fields; the template escapes on output

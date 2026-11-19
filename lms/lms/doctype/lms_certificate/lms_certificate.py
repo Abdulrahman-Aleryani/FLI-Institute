@@ -1,6 +1,7 @@
 # Copyright (c) 2021, FOSS United and contributors
 # For license information, please see license.txt
 
+import json
 import secrets
 
 import frappe
@@ -9,6 +10,8 @@ from frappe.email.doctype.email_template.email_template import get_email_templat
 from frappe.model.document import Document
 from frappe.model.naming import getseries, make_autoname
 from frappe.utils import cint
+
+from lms.lms.certificate_grades import collect_grades, is_passing
 
 CERTIFICATE_PRINT_FORMAT = "Certificate Template"
 PRIVILEGED_ROLES = ("System Manager", "Moderator")
@@ -38,6 +41,13 @@ class LMSCertificate(Document):
 		self.protect_immutable_fields()
 		self.validate_duplicate_certificate()
 		self.validate_eligibility()
+		self.enforce_passing_grade()
+
+	def enforce_passing_grade(self):
+		"""Students below the passing mark get a grades report, not a certificate,
+		so they can never appear on the certified participants page."""
+		if self.published and self.batch_name and not is_passing(collect_grades(self)):
+			self.published = 0
 
 	def protect_immutable_fields(self):
 		if self.is_new():
@@ -62,6 +72,9 @@ class LMSCertificate(Document):
 		self.name = make_autoname("hash", self.doctype)
 
 	def after_insert(self):
+		self.send_mail_if_configured()
+
+	def send_mail_if_configured(self):
 		outgoing_email_account = frappe.get_cached_value(
 			"Email Account", {"default_outgoing": 1, "enable_outgoing": 1}, "name"
 		)
@@ -279,22 +292,37 @@ def revoke_certificate(name, reason):
 
 
 @frappe.whitelist()
-def create_bulk_certificates(batch, template=None, published=1, course=None):
+def create_bulk_certificates(batch, template=None, published=1, course=None, students=None):
 	frappe.only_for(PRIVILEGED_ROLES)
 	if not frappe.db.exists("LMS Batch", batch):
 		frappe.throw(_("Batch {0} does not exist.").format(batch))
 	if template and not frappe.db.exists("LMS Certificate Template", template):
 		frappe.throw(_("Certificate template {0} does not exist.").format(template))
 
-	members = []
+	enrolled = []
 	for member in frappe.get_all(
 		"LMS Batch Enrollment",
 		{"batch": batch},
 		pluck="member",
 		order_by="creation asc",
 	):
-		if member not in members:
-			members.append(member)
+		if member not in enrolled:
+			enrolled.append(member)
+
+	if isinstance(students, str):
+		try:
+			students = json.loads(students)
+		except ValueError:
+			students = [member.strip() for member in students.split(",")]
+		if not isinstance(students, list):
+			students = [students] if students else []
+	selected = []
+	for member in students or []:
+		if member and member not in selected:
+			selected.append(member)
+
+	members = [member for member in enrolled if not selected or member in selected]
+	not_enrolled = [member for member in selected if member not in enrolled]
 
 	course_filters = {"parent": batch}
 	if course:
@@ -306,34 +334,55 @@ def create_bulk_certificates(batch, template=None, published=1, course=None):
 		or frappe._dict()
 	)
 
-	created, skipped, failed = [], [], []
+	created, updated, skipped, failed = [], [], [], []
+	for member in not_enrolled:
+		skipped.append({"member": member, "reason": _("Not enrolled in this batch")})
+
 	for member in members:
 		duplicate_filters = [{"member": member, "batch_name": batch, "revoked": 0}]
 		if batch_course.get("course"):
 			duplicate_filters.append({"member": member, "course": batch_course.get("course"), "revoked": 0})
-		if any(frappe.db.exists("LMS Certificate", filters) for filters in duplicate_filters):
+		existing = None
+		for filters in duplicate_filters:
+			existing = frappe.db.get_value("LMS Certificate", filters, "name")
+			if existing:
+				break
+
+		if existing and not selected:
 			skipped.append({"member": member, "reason": _("Already certified")})
 			continue
 
 		savepoint = "bulk_certificate"
 		frappe.db.savepoint(savepoint)
 		try:
-			certificate = frappe.get_doc(
-				{
-					"doctype": "LMS Certificate",
-					"member": member,
-					"batch_name": batch,
-					"course": batch_course.get("course"),
-					"evaluator": batch_course.get("evaluator"),
-					"certificate_template": template,
-					"published": cint(published),
-				}
-			)
-			certificate.flags.ignore_eligibility = True
-			certificate.insert(ignore_permissions=True)
-			created.append(certificate.name)
+			if existing:
+				certificate = frappe.get_doc("LMS Certificate", existing)
+				certificate.batch_name = batch
+				certificate.course = batch_course.get("course")
+				certificate.evaluator = batch_course.get("evaluator")
+				if template:
+					certificate.certificate_template = template
+				certificate.published = cint(published)
+				certificate.save(ignore_permissions=True)
+				certificate.send_mail_if_configured()
+				updated.append(certificate.name)
+			else:
+				certificate = frappe.get_doc(
+					{
+						"doctype": "LMS Certificate",
+						"member": member,
+						"batch_name": batch,
+						"course": batch_course.get("course"),
+						"evaluator": batch_course.get("evaluator"),
+						"certificate_template": template,
+						"published": cint(published),
+					}
+				)
+				certificate.flags.ignore_eligibility = True
+				certificate.insert(ignore_permissions=True)
+				created.append(certificate.name)
 		except Exception as e:
 			frappe.db.rollback(save_point=savepoint)
 			failed.append({"member": member, "error": str(e)})
 
-	return {"created": created, "skipped": skipped, "failed": failed}
+	return {"created": created, "updated": updated, "skipped": skipped, "failed": failed}

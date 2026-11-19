@@ -29,6 +29,17 @@
 					doctype="LMS Certificate Template"
 					:filters="{ enabled: 1 }"
 				/>
+				<Autocomplete
+					v-model="details.students"
+					:options="studentOptions"
+					:multiple="true"
+					:max-options="500"
+					:loading="batchStudents.loading"
+					:label="__('Students')"
+					:placeholder="
+						__('All Students in Batch (or select one or more students)')
+					"
+				/>
 				<Switch
 					size="sm"
 					:label="__('Published')"
@@ -42,6 +53,12 @@
 				<div v-if="summary" class="space-y-2 text-sm border-t pt-3">
 					<div class="text-ink-gray-9 font-medium">
 						{{ __('{0} certificates created').format(summary.created.length) }}
+					</div>
+					<div
+						v-if="summary.updated.length"
+						class="text-ink-gray-9 font-medium"
+					>
+						{{ __('{0} certificates updated').format(summary.updated.length) }}
 					</div>
 					<div v-if="summary.skipped.length">
 						<div class="text-ink-amber-3 font-medium">
@@ -69,8 +86,16 @@
 	</Dialog>
 </template>
 <script setup>
-import { reactive, ref, watch } from 'vue'
-import { call, Dialog, FormControl, Switch, toast } from 'frappe-ui'
+import { computed, reactive, ref, watch } from 'vue'
+import {
+	Autocomplete,
+	call,
+	createResource,
+	Dialog,
+	FormControl,
+	Switch,
+	toast,
+} from 'frappe-ui'
 import { cleanError } from '@/utils'
 import Link from '@/components/Controls/Link.vue'
 
@@ -80,6 +105,7 @@ const details = reactive({
 	template: null,
 	course: null,
 	published: true,
+	students: [],
 })
 
 const props = defineProps({
@@ -87,6 +113,22 @@ const props = defineProps({
 		type: [Object, null],
 		required: true,
 	},
+})
+
+const batchStudents = createResource({
+	url: 'lms.lms.utils.get_batch_students',
+	params: {
+		batch: props.batch?.name,
+	},
+	auto: false,
+})
+
+const studentOptions = computed(() => {
+	return (batchStudents.data || []).map((student) => ({
+		label: student.full_name || student.email,
+		value: student.email,
+		description: student.email,
+	}))
 })
 
 const resolveTemplate = () => {
@@ -108,7 +150,9 @@ const resolveTemplate = () => {
 const reset = () => {
 	summary.value = null
 	details.published = true
+	details.students = []
 	details.course = props.batch?.courses?.[0]?.course || null
+	batchStudents.reload()
 	resolveTemplate()
 }
 
@@ -131,6 +175,9 @@ const generateCertificates = (close) => {
 			template: details.template,
 			published: details.published ? 1 : 0,
 			course: details.course,
+			students: (details.students || []).map(
+				(student) => student.value ?? student,
+			),
 		},
 	)
 		.then((result) => {
